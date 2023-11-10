@@ -5,10 +5,18 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ExploreContainerComponent } from './explore-container.component';
+import { CapOcrComponent } from './cap-ocr/cap-ocr.component';
+import { CapNfcComponent } from './cap-nfc/cap-nfc.component';
+import { CapObdComponent } from './cap-obd/cap-obd.component';
 
 @NgModule({
   imports: [ CommonModule, FormsModule, IonicModule],
-  declarations: [ExploreContainerComponent],
+  declarations: [
+    ExploreContainerComponent,
+    CapOcrComponent,
+    CapNfcComponent,
+    CapObdComponent
+  ],
   exports: [ExploreContainerComponent]
 })
 export class ExploreContainerComponentModule {}

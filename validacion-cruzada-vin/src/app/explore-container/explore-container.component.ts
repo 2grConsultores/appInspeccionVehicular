@@ -15,7 +15,7 @@ constructor(
 ) { }
 
 caso(numero: number){
-  this.router.navigate(['/ocr/'+numero]);
+  this.router.navigate(['ocr/'+numero]);
 }
   
 }

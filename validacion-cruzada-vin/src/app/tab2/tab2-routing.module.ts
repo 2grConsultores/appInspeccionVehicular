@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: Tab2Page,
   },
-  {path:'ocr/:numero', component: CapOcrComponent},
+  
 ];
 
 @NgModule({

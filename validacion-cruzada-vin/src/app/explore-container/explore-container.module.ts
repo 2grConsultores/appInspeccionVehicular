@@ -8,9 +8,15 @@ import { ExploreContainerComponent } from './explore-container.component';
 import { CapOcrComponent } from './cap-ocr/cap-ocr.component';
 import { CapNfcComponent } from './cap-nfc/cap-nfc.component';
 import { CapObdComponent } from './cap-obd/cap-obd.component';
+import { exploreRoutingModule } from './explore-routing.module';
 
 @NgModule({
-  imports: [ CommonModule, FormsModule, IonicModule],
+  imports: [ 
+    CommonModule, 
+    FormsModule, 
+    IonicModule,
+    exploreRoutingModule
+  ],
   declarations: [
     ExploreContainerComponent,
     CapOcrComponent,

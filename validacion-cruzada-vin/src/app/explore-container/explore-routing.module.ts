@@ -4,7 +4,7 @@ import { CapOcrComponent } from '../explore-container/cap-ocr/cap-ocr.component'
 
 const routes: Routes = [
 
-  {path:'ocr/:numero', component: CapOcrComponent},
+  {path:'ocr', component: CapOcrComponent},
 ];
 
 @NgModule({

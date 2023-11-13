@@ -1,3 +1,71 @@
-<p>
-  resultado works!
-</p>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Resultado 
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" >
+  <div id="container">
+    <div class="cuerpo formulario" *ngIf="mostrarResutlado">
+      <ion-loading class="custom-loading" trigger="open-loading" message="Comparando los resultados" [duration]="3000"></ion-loading>
+    </div>
+    <div class="cuerpo" *ngIf="mostrarResutlado">
+      <ion-item >
+        <ion-label class="m-5 text-center"><h1>Riesgo {{casoJson.resultado.riesgo}} </h1></ion-label>
+      </ion-item>
+      <ion-item >
+        <ion-label>
+          <p class="m-5 ion-text-wrap">{{casoJson.resultado.descripcion}} </p>
+        </ion-label>
+      </ion-item>
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>Recomendaciones</ion-label>
+        </ion-item-divider>
+        <ion-item *ngFor="let recomendacion of casoJson.resultado.recomendacion ">
+          <ion-label>
+           <p class="ion-text-wrap">{{recomendacion}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-item-group>
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>Consulta reporte CRAFAX</ion-label>
+        </ion-item-divider>
+        <ion-item *ngIf="muestraVisibles">
+          <div class="consulta">
+            <h3>Visibles:</h3>
+            <p class="consulta_resultado">
+              <ion-label class="m-5">{{casoJson.visibles.vin}} </ion-label>
+              <ion-button expand="block" shape="round"><ion-icon name="document-outline"></ion-icon>Consultar</ion-button>
+            </p>
+          </div>
+        </ion-item>
+        <ion-item *ngIf="muestraObd">
+          <div class="consulta">
+            <h3>OBD:</h3>
+            <p class="consulta_resultado">
+              <ion-label class="m-5">{{casoJson.obd.vin}} </ion-label>
+              <ion-button expand="block" shape="round"><ion-icon name="document-outline"></ion-icon>Consultar</ion-button>
+            </p>
+          </div>
+        </ion-item>
+        <ion-item *ngIf="muestraEngomado">
+          <div class="consulta">
+            <h3>Engomado:</h3>
+            <p class="consulta_resultado">
+              <ion-label class="m-5">{{casoJson.nfc.vin}} </ion-label>
+              <ion-button expand="block" shape="round"><ion-icon name="document-outline"></ion-icon>Consultar</ion-button>
+            </p>
+          </div>
+        </ion-item>
+      </ion-item-group>
+
+      <ion-button expand="block" shape="round" (click)="linkCapturaHome()" >Regresar</ion-button>
+    </div>
+
+
+  </div>
+
+</ion-content>

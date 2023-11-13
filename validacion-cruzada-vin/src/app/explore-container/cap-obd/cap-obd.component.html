@@ -9,28 +9,44 @@
 
 <ion-content [fullscreen]="true" >
   <div id="container">
-    <div class="formulario" *ngIf="!mostrarResutlado">
-      <ion-item>
-        <ion-label >VIN en puerta</ion-label>
-        <ion-button expand="block" shape="round"><ion-icon name="camera-outline"></ion-icon></ion-button>
-      </ion-item>
-      <ion-item>
-        <ion-label >VIN en parbrisas</ion-label>
-        <ion-button expand="block" shape="round"><ion-icon name="camera-outline"></ion-icon></ion-button>
-      </ion-item>
-      <!-- <ion-item>
-        <ion-label >VIN en documentos</ion-label>
-        <ion-button expand="block"><ion-icon name="camera-outline"></ion-icon></ion-button>
-      </ion-item> -->
-      <ion-button expand="block" id="open-loading" (click)="validarCaptura()">Validar captura</ion-button>
-      <ion-loading class="custom-loading" trigger="open-loading" message="Validando el VIN" [duration]="3000"></ion-loading>
+    <div *ngIf="instrucciones">
+      <ion-img
+        src="https://docs-demo.ionic.io/assets/madison.jpg"
+        alt="The Wisconsin State Capitol building in Madison, WI at night"
+      ></ion-img>
+      <ion-button expand="block" id="buscar" shape="round" (click)="buscarDispositivo()" >Buscar</ion-button>
+      <ion-loading class="custom-loading" trigger="buscar" message="buscando bluethoot" [duration]="1500"></ion-loading>
     </div>
-    <ion-item *ngIf="mostrarResutlado">
-      <ion-label class="m-5">VIN obtenido </ion-label>
-      <ion-label class="m-5">123ASDE2324SD23 </ion-label>
-    </ion-item>
-    <ion-button expand="block" shape="round" (click)="linkCapturaNFC(caso)" >Siguiente</ion-button>
+    <div class="formulario" *ngIf="vincularDispositivo">
+      <ion-list [inset]="true">
+        <ion-item [button]="true">
+          <ion-label>OBDII bluethoot</ion-label>
+          <ion-note slot="end">62123</ion-note>
+        </ion-item>
+        <ion-item [button]="true">
+          <ion-label>Samsung A16</ion-label>
+          <ion-note slot="end">62123</ion-note>
+        </ion-item>
+        <ion-item [button]="true">
+          <ion-label>TCL</ion-label>
+          <ion-note slot="end">23412</ion-note>
+        </ion-item>
+        <ion-item [button]="true">
+          <ion-label>Iphone X3</ion-label>
+          <ion-note slot="end">4534</ion-note>
+        </ion-item>
+      </ion-list>
 
+      <ion-button expand="block" id="vincular" (click)="obtenerVin()">Obtener VIN</ion-button>
+      <ion-loading class="custom-loading" trigger="vincular" message="Obteniendo VIN" [duration]="3000"></ion-loading>
+    </div>
+    <div class="cuerpo" *ngIf="mostrarResutlado">
+      <ion-item >
+        <ion-label class="m-5">VIN obtenido </ion-label>
+        <ion-label class="m-5">{{casoJson.visibles.vin}} </ion-label>
+      </ion-item>
+      <ion-button expand="block" shape="round" (click)="linkCapturaNFC(caso)" >Siguiente</ion-button>
+    </div>
 
   </div>
 

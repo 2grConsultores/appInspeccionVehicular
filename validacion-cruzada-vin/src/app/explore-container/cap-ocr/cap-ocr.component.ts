@@ -11,7 +11,28 @@ import { Caso } from 'src/app/interfaces/caso.interfaces';
 export class CapOcrComponent  implements OnInit {
   mostrarResutlado:boolean = false;
   caso:number = 0; 
-  casoJson:Caso[]= [];
+  casoJson:Caso = {
+    _id: 0,
+    visibles: {
+      listaLecturas: [{
+        lectura:'',
+        resultado:''
+      }],
+      vin: ''
+    },
+    obd: {
+      vin: ''
+    },
+    nfc: {
+      vin: ''
+    },
+    resultado: {
+      riesgo: '',
+      color: '',
+      descripcion: '',
+      recomendacion: []
+    }
+  };
 
   constructor(
     private router: Router,
@@ -45,14 +66,12 @@ export class CapOcrComponent  implements OnInit {
     this.CasosService.getJSON().subscribe( (casos: Caso[]) => {
       console.log('casos',casos);
       const foundCaso = casos.find( (caso: Caso) => caso._id == numeroCaso);
-      console.log('caso encontado',foundCaso);
-
-      // if (foundCaso !== undefined) {
-      //   this.casoJson = [foundCaso]; // if foundCaso is not undefined, assign it to this.casoJson
-      //   console.log(this.casoJson);
-      // } else {
-      //   // handle the case when no matching caso is found
-      // }
+      if (foundCaso !== undefined) {
+        this.casoJson = foundCaso; // if foundCaso is not undefined, assign it to this.casoJson
+        console.log('casoJson',this.casoJson);
+      } else {
+        console.log('No se encontro el caso');
+      }
     });
   }
 

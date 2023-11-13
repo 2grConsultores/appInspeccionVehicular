@@ -26,5 +26,11 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 #container {
+    display: flex;
     padding: 10px;
+    margin-top: 30px;
+    min-height: 200px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-around;
 }

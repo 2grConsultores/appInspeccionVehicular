@@ -9,24 +9,29 @@
 
 <ion-content [fullscreen]="true" >
   <div id="container">
-    <ion-item>
-      <ion-label >VIN en puerta</ion-label>
-      <ion-button expand="block" shape="round"><ion-icon name="camera-outline"></ion-icon></ion-button>
-    </ion-item>
-    <ion-item>
-      <ion-label >VIN en parbrisas</ion-label>
-      <ion-button expand="block" shape="round"><ion-icon name="camera-outline"></ion-icon></ion-button>
-    </ion-item>
-    <!-- <ion-item>
-      <ion-label >VIN en documentos</ion-label>
-      <ion-button expand="block"><ion-icon name="camera-outline"></ion-icon></ion-button>
-    </ion-item> -->
-    <ion-button expand="block" id="open-loading" (click)="validarCaptura">Validar captura</ion-button>
-    <ion-loading class="custom-loading" trigger="open-loading" message="Validando el VIN" [duration]="3000"></ion-loading>
-    <ion-item *ngIf="mostrarResutlado">
-      <ion-label class="m-5">VIN obtenido </ion-label>
-      <ion-label class="m-5">123ASDE2324SD23 </ion-label>
-    </ion-item>
+    <div class="cuerpo formulario" *ngIf="!mostrarResutlado">
+      <ion-item class="my-5">
+        <ion-label >VIN en puerta</ion-label>
+        <ion-button expand="block" shape="round"><ion-icon name="camera-outline"></ion-icon></ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-label >VIN en parbrisas</ion-label>
+        <ion-button expand="block" shape="round"><ion-icon name="camera-outline"></ion-icon></ion-button>
+      </ion-item>
+      <!-- <ion-item>
+        <ion-label >VIN en documentos</ion-label>
+        <ion-button expand="block"><ion-icon name="camera-outline"></ion-icon></ion-button>
+      </ion-item> -->
+      <ion-button expand="block" id="open-loading" (click)="validarCaptura()">Validar captura</ion-button>
+      <ion-loading class="custom-loading" trigger="open-loading" message="Validando el VIN" [duration]="3000"></ion-loading>
+    </div>
+    <div class="cuerpo" *ngIf="mostrarResutlado">
+      <ion-item >
+        <ion-label class="m-5">VIN obtenido </ion-label>
+        <ion-label class="m-5">123ASDE2324SD23 </ion-label>
+      </ion-item>
+      <ion-button expand="block" shape="round" (click)="linkCapturaOBD(caso)" >Siguiente</ion-button>
+    </div>
 
 
   </div>

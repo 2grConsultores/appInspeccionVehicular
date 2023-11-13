@@ -8,14 +8,14 @@ import { Router } from '@angular/router';
 })
 export class ExploreContainerComponent {
 
-  @Input() name?: string;
+@Input() name?: string;
 
 constructor(
   private router: Router,
 ) { }
 
-caso(numero: number){
-  this.router.navigate(['ocr/'+numero]);
+caso(caso: number){
+  this.router.navigate(['ocr/'+caso]);
 }
   
 }

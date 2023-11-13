@@ -1,5 +1,5 @@
 [{
-	"caso": 1,
+	"_id": 1,
 	"visibles":{
 		"listaLecturas":[{
 				"lectura":"3VWN4B1C2WM022888",
@@ -25,7 +25,7 @@
 		]
 	}
 },{
-	"caso": 2,
+	"_id": 2,
 	"visibles":{
 		"listaLecturas":[{
 				"lectura":"3VWN4B1C2WM022888",
@@ -52,7 +52,7 @@
 		]
 	}
 },{
-	"caso": 3,
+	"_id": 3,
 	"visibles":{
 		"listaLecturas":[{
 				"lectura":"3VWN4B1C2WM022888",
@@ -79,7 +79,7 @@
 		]
 	}
 },{
-	"caso": 4,
+	"_id": 4,
 	"visibles":{
 		"listaLecturas":[{
 				"lectura":"3VWN4B1C2WM022880",
@@ -105,7 +105,7 @@
 		]
 	}
 },{
-	"caso": 5,
+	"_id": 5,
 	"visibles":{
 		"listaLecturas":[{
 				"lectura":"3VWN4B1C2WM022880",

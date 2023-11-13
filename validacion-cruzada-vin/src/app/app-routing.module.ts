@@ -10,6 +10,10 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
+  {
+    path: 'home',
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
   {path: 'ocr/:id', component: CapOcrComponent},
   {path: 'obd/:id', component: CapObdComponent},
   {path: 'ocr/:id', component: CapNfcComponent},

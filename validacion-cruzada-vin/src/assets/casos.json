@@ -1,0 +1,134 @@
+[{
+	"caso": 1,
+	"visibles":{
+		"listaLecturas":[{
+				"lectura":"3VWN4B1C2WM022888",
+				"resultado":"3VWN4B1C2WM022888"
+			},{
+				"lectura":"3VWN4B1C2WM022888",
+				"resultado":"3VWN4B1C2WM022888"
+			}],
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"obd":{
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"nfc":{
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"resultado":{
+		"riesgo": "bajo",
+		"color": "verde",
+		"descripcion": "Todo indica que el VIN está correcto en el vehículo.",
+		"recomendacion": [
+			"Complementar con reporte CARFAX MX"
+		]
+	}
+},{
+	"caso": 2,
+	"visibles":{
+		"listaLecturas":[{
+				"lectura":"3VWN4B1C2WM022888",
+				"resultado":"3VWN4B1C2WM022888"
+			},{
+				"lectura":"3VWN4B1C2WM022888",
+				"resultado":"3VWN4B1C2WM022888"
+			}],
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"obd":{
+		"vin": "3VWN4B1C2WM022880"
+	},
+	"nfc":{
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"resultado":{
+		"riesgo": "alto",
+		"color": "rojo",
+		"descripcion": "El VIN en la computadora del vehículo no coincide con el presentado en las demás fuentes. Probable sustitución de la computadora del motor.",
+		"recomendacion": [
+			"Se puede reducir el riesgo mediante evidencias documentales de sustitución de la computadora del motor.",
+			"Complementar con reporte CARFAX MX para cada uno de los dos datos de VIN encontrados en el vehículo"
+		]
+	}
+},{
+	"caso": 3,
+	"visibles":{
+		"listaLecturas":[{
+				"lectura":"3VWN4B1C2WM022888",
+				"resultado":"3VWN4B1C2WM022888"
+			},{
+				"lectura":"3VWN4B1C2WM022888",
+				"resultado":"3VWN4B1C2WM022888"
+			}],
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"obd":{
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"nfc":{
+		"vin": "3VWN4B1C2WM022880"
+	},
+	"resultado":{
+		"riesgo": "alto",
+		"color": "rojo",
+		"descripcion": "El VIN en la Constancia de Inscripción al REPUVE no coincide con el presentado en las demás fuentes. Probable alteración del VIN.",
+		"recomendacion": [
+			"Se puede reducir el riesgo al comprobar sustitución del parabrisas desde uno de rehuso.",
+			"Complementar con reporte CARFAX MX para cada uno de los dos datos de VIN encontrados en el vehículo"
+		]
+	}
+},{
+	"caso": 4,
+	"visibles":{
+		"listaLecturas":[{
+				"lectura":"3VWN4B1C2WM022880",
+				"resultado":"3VWN4B1C2WM022880"
+			},{
+				"lectura":"3VWN4B1C2WM022880",
+				"resultado":"3VWN4B1C2WM022880"
+			}],
+		"vin": "3VWN4B1C2WM022880"
+	},
+	"obd":{
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"nfc":{
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"resultado":{
+		"riesgo": "alto",
+		"color": "rojo",
+		"descripcion": "El VIN visible en el vehículo no coincide con el presentado en las demás fuentes. Probable alteración maliciosa del VIN.",
+		"recomendacion": [
+			"Complementar con reporte CARFAX MX para cada uno de los dos datos de VIN encontrados en el vehículo"
+		]
+	}
+},{
+	"caso": 5,
+	"visibles":{
+		"listaLecturas":[{
+				"lectura":"3VWN4B1C2WM022880",
+				"resultado":"3VWN4B1C2WM022880"
+			},{
+				"lectura":"3VWN4B1C2WM022880",
+				"resultado":"3VWN4B1C2WM022880"
+			}],
+		"vin": "3VWN4B1C2WM022880"
+	},
+	"obd":{
+		"vin": "3VWN4B1C2WM022888"
+	},
+	"nfc":{
+		"vin": "3VWN4B1C2WM022889"
+	},
+	"resultado":{
+		"riesgo": "alto",
+		"color": "rojo",
+		"descripcion": "El VIN es diferente en cada una de las fuentes del dato en el vehículo. Probable alteración maliciosa del VIN.",
+		"recomendacion": [
+			"Considerar como situación crítica",
+			"Complementar con reporte CARFAX MX para cada uno de los tres datos de VIN encontrados en el vehículo"
+		]
+	}
+}]

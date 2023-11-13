@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {path: 'ocr/:id', component: CapOcrComponent},
   {path: 'obd/:id', component: CapObdComponent},
-  {path: 'ocr/:id', component: CapNfcComponent},
+  {path: 'nfc/:id', component: CapNfcComponent},
   {path: 'resultado/:id', component: ResultadoComponent}
 ];
 @NgModule({

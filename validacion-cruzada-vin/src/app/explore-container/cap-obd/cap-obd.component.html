@@ -11,16 +11,17 @@
   <div id="container">
     <div *ngIf="instrucciones">
       <ion-img
-        src="https://docs-demo.ionic.io/assets/madison.jpg"
+        src="../../../assets/How-to-Connect-an-OBD-2-to-Your-Car.jpg"
         alt="The Wisconsin State Capitol building in Madison, WI at night"
       ></ion-img>
+      <p>Inserta el dispositivo y presiona el boton de buscar, uan ves que tengas la lista de dispositovos selecciona "OBD2 bluethoot"</p>
       <ion-button expand="block" id="buscar" shape="round" (click)="buscarDispositivo()" >Buscar</ion-button>
       <ion-loading class="custom-loading" trigger="buscar" message="buscando bluethoot" [duration]="1500"></ion-loading>
     </div>
     <div class="formulario" *ngIf="vincularDispositivo">
       <ion-list [inset]="true">
-        <ion-item [button]="true">
-          <ion-label>OBDII bluethoot</ion-label>
+        <ion-item (click)="obtenerVin()" id="vincular" [button]="true">
+          <ion-label >OBD2 bluethoot</ion-label>
           <ion-note slot="end">62123</ion-note>
         </ion-item>
         <ion-item [button]="true">
@@ -36,16 +37,14 @@
           <ion-note slot="end">4534</ion-note>
         </ion-item>
       </ion-list>
-
-      <ion-button expand="block" id="vincular" (click)="obtenerVin()">Obtener VIN</ion-button>
       <ion-loading class="custom-loading" trigger="vincular" message="Obteniendo VIN" [duration]="3000"></ion-loading>
     </div>
     <div class="cuerpo" *ngIf="mostrarResutlado">
       <ion-item >
         <ion-label class="m-5">VIN obtenido </ion-label>
-        <ion-label class="m-5">{{casoJson.visibles.vin}} </ion-label>
+        <p style="font-size: 13px;">{{casoJson.visibles.vin}} </p>
       </ion-item>
-      <ion-button expand="block" shape="round" (click)="linkCapturaNFC(caso)" >Siguiente</ion-button>
+      <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkCapturaNFC(caso)" >Siguiente</ion-button>
     </div>
 
   </div>

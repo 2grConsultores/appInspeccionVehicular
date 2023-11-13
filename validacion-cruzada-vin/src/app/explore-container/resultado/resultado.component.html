@@ -11,6 +11,12 @@
       <ion-loading class="custom-loading" trigger="open-loading" message="Comparando los resultados" [duration]="3000"></ion-loading>
     </div>
     <div class="cuerpo" *ngIf="mostrarResutlado">
+      <div class="imagen_semaforo">
+        <ion-img 
+          src="../../../assets/semaforo/{{casoJson.resultado.color}}.svg"
+          style="width: 80px;"
+        ></ion-img>
+      </div>
       <ion-item >
         <ion-label class="m-5 text-center"><h1>Riesgo {{casoJson.resultado.riesgo}} </h1></ion-label>
       </ion-item>
@@ -62,7 +68,7 @@
         </ion-item>
       </ion-item-group>
 
-      <ion-button expand="block" shape="round" (click)="linkCapturaHome()" >Regresar</ion-button>
+      <ion-button style="margin-top: 30px;" expand="block" shape="round" (click)="linkCapturaHome()" >Regresar</ion-button>
     </div>
 
 

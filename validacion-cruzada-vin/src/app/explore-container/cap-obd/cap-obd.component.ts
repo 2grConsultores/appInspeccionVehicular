@@ -45,6 +45,7 @@ export class CapObdComponent  implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe( ({id}) => { // aqui obtengo el id del registro
       this.obtenercasos(id);
+      this.caso = id;
     })
   }
 

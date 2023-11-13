@@ -9,6 +9,8 @@ import { Caso } from 'src/app/interfaces/caso.interfaces';
   styleUrls: ['./cap-ocr.component.scss'],
 })
 export class CapOcrComponent  implements OnInit {
+  fotoPuerta:boolean = false;
+  fotoParabrisas:boolean = false;
   mostrarResutlado:boolean = false;
   caso:number = 0; 
   casoJson:Caso = {
@@ -43,6 +45,7 @@ export class CapOcrComponent  implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe( ({id}) => { // aqui obtengo el id del registro
       this.obtenercasos(id);
+      this.caso = id;
     })
   }
 
@@ -53,8 +56,13 @@ export class CapOcrComponent  implements OnInit {
       this.mostrarResutlado = true;
   
     }, 3500);
+  }
 
-
+  fotoPuertaCapturada(){
+    this.fotoPuerta = true;
+  }
+  fotoParabrisasCapturada(){
+    this.fotoParabrisas = true;
   }
 
   linkCapturaOBD(caso: number){

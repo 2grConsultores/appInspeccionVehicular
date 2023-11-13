@@ -1,3 +1,30 @@
-<p>
-  cap-nfc works!
-</p>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Constancia de Inscripción REPUVE 
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+  <div id="container">
+    <div *ngIf="instrucciones">
+      <ion-img
+        src="../../../assets/hologramaRepuve.png"
+        alt="The Wisconsin State Capitol building in Madison, WI at night"
+      ></ion-img>
+      <p>Acerca el diospositovo al engomado de REPUVE en el parabrisas y presiona el boton "Leer constancia"</p>
+      <ion-button expand="block" id="buscar" shape="round" (click)="buscarDispositivo()" >Leer constancia</ion-button>
+      <ion-loading class="custom-loading" trigger="buscar" message="Leyendo constancia RFID" [duration]="1500"></ion-loading>
+    </div>
+    <div class="cuerpo" *ngIf="mostrarResutlado">
+      <ion-item >
+        <ion-label class="m-5">VIN obtenido </ion-label>
+        <p style="font-size: 13px;">{{casoJson.visibles.vin}} </p>
+      </ion-item>
+      <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkResultado(caso)" >Siguiente</ion-button>
+    </div>
+
+  </div>
+
+</ion-content>

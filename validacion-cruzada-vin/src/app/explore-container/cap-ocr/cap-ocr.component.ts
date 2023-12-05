@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CasosService } from '../../services/casos.service';
 import { Caso } from 'src/app/interfaces/caso.interfaces';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-cap-ocr',
@@ -40,6 +41,7 @@ export class CapOcrComponent  implements OnInit {
     private router: Router,
     private CasosService: CasosService,
     private activatedRoute: ActivatedRoute,
+    private firestoreService: FirestoreService
   ) { }
 
   ngOnInit() {
@@ -60,8 +62,10 @@ export class CapOcrComponent  implements OnInit {
 
   fotoPuertaCapturada(){
     this.fotoPuerta = true;
+    this.capturaManualPuerta = false;
   }
   fotoParabrisasCapturada(){
+    this.capturaManualParabrisas = false;
     this.fotoParabrisas = true;
   }
 
@@ -81,6 +85,29 @@ export class CapOcrComponent  implements OnInit {
         console.log('No se encontro el caso');
       }
     });
+  }
+
+  capturaManualPuerta:boolean = false;
+  capManualPuerta(){
+    this.capturaManualPuerta = true;
+    this.fotoPuerta = false;
+  };
+
+  capturaManualParabrisas:boolean = false;
+  capManualParabrisas(){
+    this.capturaManualParabrisas = true;
+    this.fotoParabrisas = false;
+  };
+
+  guardarCapManualPuerta(){
+    setTimeout(() => {
+    const data = {
+      vin:this.casoJson.visibles.vin,
+    }
+    this.firestoreService.updateDoc(data,'validacion','1');
+    this.capturaManualPuerta = false;
+    console.log('Guardando captura manual puerta');
+    }, 1500);
   }
 
 }

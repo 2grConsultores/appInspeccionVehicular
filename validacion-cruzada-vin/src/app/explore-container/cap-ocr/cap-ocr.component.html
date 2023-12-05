@@ -12,7 +12,13 @@
     <div class="cuerpo formulario" *ngIf="!mostrarResutlado">
       <ion-item class="my-5">
         <ion-label >VIN en puerta</ion-label>
-        <ion-button expand="block" shape="round" (click)="fotoPuertaCapturada()"><ion-icon name="camera-outline"></ion-icon></ion-button>
+          <ion-button slot="end" expand="block" shape="round" (click)="fotoPuertaCapturada()"><ion-icon name="camera-outline"></ion-icon></ion-button>
+          <ion-button slot="end" expand="block" shape="round" (click)="capManualPuerta()"><ion-icon name="text-outline"></ion-icon></ion-button>
+      </ion-item>
+      <ion-item *ngIf="capturaManualPuerta">
+          <ion-input label="Captura manual" labelPlacement="floating" placeholder="VIN"></ion-input>
+          <ion-button slot="end" expand="block" id="guardar" shape="round" (click)="guardarCapManualPuerta()"><ion-icon name="save-outline"></ion-icon></ion-button>
+          <ion-loading class="custom-loading"  trigger="guardar" message="Guardando VIN" [duration]="1000"></ion-loading>
       </ion-item>
       <ion-item *ngIf="fotoPuerta">
         <ion-img
@@ -22,7 +28,12 @@
       <ion-item>
         <ion-label >VIN en parbrisas</ion-label>
         <ion-button expand="block" shape="round" (click)="fotoParabrisasCapturada()"><ion-icon name="camera-outline"></ion-icon></ion-button>
+        <ion-button slot="end" expand="block" shape="round" (click)="capManualParabrisas()"><ion-icon name="text-outline"></ion-icon></ion-button>
       </ion-item>
+      <ion-item *ngIf="capturaManualParabrisas">
+        <ion-input label="Captura manual" labelPlacement="floating" placeholder="VIN"></ion-input>
+        <ion-button slot="end" expand="block" shape="round" (click)="capManualParabrisas()"><ion-icon name="save-outline"></ion-icon></ion-button>
+    </ion-item>
       <ion-item *ngIf="fotoParabrisas">
         <ion-img
         src="../../../assets/fotosOcr/ocsParabrisas.jpg"

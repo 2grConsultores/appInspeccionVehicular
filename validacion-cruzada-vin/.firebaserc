@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "validacioncruzadavin": {
+      "hosting": {
+        "app": [
+          "validacioncruzadavin"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "validacioncruzadavin"
+  }
+}

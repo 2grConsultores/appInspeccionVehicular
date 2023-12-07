@@ -5,6 +5,7 @@ import { Caso } from 'src/app/interfaces/caso.interfaces';
 import { FirestoreService } from '../../services/firestore.service';
 import { PhotoService } from 'src/app/services/photo.service';
 import { GoogleCloudVisionService } from '../../services/google-cloud-vision.service';
+import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 
 @Component({
   selector: 'app-cap-ocr',
@@ -16,6 +17,7 @@ export class CapOcrComponent  implements OnInit {
   fotoParabrisas:boolean = false;
   mostrarResutlado:boolean = false;
   vinPuerta:string = '';
+  vinPuertaBase64:string = '';
   caso:number = 0; 
   casoJson:Caso = {
     _id: 0,
@@ -39,6 +41,24 @@ export class CapOcrComponent  implements OnInit {
       recomendacion: []
     }
   };
+  alertButtons = [
+    {
+      text: 'Corregir',
+      role: 'cancel',
+      handler: () => {
+        console.log('Alert canceled');
+      },
+    },
+    {
+      text: 'Validar',
+      role: 'confirm',
+      handler: () => {
+        console.log('Alert confirmed');
+        this.guardarCapManualPuerta();
+      },
+    },
+  ];
+  isAlertOpen = false;
 
   constructor(
     private router: Router,
@@ -66,9 +86,14 @@ export class CapOcrComponent  implements OnInit {
     }, 3500);
   }
 
+  setOpen(isOpen: boolean) {
+    this.isAlertOpen = isOpen;
+  }
+
   async fotoPuertaCapturada(){
     await this.photoService.takePhoto().then( (base64Image: any) => {
       console.log('base64Image',base64Image);
+      this.vinPuertaBase64 = base64Image;
       this.GoogleCloudVisionService.getLabels(base64Image, 'TEXT_DETECTION').subscribe((result: any) => {
         console.log('result',result);
         const vin = result.responses[0].textAnnotations[0].description;
@@ -80,6 +105,8 @@ export class CapOcrComponent  implements OnInit {
         // this.firestoreService.updateDoc(data,'validacion','1');
         this.fotoPuerta = true;
         this.capturaManualPuerta = true;
+        this.setOpen(true);
+
       });
 
     });
@@ -121,9 +148,39 @@ export class CapOcrComponent  implements OnInit {
 
   guardarCapManualPuerta(){
     setTimeout(() => {
-    const data = {
-      vin:this.vinPuerta,
-    }
+    const data:validacionInt = {
+      visibles: {
+        listaLecturas: [{
+          posicion: 'puerta',
+          lectura: this.vinPuerta,
+          resultado: '',
+          editado: false,
+          fecha: new Date(),
+          imagen: {
+            base64: this.vinPuertaBase64,
+          },
+        }],
+        vin: this.vinPuerta,
+      },
+      _id: 0,
+      usuario: '',
+      fechaInicio: new Date(),
+      fechaFin: new Date(),
+      obd: {
+        vin: '',
+        fecha: new Date()
+      },
+      nfc: {
+        vin: '',
+        fecha: new Date()
+      },
+      resultado: {
+        riesgo: '',
+        color: '',
+        descripcion: '',
+        recomendacion: []
+      }
+    };
     this.firestoreService.updateDoc(data,'validacion','1');
     this.capturaManualPuerta = false;
     console.log('Guardando captura manual puerta');

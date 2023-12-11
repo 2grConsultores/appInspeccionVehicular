@@ -82,20 +82,20 @@
     </div>
     <div *ngIf="mostrarTablaComparacion">
       <h1>Tabla de comparación</h1>
-      <ion-item class="my-5">
-        <ion-label *ngIf="mostrarVinParabrisas" ><p>Parabrisas</p><h2 class="bold">{{ resultadoVinParabrisas }}</h2>  </ion-label>
+      <ion-item class="my-5" *ngIf="mostrarVinParabrisas" >
+        <ion-label ><p>Parabrisas</p><h2 class="bold">{{ resultadoVinParabrisas }}</h2>  </ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
-      <ion-item class="my-5">
-        <ion-label *ngIf="mostrarVinPuerta" ><p>Puerta</p><h2 class="bold">{{ resultadoVinPuerta }}</h2></ion-label>
+      <ion-item class="my-5" *ngIf="mostrarVinPuerta">
+        <ion-label  ><p>Puerta</p><h2 class="bold">{{ resultadoVinPuerta }}</h2></ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
-      <ion-item class="my-5">
-        <ion-label *ngIf="mostrarVinFactura" ><p>Factura</p><h2 class="bold">{{ resultadoVinFactura }}</h2></ion-label>
+      <ion-item class="my-5" *ngIf="mostrarVinFactura">
+        <ion-label  ><p>Factura</p><h2 class="bold">{{ resultadoVinFactura }}</h2></ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
-      <ion-item class="my-5">
-        <ion-label *ngIf="mostrarVinTarjeta" ><p>Tarjeta de circulación</p><h2 class="bold">{{ resultadoVinTarjeta }}</h2></ion-label>
+      <ion-item class="my-5" *ngIf="mostrarVinTarjeta">
+        <ion-label  ><p>Tarjeta de circulación</p><h2 class="bold">{{ resultadoVinTarjeta }}</h2></ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
     </div>

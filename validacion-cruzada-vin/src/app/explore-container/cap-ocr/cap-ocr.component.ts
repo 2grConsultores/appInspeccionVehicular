@@ -24,12 +24,27 @@ export class CapOcrComponent  implements OnInit {
   isAlertOpen = false;
   isAlertOpenInputs = false;
   posicion:string = '';
+  mensajeAlert:string = '';
+  vinREGEX = /[a-hj-npr-zA-HJ-NPR-Z0-9]{17}/g;
+  mostrarTablaComparacion:boolean = false;
+
+
+// resultados
   mostrarVinPuerta:boolean = false;
   resultadoVinPuerta:string = '';
   mostrarVinParabrisas:boolean = false;
   resultadoVinParabrisas:string = '';
-  mensajeAlert:string = '';
-  vinREGEX = /[a-hj-npr-zA-HJ-NPR-Z0-9]{17}/g;
+  mostrarVinFactura:boolean = false;
+  resultadoVinFactura:string = '';
+  mostrarVinTarjeta:boolean = false;
+  resultadoVinTarjeta:string = '';
+
+
+  //Captura de fotos
+capturaParabrisas:boolean = false;
+capturaPuerta:boolean = false;
+capturaFactura:boolean = false;
+capturaTarjetaCirculacion:boolean = false;
 
 // semaforos 
 mostrarIcono:boolean = false;
@@ -104,9 +119,11 @@ arregloResultados:string[] = [];
 
   comparacionResultados(){
     console.log('Comparacion',this.arregloResultados);
-
+    if (this.arregloResultados.length >= 1) { /// si el arreglo tiene 1 elemento muetra tabla
+      this.mostrarTablaComparacion = true;
+    }
     const uniqueVins = new Set(this.arregloResultados);
-    if(this.arregloResultados.length >= 2){ // si el arreglo tiene 2 elementos
+    if(this.arregloResultados.length >= 2){ // si el arreglo tiene 2 elementos muestra comparacion
       if (uniqueVins.size === 1) {
         this.mostrarIcono = true;
         this.colorResultado = 'verde';
@@ -202,6 +219,15 @@ arregloResultados:string[] = [];
           this.arregloResultados.push(this.vinOCR);
           this.mensajeAlert = matchesVinRegExp[0];
           this.posicion = posicion;
+          if(posicion == 'puerta'){
+            this.capturaPuerta = true;
+          } else if (posicion == 'parabrisas'){
+            this.capturaParabrisas = true;
+          } else if (posicion == 'factura'){
+            this.capturaFactura = true;
+          } else if (posicion == 'tarjeta-circulacion'){
+            this.capturaTarjetaCirculacion = true;
+          }
           console.log('posicion:',this.posicion);
           this.setOpen(true);
         } else {
@@ -273,6 +299,12 @@ arregloResultados:string[] = [];
     } else if (posision == 'parabrisas') {
       this.mostrarVinParabrisas = true;
       this.resultadoVinParabrisas = vinOCR;
+    } else if (posision == 'factura') {
+      this.mostrarVinFactura = true;
+      this.resultadoVinFactura = vinOCR;
+    } else if (posision == 'tarjeta-circulacion') {
+      this.mostrarVinTarjeta = true;
+      this.resultadoVinTarjeta = vinOCR;
     }
     console.log('Guardado aprobo OCR');
   }
@@ -300,6 +332,12 @@ arregloResultados:string[] = [];
     } else if (posision == 'parabrisas') {
       this.mostrarVinParabrisas = true;
       this.resultadoVinParabrisas = vinEditado;
+    } else if (posision == 'factura') {
+      this.mostrarVinFactura = true;
+      this.resultadoVinFactura = vinEditado;
+    } else if (posision == 'tarjeta-circulacion') {
+      this.mostrarVinTarjeta = true;
+      this.resultadoVinTarjeta = vinEditado;
     }
     console.log('Guardado Edito VIN');
   }

@@ -14,7 +14,7 @@ export class FirestoreService {
   }
 
   // Crea un nuevo registro
-  public createDoc(data: {}, path: string, id: string) {
+  public createDoc(data: {}, path: string) {
     const coleccion = collection(this.database, path);
     return addDoc(coleccion, data);
   }
@@ -42,5 +42,7 @@ export class FirestoreService {
     const coleccion = collection(this.database, path);
     return deleteDoc(doc(coleccion, id));
   }
+
+
 
 }

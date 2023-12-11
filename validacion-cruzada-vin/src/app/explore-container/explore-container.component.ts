@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { FirestoreService } from '../services/firestore.service';
 
 @Component({
   selector: 'app-explore-container',
@@ -12,10 +13,51 @@ export class ExploreContainerComponent {
 
 constructor(
   private router: Router,
+  private firestoreService: FirestoreService,
 ) { }
 
 caso(caso: number){
   this.router.navigate(['ocr/'+caso]);
 }
-  
+
+  crearValidacion(){
+    const data = {
+      usuario: 'usuario',
+      fechaInicio: new Date(),
+      visibles:{
+        listaLecturas:[{
+          posicion:'',
+          lectura:'',
+          resultado:'',
+          editado:false,
+          fecha:new Date(),
+          imagen:{
+            base64:'',
+          },
+        }],
+        vin: '',
+      },
+      obd:{
+        vin: '',
+        fecha: new Date(),
+      },
+      nfc:{
+        vin: '',
+        fecha: new Date(),
+      },
+      resultado:{
+        riesgo: '',
+        color: '',
+        descripcion: '',
+        recomendacion: [],
+      }
+    };
+    this.firestoreService.createDoc(data,'validacion').then(registro => {
+
+      console.log('id registro', registro.id);
+      this.router.navigate(['ocr/'+registro.id]);
+    });
+  };
+
 }
+  

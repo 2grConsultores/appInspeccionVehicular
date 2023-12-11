@@ -10,18 +10,45 @@
 <ion-content [fullscreen]="true" >
   <div id="container">
     <div class="cuerpo formulario" *ngIf="!mostrarResutlado">
-      <ion-item class="my-5">
-        <ion-label *ngIf="!mostrarVinParabrisas" >VIN en parabrisas</ion-label>
-        <ion-label *ngIf="mostrarVinParabrisas" ><h3 class="bold">{{ resultadoVinParabrisas }}</h3></ion-label>
-        <ion-button slot="end" expand="block" shape="round" (click)="capturaOCR('parabrisas')"><ion-icon name="camera-outline"></ion-icon></ion-button>
-        <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
-      </ion-item>
-      <ion-item class="my-5">
-        <ion-label *ngIf="!mostrarVinPuerta" >VIN en puerta</ion-label>
-        <ion-label *ngIf="mostrarVinPuerta" ><h3 class="bold">{{ resultadoVinPuerta }}</h3></ion-label>
-        <ion-button slot="end" expand="block" shape="round" (click)="capturaOCR('puerta')"><ion-icon name="camera-outline"></ion-icon></ion-button>
-        <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
-      </ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <img alt="parabrisas" src="../../../assets/botonesVisibles/parabrisas.png" />
+              <ion-card-header>
+                <ion-card-title><ion-button shape="round" (click)="capturaOCR('parabrisas')"><ion-icon name="camera-outline"></ion-icon></ion-button></ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+          <ion-col>
+            <ion-card>
+              <img alt="puerta" src="../../../assets/botonesVisibles/puerta.png" />
+              <ion-card-header>
+                <ion-card-title><ion-button shape="round" (click)="capturaOCR('puerta')"><ion-icon name="camera-outline"></ion-icon></ion-button></ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <img alt="parabrisas" src="../../../assets/botonesVisibles/parabrisas.png" />
+              <ion-card-header>
+                <ion-card-title><ion-button shape="round" (click)="capturaOCR('parabrisas')"><ion-icon name="camera-outline"></ion-icon></ion-button></ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+          <ion-col>
+            <ion-card>
+              <img alt="parabrisas" src="../../../assets/botonesVisibles/parabrisas.png" />
+              <ion-card-header>
+                <ion-card-title><ion-button shape="round" (click)="capturaOCR('parabrisas')"><ion-icon name="camera-outline"></ion-icon></ion-button></ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
       <ion-alert
         [isOpen]="isAlertOpen"
         header="Validar VIN obtenido"
@@ -32,6 +59,20 @@
 <!-- 
       <ion-button expand="block"  style="margin-top: 30px;" id="open-loading" (click)="IconoResultado()">Comparar resultados</ion-button>
       <ion-loading class="custom-loading"  trigger="open-loading" message="Comparando resultados" [duration]="3000"></ion-loading> -->
+    </div>
+    <div>
+      <h1>Tabla de comparación</h1>
+      <ion-item class="my-5">
+        
+        <ion-label *ngIf="mostrarVinParabrisas" ><h3 class="bold">{{ resultadoVinParabrisas }}</h3></ion-label>
+        <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
+      </ion-item>
+      <ion-item class="my-5">
+        <!-- <ion-label *ngIf="!mostrarVinPuerta" >VIN en puerta</ion-label> -->
+        <ion-label *ngIf="mostrarVinPuerta" ><h3 class="bold">{{ resultadoVinPuerta }}</h3></ion-label>
+        <!-- <ion-button slot="end" expand="block" shape="round" (click)="capturaOCR('puerta')"><ion-icon name="camera-outline"></ion-icon></ion-button> -->
+        <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
+      </ion-item>
     </div>
     <div class="cuerpo" *ngIf="mostrarResutlado">
       <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkCapturaOBD(validacionId)" >Siguiente</ion-button>

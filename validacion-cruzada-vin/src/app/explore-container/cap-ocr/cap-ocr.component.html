@@ -2,7 +2,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Captura de VIN´s a la vista
+      Captura de VINs a la vista
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -83,24 +83,29 @@
     <div *ngIf="mostrarTablaComparacion">
       <h1>Tabla de comparación</h1>
       <ion-item class="my-5" *ngIf="mostrarVinParabrisas" >
+        <ion-icon name="custom-parabrisas" slot="start"></ion-icon>
         <ion-label ><p>Parabrisas</p><h2 class="bold">{{ resultadoVinParabrisas }}</h2>  </ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
       <ion-item class="my-5" *ngIf="mostrarVinPuerta">
+        <ion-icon name="custom-puerta" slot="start"></ion-icon>
         <ion-label  ><p>Puerta</p><h2 class="bold">{{ resultadoVinPuerta }}</h2></ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
       <ion-item class="my-5" *ngIf="mostrarVinFactura">
+        <ion-icon name="custom-factura" slot="start"></ion-icon>
         <ion-label  ><p>Factura</p><h2 class="bold">{{ resultadoVinFactura }}</h2></ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
       <ion-item class="my-5" *ngIf="mostrarVinTarjeta">
+        <ion-icon name="custom-tarjetaCirculacion" slot="start"></ion-icon>
         <ion-label  ><p>Tarjeta de circulación</p><h2 class="bold">{{ resultadoVinTarjeta }}</h2></ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
     </div>
     <div class="cuerpo" *ngIf="mostrarIcono">
-      <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkCapturaOBD(validacionId)" >Siguiente</ion-button>
+      <p *ngIf="colorResultado == 'rojo'" >La comparación de los VINs no coincide, es probable se tenga un problema </p>
+      <ion-button *ngIf="colorResultado == 'verde'" expand="block"  style="margin-top: 30px;" shape="round" (click)="linkCapturaOBD(validacionId)" >Siguiente</ion-button>
       <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkHome(validacionId)" >Cencelar</ion-button>
     </div>
 

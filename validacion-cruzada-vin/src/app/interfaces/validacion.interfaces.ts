@@ -1,13 +1,12 @@
 export interface validacionInt{
-    _id: number;
 	usuario: string;
 	fechaInicio?: Date;
 	fechaFin?: Date;
 	visibles:{
 		listaLecturas:[{
 				posicion:string,
-				lectura:string,
-				resultado:string,
+				vinOCR:string,
+				vinEditado:string,
 				editado:boolean,
 				fecha:Date,
 				imagen:{

@@ -1,8 +1,10 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-icon class="iconoheader" name="custom-visibles" slot="start"></ion-icon>
     <ion-title>
-      Captura de VINs a la vista
+      
+      Evidencias a la vista
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -10,16 +12,17 @@
 <ion-content [fullscreen]="true" >
   <div id="container">
     <div class="cuerpo formulario" *ngIf="!mostrarResutlado">
+      <p class="ion-margin ">Captura al menos dos imagenes para comparar los datos obtenidos. </p>
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-card>
-              <img alt="parabrisas" src="../../../assets/botonesVisibles/parabrisas.png" />
+            <ion-card >
+              <img alt="parabrisas" class="cardimage" src="../../../assets/botonesVisibles/parabrisas.png" />
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('parabrisas')">
                     <ion-icon *ngIf="!capturaParabrisas" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaParabrisas" name="checkmark-circle"></ion-icon>
+                    <ion-icon *ngIf="capturaParabrisas" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -27,12 +30,12 @@
           </ion-col>
           <ion-col>
             <ion-card>
-              <img alt="puerta" src="../../../assets/botonesVisibles/puerta.png" />
+              <img alt="puerta" class="cardimage" src="../../../assets/botonesVisibles/puerta.png" />
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('puerta')">
                     <ion-icon *ngIf="!capturaPuerta" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaPuerta" name="checkmark-circle"></ion-icon>
+                    <ion-icon *ngIf="capturaPuerta" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -42,12 +45,12 @@
         <ion-row>
           <ion-col>
             <ion-card>
-              <img alt="factura" src="../../../assets/botonesVisibles/factura.png" />
+              <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/factura.png" />
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('factura')">
                     <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark-circle"></ion-icon>
+                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -55,12 +58,12 @@
           </ion-col>
           <ion-col>
             <ion-card>
-              <img alt="tarjeta-circulacion" src="../../../assets/botonesVisibles/tarjeta-circulacion.png" />
+              <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/tarjeta-circulacion.png" />
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('tarjeta-circulacion')">
                     <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark-circle"></ion-icon>
+                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -98,13 +101,13 @@
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
       <ion-item class="my-5" *ngIf="mostrarVinTarjeta">
-        <ion-icon name="custom-tarjetaCirculacion" slot="start"></ion-icon>
+        <ion-icon name="custom-tarjeta-circulacion" slot="start"></ion-icon>
         <ion-label  ><p>Tarjeta de circulación</p><h2 class="bold">{{ resultadoVinTarjeta }}</h2></ion-label>
         <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
       </ion-item>
     </div>
     <div class="cuerpo" *ngIf="mostrarIcono">
-      <p *ngIf="colorResultado == 'rojo'" >La comparación de los VINs no coincide, es probable se tenga un problema </p>
+      <p *ngIf="colorResultado == 'rojo'"  class="ion-margin" >La comparación de los VINs no coincide, es probable se tenga un problema </p>
       <ion-button *ngIf="colorResultado == 'verde'" expand="block"  style="margin-top: 30px;" shape="round" (click)="linkCapturaOBD(validacionId)" >Siguiente</ion-button>
       <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkHome(validacionId)" >Cencelar</ion-button>
     </div>

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore, addDoc, collection, collectionData,
-  doc, docData, deleteDoc, updateDoc, DocumentReference, setDoc
+  doc, docData, deleteDoc, updateDoc, DocumentReference, setDoc, DocumentSnapshot
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -20,9 +20,9 @@ export class FirestoreService {
   }
 
   // Obtiene un registro
-  public getDoc(path: string, id: string) {
-    const coleccion = collection(this.database, path);
-    return doc(coleccion, id);
+  public findOne(path: string, id: string) : Observable<any> {
+    const documentRef = doc(this.database, `${path}/${id}`);
+    return docData(documentRef);
   }
 
   // Obtiene todos los registros de una colección

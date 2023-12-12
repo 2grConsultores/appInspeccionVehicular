@@ -27,6 +27,40 @@ export class CapOcrComponent  implements OnInit {
   mensajeAlert:string = '';
   vinREGEX = /[a-hj-npr-zA-HJ-NPR-Z0-9]{17}/g;
   mostrarTablaComparacion:boolean = false;
+  validacionData:validacionInt = {
+    usuario: '',
+    fechaInicio: new Date(),
+    fechaFin: new Date(),
+    visibles:{
+      listaLecturas:[
+        {
+          posicion:'',
+          vinOCR:'',
+          vinEditado:'',
+          editado:false,
+          fecha:new Date(),
+          imagen:{
+            base64:'',
+          },
+        }
+      ],
+      vin: '',
+    },
+    obd:{
+      vin: '',
+      fecha: new Date(),
+    },
+    nfc:{
+      vin: '',
+      fecha: new Date(),
+    },
+    resultado:{
+      riesgo: '',
+      color: '',
+      descripcion: '',
+      recomendacion: [],
+    }
+  };
 
 
 // resultados
@@ -50,7 +84,7 @@ capturaTarjetaCirculacion:boolean = false;
 mostrarIcono:boolean = false;
 colorResultado:string = '';
 iconoResultado:string = '';
-arregloResultados:string[] = [];
+arregloResultados:any[] = [];
 
   casoJson:Caso = {
     _id: 0,
@@ -114,20 +148,42 @@ arregloResultados:string[] = [];
     this.activatedRoute.params.subscribe( ({id}) => { // aqui obtengo el id del registro
       // this.obtenercasos(id);
       this.validacionId = id;
-    })
+      console.log('validacionId',this.validacionId);
+      this.obtenerDatosValidacion(this.validacionId);
+      });
+    
+      console.log('arreglo onInit',this.arregloResultados);
+
   }
 
   comparacionResultados(){
-    console.log('Comparacion',this.arregloResultados);
-    if (this.arregloResultados.length >= 1) { /// si el arreglo tiene 1 elemento muetra tabla
+      // Limpiar el arreglo antes de agregar nuevos VIN
+      this.arregloResultados = [];
+    // Verificar si "listaLecturas" existe y tiene elementos
+    if (this.validacionData.visibles.listaLecturas.length >= 2) {
+      // Iterar sobre las lecturas
+      let i=0;
+      this.validacionData.visibles.listaLecturas.forEach(lectura => {
+        // Verificar si "vinEditado" existe y tiene valor, en ese caso usarlo, de lo contrario usar "vinOCR"
+        const vin = lectura.vinEditado ? lectura.vinEditado : lectura.vinOCR;
+        // Agregar el VIN al arreglo
+        this.arregloResultados.push(vin);
+        i++;
+        console.log('vueltas:',i);
+      });
+    }
+    console.log('arregloResultados',this.arregloResultados);
+    
+    if (this.validacionData.visibles.listaLecturas.length >= 1) { /// si el arreglo tiene 1 elemento muestra tabla
       this.mostrarTablaComparacion = true;
     }
+
     const uniqueVins = new Set(this.arregloResultados);
     if(this.arregloResultados.length >= 2){ // si el arreglo tiene 2 elementos muestra comparacion
       if (uniqueVins.size === 1) {
         this.mostrarIcono = true;
         this.colorResultado = 'verde';
-        this.iconoResultado = 'checkmark-circle';
+        this.iconoResultado = 'checkmark';
       } else {
         this.mostrarIcono = true;
         this.colorResultado = 'rojo';
@@ -159,6 +215,7 @@ arregloResultados:string[] = [];
           handler: (data) => {
             console.log('vin ingresado:', data.vin);
             this.guardarEdicionVIN(this.posicion, data.vin );
+            this.comparacionResultados();
           }
         }
       ]
@@ -254,45 +311,44 @@ arregloResultados:string[] = [];
     this.router.navigate(['home']);
   }
 
-  
-  // fotoParabrisasCapturada(){
-  //   this.capturaManualParabrisas = false;
-  //   this.fotoParabrisas = true;
-  // }
-
-
-  // obtenercasos(numeroCaso: number){
-  //   console.log('numero de caso',numeroCaso);
-  //   this.CasosService.getJSON().subscribe( (casos: Caso[]) => {
-  //     console.log('casos',casos);
-  //     const foundCaso = casos.find( (caso: Caso) => caso._id == numeroCaso);
-  //     if (foundCaso !== undefined) {
-  //       this.casoJson = foundCaso; // if foundCaso is not undefined, assign it to this.casoJson
-  //       console.log('casoJson',this.casoJson);
-  //     } else {
-  //       console.log('No se encontro el caso');
-  //     }
-  //   });
-  // }
+  obtenerDatosValidacion(validacionId: string){
+    this.firestoreService.findOne('validacion', validacionId).subscribe( (validacion: validacionInt) => {
+      console.log('validacion Datos:',validacion);
+      this.validacionData = validacion;
+      } );
+  }
 
   guardarValidoOCR( posision: string, vinOCR: string){
-    const data = {
-      visibles: {
-        listaLecturas: [{
-          posicion: posision,
-          vinOCR: vinOCR,
-          vinEditado: '',
-          editado: false,
-          fecha: new Date(),
-          imagen: {
-            base64: this.vinImageBase64,
-          },
-        }],
-        vin: vinOCR,
+
+    const busquedaanteriores = this.validacionData.visibles.listaLecturas.filter( (lectura) => lectura.posicion == posision);
+    console.log('busquedaanteriores',busquedaanteriores);
+
+    if (busquedaanteriores.length >= 1) { // si ya existe una lectura en la posicion, la elimina
+      console.log('ya existe');
+      const indiceExistente = this.validacionData.visibles.listaLecturas.indexOf(
+        busquedaanteriores[0]
+      );
+      if (indiceExistente !== -1) {
+        this.validacionData.visibles.listaLecturas.splice(indiceExistente, 1);
+      }
+    }
+
+    const nuevaLectura = {
+      posicion: posision,
+      vinOCR: vinOCR,
+      vinEditado: '',
+      editado: false,
+      fecha: new Date(),
+      imagen: {
+        base64: this.vinImageBase64,
       },
     };
+    
+    this.validacionData.visibles.listaLecturas.push(nuevaLectura);
 
-    this.firestoreService.updateDoc(data,'validacion',this.validacionId);
+    this.firestoreService.updateDoc(this.validacionData, 'validacion', this.validacionId);
+
+    // Actualizar las variables de resultado y mostrar según la posición
     if (posision == 'puerta') {
       this.mostrarVinPuerta = true;
       this.resultadoVinPuerta = vinOCR;
@@ -310,9 +366,21 @@ arregloResultados:string[] = [];
   }
 
   guardarEdicionVIN(posision: string, vinEditado: string ){
-    const data = {
-      visibles: {
-        listaLecturas: [{
+  
+    const busquedaanteriores = this.validacionData.visibles.listaLecturas.filter( (lectura) => lectura.posicion == posision);
+    console.log('busquedaanteriores',busquedaanteriores);
+
+    if (busquedaanteriores.length >= 1) { // si ya existe una lectura en la posicion, la elimina
+      console.log('ya existe');
+      const indiceExistente = this.validacionData.visibles.listaLecturas.indexOf(
+        busquedaanteriores[0]
+      );
+      if (indiceExistente !== -1) {
+        this.validacionData.visibles.listaLecturas.splice(indiceExistente, 1);
+      }
+    }
+
+    const nuevaLectura = {
           posicion: posision,
           vinOCR: this.vinOCR,
           vinEditado: vinEditado,
@@ -321,11 +389,12 @@ arregloResultados:string[] = [];
           imagen: {
             base64: this.vinImageBase64,
           },
-        }],
-        vin: vinEditado,
-      },
-    };
-    this.firestoreService.updateDoc(data,'validacion',this.validacionId);
+        };
+
+    this.validacionData.visibles.listaLecturas.push(nuevaLectura);
+
+    this.firestoreService.updateDoc(this.validacionData,'validacion',this.validacionId);
+
     if (posision == 'puerta') {
       this.mostrarVinPuerta = true;
       this.resultadoVinPuerta = vinEditado;

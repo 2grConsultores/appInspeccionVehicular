@@ -25,16 +25,7 @@ caso(caso: number){
       usuario: 'usuario',
       fechaInicio: new Date(),
       visibles:{
-        listaLecturas:[{
-          posicion:'',
-          lectura:'',
-          resultado:'',
-          editado:false,
-          fecha:new Date(),
-          imagen:{
-            base64:'',
-          },
-        }],
+        listaLecturas:[],
         vin: '',
       },
       obd:{

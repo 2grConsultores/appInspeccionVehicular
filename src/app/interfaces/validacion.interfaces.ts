@@ -23,6 +23,13 @@ export interface validacionInt{
 		vin: string,
 		fecha?: Date,
 	},
+	fotos:[{
+		imagen:{
+			base64:string,
+		},
+		posicion: string,
+		fecha: Date,
+	}],
 	resultado:{
 		riesgo: string,
 		color: string,

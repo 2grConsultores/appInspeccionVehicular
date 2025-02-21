@@ -54,6 +54,15 @@ export class CapOcrComponent implements OnInit {
       vin: '',
       fecha: new Date(),
     },
+    fotos: [
+      {
+        imagen: {
+          base64: '',
+        },
+        posicion: '',
+        fecha: new Date(),
+      },
+    ],
     resultado: {
       riesgo: '',
       color: '',

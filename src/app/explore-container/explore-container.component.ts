@@ -36,12 +36,14 @@ caso(caso: number){
         vin: '',
         fecha: new Date(),
       },
+      fotos:[],
       resultado:{
         riesgo: '',
         color: '',
         descripcion: '',
         recomendacion: [],
-      }
+      },
+
     };
     this.firestoreService.createDoc(data,'inspecciones').then(registro => {
 

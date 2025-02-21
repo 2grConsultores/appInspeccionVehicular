@@ -5,9 +5,11 @@ import { Caso } from 'src/app/interfaces/caso.interfaces';
 import { FirestoreService } from '../../services/firestore.service';
 import { PhotoService } from 'src/app/services/photo.service';
 import { GoogleCloudVisionService } from '../../services/google-cloud-vision.service';
+import { NhtsaService } from '../../services/nhtsa.service';
 import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-cap-ocr',
@@ -20,6 +22,7 @@ export class CapOcrComponent implements OnInit {
   mostrarResutlado: boolean = false;
   vinOCR: string = '';
   vinImageBase64: string = '';
+  fotoImageBase64: string = '';
   validacionId: string = '';
   isAlertOpen = false;
   isAlertOpenInputs = false;
@@ -69,6 +72,12 @@ export class CapOcrComponent implements OnInit {
       descripcion: '',
       recomendacion: [],
     },
+    decodificacionVin: {
+      marca: '',
+      modelo: '',
+      anioModelo: '',
+      pais: '',
+    },
   };
 
   // resultados
@@ -80,6 +89,7 @@ export class CapOcrComponent implements OnInit {
   resultadoVinFactura: string = '';
   mostrarVinTarjeta: boolean = false;
   resultadoVinTarjeta: string = '';
+  consultaNHTSA: any = {};
 
   //Captura de fotos
   capturaParabrisas: boolean = false;
@@ -163,6 +173,7 @@ export class CapOcrComponent implements OnInit {
     private firestoreService: FirestoreService,
     private photoService: PhotoService,
     private GoogleCloudVisionService: GoogleCloudVisionService,
+    private nhtsaService: NhtsaService,
     public alertController: AlertController,
     private loadingCtrl: LoadingController
   ) {}
@@ -341,7 +352,7 @@ export class CapOcrComponent implements OnInit {
   async agregaFoto(posicion: string) {
     await this.photoService.takePhoto().then((base64Image: any) => {
       console.log('base64Image', base64Image);
-      this.vinImageBase64 = base64Image;
+      this.fotoImageBase64 = base64Image;
       this.posicion = posicion;
       switch (posicion) {
         case 'frente':
@@ -526,5 +537,10 @@ export class CapOcrComponent implements OnInit {
       this.resultadoVinTarjeta = vinEditado;
     }
     console.log('Guardado Edito VIN');
+  }
+
+  consultarNHTSA(vin: string) {
+    this.consultaNHTSA = this.nhtsaService.getLabels(vin);
+    console.log('consultaNHTSA: ', this.consultaNHTSA);
   }
 }

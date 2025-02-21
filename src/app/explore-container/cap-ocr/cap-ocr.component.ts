@@ -295,6 +295,10 @@ arregloResultados:any[] = [];
     });
   }
 
+  agregaFoto(posicion: string){
+    
+  }
+
   async showLoading() {
     const loading = await this.loadingCtrl.create({
       message: 'Buscando VIN...',

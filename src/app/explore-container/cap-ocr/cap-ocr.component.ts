@@ -303,15 +303,31 @@ export class CapOcrComponent implements OnInit {
           this.arregloResultados.push(this.vinOCR);
           this.mensajeAlert = matchesVinRegExp[0];
           this.posicion = posicion;
-          if (posicion == 'puerta') {
-            this.capturaPuerta = true;
-          } else if (posicion == 'parabrisas') {
-            this.capturaParabrisas = true;
-          } else if (posicion == 'factura') {
-            this.capturaFactura = true;
-          } else if (posicion == 'tarjeta-circulacion') {
-            this.capturaTarjetaCirculacion = true;
+          switch (posicion) {
+            case 'puerta':
+              this.capturaPuerta = true;
+              break;
+            case 'parabrisas':
+              this.capturaParabrisas = true;
+              break;
+            case 'factura':
+              this.capturaFactura = true;
+              break;
+            case 'tarjeta-circulacion':
+              this.capturaTarjetaCirculacion = true;
+              break;
+            default:
+              break;
           }
+          // if (posicion == 'puerta') {
+          //   this.capturaPuerta = true;
+          // } else if (posicion == 'parabrisas') {
+          //   this.capturaParabrisas = true;
+          // } else if (posicion == 'factura') {
+          //   this.capturaFactura = true;
+          // } else if (posicion == 'tarjeta-circulacion') {
+          //   this.capturaTarjetaCirculacion = true;
+          // }
           console.log('posicion:', this.posicion);
           this.setOpen(true);
         } else {

@@ -70,6 +70,7 @@
             </ion-card>
           </ion-col>
         </ion-row>
+
         <!-- Fotos vehículo -->
         <ion-row>
           <ion-col>
@@ -78,8 +79,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('frente')">
-                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaFrente" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaFrente" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -91,8 +92,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('atras')">
-                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaAtras" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaAtras" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -106,8 +107,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('lateral_derecho')">
-                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaLadoDerecho" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaLadoDerecho" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -119,8 +120,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('lateral_izquierdo')">
-                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaLadoIzquierdo" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaLadoIzquierdo" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -134,8 +135,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('exterior_1')">
-                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaExterior1" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaExterior1" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -147,8 +148,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('exterior_2')">
-                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaExterior2" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaExterior2" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -162,8 +163,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('motor')">
-                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaMotor" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaMotor" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -175,8 +176,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('cajuela')">
-                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaCajuela" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaCajuela" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -190,8 +191,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('tablero')">
-                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaTablero" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaTablero" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -203,8 +204,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('interior_1')">
-                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaInterior1" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaInterior1" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -218,8 +219,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('interior_2')">
-                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaInterior2" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaInterior2" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -231,8 +232,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('interior_3')">
-                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaInterior3" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaInterior3" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -246,8 +247,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('interior_4')">
-                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaInterior4" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaInterior4" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>
@@ -259,8 +260,8 @@
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="agregaFoto('interior_5')">
-                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="!capturaInterior5" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaInterior5" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
               </ion-card-header>

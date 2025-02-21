@@ -8,49 +8,50 @@ import { FirestoreService } from '../services/firestore.service';
   styleUrls: ['./explore-container.component.scss'],
 })
 export class ExploreContainerComponent {
+  @Input() name?: string;
 
-@Input() name?: string;
+  constructor(
+    private router: Router,
+    private firestoreService: FirestoreService
+  ) {}
 
-constructor(
-  private router: Router,
-  private firestoreService: FirestoreService,
-) { }
+  caso(caso: number) {
+    this.router.navigate(['ocr/' + caso]);
+  }
 
-caso(caso: number){
-  this.router.navigate(['ocr/'+caso]);
-}
-
-  crearValidacion(){
+  crearValidacion() {
     const data = {
       usuario: 'usuario',
       fechaInicio: new Date(),
-      visibles:{
-        listaLecturas:[],
+      visibles: {
+        listaLecturas: [],
         vin: '',
       },
-      obd:{
-        vin: '',
-        fecha: new Date(),
-      },
-      nfc:{
+      obd: {
         vin: '',
         fecha: new Date(),
       },
-      fotos:[],
-      resultado:{
+      nfc: {
+        vin: '',
+        fecha: new Date(),
+      },
+      fotos: [],
+      resultado: {
         riesgo: '',
         color: '',
         descripcion: '',
         recomendacion: [],
       },
-
+      decodificacionVin: {
+        marca: '',
+        modelo: '',
+        anioModelo: '',
+        pais: '',
+      },
     };
-    this.firestoreService.createDoc(data,'inspecciones').then(registro => {
-
+    this.firestoreService.createDoc(data, 'inspecciones').then((registro) => {
       console.log('id registro', registro.id);
-      this.router.navigate(['ocr/'+registro.id]);
+      this.router.navigate(['ocr/' + registro.id]);
     });
-  };
-
+  }
 }
-  

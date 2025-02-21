@@ -9,6 +9,7 @@ import { NhtsaService } from '../../services/nhtsa.service';
 import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-cap-ocr',
@@ -28,7 +29,6 @@ export class CapOcrComponent implements OnInit {
   posicion: string = '';
   mensajeAlert: string = '';
   vinREGEX = /[a-hj-npr-zA-HJ-NPR-Z0-9]{17}/g;
-  consultaNHTSA: any = {};
   mostrarTablaComparacion: boolean = false;
   validacionData: validacionInt = {
     usuario: '',
@@ -72,6 +72,12 @@ export class CapOcrComponent implements OnInit {
       descripcion: '',
       recomendacion: [],
     },
+    decodificacionVin: {
+      marca: '',
+      modelo: '',
+      anioModelo: '',
+      pais: '',
+    },
   };
 
   // resultados
@@ -83,6 +89,7 @@ export class CapOcrComponent implements OnInit {
   resultadoVinFactura: string = '';
   mostrarVinTarjeta: boolean = false;
   resultadoVinTarjeta: string = '';
+  consultaNHTSA: any = {};
 
   //Captura de fotos
   capturaParabrisas: boolean = false;
@@ -531,9 +538,7 @@ export class CapOcrComponent implements OnInit {
   }
 
   consultarNHTSA(vin: string) {
-    this.nhtsaService.getLabels(vin).subscribe((data: any) => {
-      console.log('data', data);
-      this.consultaNHTSA = data.Results;
-    });
+    this.consultaNHTSA = this.nhtsaService.getLabels(vin);
+    console.log('consultaNHTSA: ', this.consultaNHTSA);
   }
 }

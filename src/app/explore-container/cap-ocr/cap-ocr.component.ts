@@ -108,30 +108,30 @@ export class CapOcrComponent implements OnInit {
   iconoResultado: string = '';
   arregloResultados: any[] = [];
 
-  casoJson: Caso = {
-    _id: 0,
-    visibles: {
-      listaLecturas: [
-        {
-          lectura: '',
-          resultado: '',
-        },
-      ],
-      vin: '',
-    },
-    obd: {
-      vin: '',
-    },
-    nfc: {
-      vin: '',
-    },
-    resultado: {
-      riesgo: '',
-      color: '',
-      descripcion: '',
-      recomendacion: [],
-    },
-  };
+  // casoJson: Caso = {
+  //   _id: 0,
+  //   visibles: {
+  //     listaLecturas: [
+  //       {
+  //         lectura: '',
+  //         resultado: '',
+  //       },
+  //     ],
+  //     vin: '',
+  //   },
+  //   obd: {
+  //     vin: '',
+  //   },
+  //   nfc: {
+  //     vin: '',
+  //   },
+  //   resultado: {
+  //     riesgo: '',
+  //     color: '',
+  //     descripcion: '',
+  //     recomendacion: [],
+  //   },
+  // };
 
   alertButtons = [
     {
@@ -449,8 +449,10 @@ export class CapOcrComponent implements OnInit {
 
     this.validacionData.visibles.listaLecturas.push(nuevaLectura);
 
+    console.log('validacionData-guardarValidoOCR:', this.validacionData);
+
     this.firestoreService.updateDoc(
-      this.validacionData,
+      JSON.parse(JSON.stringify(this.validacionData)),
       'inspecciones',
       this.validacionId
     );
@@ -505,7 +507,7 @@ export class CapOcrComponent implements OnInit {
     this.validacionData.visibles.listaLecturas.push(nuevaLectura);
 
     this.firestoreService.updateDoc(
-      this.validacionData,
+      JSON.parse(JSON.stringify(this.validacionData)),
       'inspecciones',
       this.validacionId
     );

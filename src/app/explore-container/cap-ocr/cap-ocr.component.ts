@@ -5,6 +5,7 @@ import { Caso } from 'src/app/interfaces/caso.interfaces';
 import { FirestoreService } from '../../services/firestore.service';
 import { PhotoService } from 'src/app/services/photo.service';
 import { GoogleCloudVisionService } from '../../services/google-cloud-vision.service';
+import { NhtsaService } from '../../services/nhtsa.service';
 import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
@@ -26,6 +27,7 @@ export class CapOcrComponent implements OnInit {
   posicion: string = '';
   mensajeAlert: string = '';
   vinREGEX = /[a-hj-npr-zA-HJ-NPR-Z0-9]{17}/g;
+  consultaNHTSA: any = {};
   mostrarTablaComparacion: boolean = false;
   validacionData: validacionInt = {
     usuario: '',
@@ -163,6 +165,7 @@ export class CapOcrComponent implements OnInit {
     private firestoreService: FirestoreService,
     private photoService: PhotoService,
     private GoogleCloudVisionService: GoogleCloudVisionService,
+    private nhtsaService: NhtsaService,
     public alertController: AlertController,
     private loadingCtrl: LoadingController
   ) {}
@@ -524,5 +527,12 @@ export class CapOcrComponent implements OnInit {
       this.resultadoVinTarjeta = vinEditado;
     }
     console.log('Guardado Edito VIN');
+  }
+
+  consultarNHTSA(vin: string) {
+    this.nhtsaService.getLabels(vin).subscribe((data: any) => {
+      console.log('data', data);
+      this.consultaNHTSA = data.Results;
+    });
   }
 }

@@ -43,7 +43,7 @@ caso(caso: number){
         recomendacion: [],
       }
     };
-    this.firestoreService.createDoc(data,'validacion').then(registro => {
+    this.firestoreService.createDoc(data,'inspecciones').then(registro => {
 
       console.log('id registro', registro.id);
       this.router.navigate(['ocr/'+registro.id]);

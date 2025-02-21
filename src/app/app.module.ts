@@ -21,7 +21,15 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
     IonicModule.forRoot(), 
     AppRoutingModule,
     HttpClientModule,
-    provideFirebaseApp(() => initializeApp({"projectId":"validacioncruzadavin","appId":"1:449649792516:web:ebbffc5582587b26060751","storageBucket":"validacioncruzadavin.appspot.com","apiKey":"AIzaSyDKTfWq67Ft1XZa69Q2GK2ecPD2_9tAR10","authDomain":"validacioncruzadavin.firebaseapp.com","messagingSenderId":"449649792516","measurementId":"G-KMPGGJVRFM"})),
+    provideFirebaseApp(() => initializeApp({
+      projectId: "comprasegura-c5113",
+      appId: "1:438286891161:web:848cbaa0a1fe3bfb462008",
+      storageBucket: "comprasegura-c5113.firebasestorage.app",
+      apiKey: "AIzaSyDwwl7HQRV2srXun9cvGP4tU12gjSrM3xw",
+      authDomain: "comprasegura-c5113.firebaseapp.com",
+      messagingSenderId: "438286891161",
+      measurementId: "G-29YNLWXZMD"
+    })),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
     provideFirestore(() => getFirestore()),

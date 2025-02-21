@@ -312,7 +312,7 @@ arregloResultados:any[] = [];
   }
 
   obtenerDatosValidacion(validacionId: string){
-    this.firestoreService.findOne('validacion', validacionId).subscribe( (validacion: validacionInt) => {
+    this.firestoreService.findOne('inspecciones', validacionId).subscribe( (validacion: validacionInt) => {
       console.log('validacion Datos:',validacion);
       this.validacionData = validacion;
       } );
@@ -346,7 +346,7 @@ arregloResultados:any[] = [];
     
     this.validacionData.visibles.listaLecturas.push(nuevaLectura);
 
-    this.firestoreService.updateDoc(this.validacionData, 'validacion', this.validacionId);
+    this.firestoreService.updateDoc(this.validacionData, 'inspecciones', this.validacionId);
 
     // Actualizar las variables de resultado y mostrar según la posición
     if (posision == 'puerta') {
@@ -393,7 +393,7 @@ arregloResultados:any[] = [];
 
     this.validacionData.visibles.listaLecturas.push(nuevaLectura);
 
-    this.firestoreService.updateDoc(this.validacionData,'validacion',this.validacionId);
+    this.firestoreService.updateDoc(this.validacionData,'inspecciones',this.validacionId);
 
     if (posision == 'puerta') {
       this.mostrarVinPuerta = true;

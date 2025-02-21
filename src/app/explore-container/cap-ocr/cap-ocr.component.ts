@@ -21,6 +21,7 @@ export class CapOcrComponent implements OnInit {
   mostrarResutlado: boolean = false;
   vinOCR: string = '';
   vinImageBase64: string = '';
+  fotoImageBase64: string = '';
   validacionId: string = '';
   isAlertOpen = false;
   isAlertOpenInputs = false;
@@ -344,7 +345,7 @@ export class CapOcrComponent implements OnInit {
   async agregaFoto(posicion: string) {
     await this.photoService.takePhoto().then((base64Image: any) => {
       console.log('base64Image', base64Image);
-      this.vinImageBase64 = base64Image;
+      this.fotoImageBase64 = base64Image;
       this.posicion = posicion;
       switch (posicion) {
         case 'frente':

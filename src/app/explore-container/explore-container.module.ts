@@ -10,6 +10,8 @@ import { CapNfcComponent } from './cap-nfc/cap-nfc.component';
 import { CapObdComponent } from './cap-obd/cap-obd.component';
 import { exploreRoutingModule } from './explore-routing.module';
 import { ResultadoComponent } from './resultado/resultado.component';
+import { FotosComponent } from './fotos/fotos.component';
+
 
 @NgModule({
   imports: [ 
@@ -23,6 +25,7 @@ import { ResultadoComponent } from './resultado/resultado.component';
     CapOcrComponent,
     CapNfcComponent,
     CapObdComponent,
+    FotosComponent,
     ResultadoComponent
   ],
   exports: [ExploreContainerComponent]

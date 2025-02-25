@@ -1,10 +1,29 @@
-<div id="container">
-  <!-- <ion-button expand="block" (click)="caso(1)">Caso 1</ion-button>
-  <ion-button expand="block" (click)="caso(2)">Caso 2</ion-button>
-  <ion-button expand="block" (click)="caso(3)">Caso 3</ion-button>
-  <ion-button expand="block" (click)="caso(4)">Caso 4</ion-button>
-  <ion-button expand="block" (click)="caso(5)">Caso 5</ion-button> -->
-  <ion-button expand="block" (click)="crearValidacion()">Crear Validacion</ion-button>
 
+<ion-content fixed-slot-placement="before">
+  <div id="container">
+    <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+      <ion-fab-button (click)="crearValidacion()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-list>
+      <ion-list-header>
+        <h1 color="primary">Inspecciones</h1>
+      </ion-list-header>
+      <ion-item button detail="true" *ngFor="let inspeccion of datasources ">
+        <ion-thumbnail slot="start">
+          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+        </ion-thumbnail>
+        <ion-label (click)="ver(inspeccion.id)">
+          <h3 ><b>{{ inspeccion.id }}</b> </h3>
+          <p><b>{{ inspeccion.fechaInicio.seconds}}</b> </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    
 
-</div>
+  </div>
+</ion-content>

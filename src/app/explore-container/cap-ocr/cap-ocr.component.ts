@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CasosService } from '../../services/casos.service';
-import { Caso } from 'src/app/interfaces/caso.interfaces';
 import { FirestoreService } from '../../services/firestore.service';
 import { PhotoService } from 'src/app/services/photo.service';
 import { GoogleCloudVisionService } from '../../services/google-cloud-vision.service';
@@ -9,7 +8,7 @@ import { NhtsaService } from '../../services/nhtsa.service';
 import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
-import { map } from 'rxjs';
+
 
 @Component({
   selector: 'app-cap-ocr',
@@ -22,7 +21,8 @@ export class CapOcrComponent implements OnInit {
   mostrarResutlado: boolean = false;
   vinOCR: string = '';
   vinImageBase64: string = '';
-  fotoImageBase64: string = '';
+  vinDecodificado = false;
+  fotoImage_url: string = '';
   validacionId: string = '';
   isAlertOpen = false;
   isAlertOpenInputs = false;
@@ -43,7 +43,7 @@ export class CapOcrComponent implements OnInit {
           editado: false,
           fecha: new Date(),
           imagen: {
-            base64: '',
+            url: '',
           },
         },
       ],
@@ -60,7 +60,7 @@ export class CapOcrComponent implements OnInit {
     fotos: [
       {
         imagen: {
-          base64: '',
+          url: '',
         },
         posicion: '',
         fecha: new Date(),
@@ -97,20 +97,11 @@ export class CapOcrComponent implements OnInit {
   capturaFactura: boolean = false;
   capturaTarjetaCirculacion: boolean = false;
 
-  capturaFrente: boolean = false;
-  capturaAtras: boolean = false;
-  capturaLadoIzquierdo: boolean = false;
-  capturaLadoDerecho: boolean = false;
-  capturaExterior1: boolean = false;
-  capturaExterior2: boolean = false;
-  capturaMotor: boolean = false;
-  capturaCajuela: boolean = false;
-  capturaTablero: boolean = false;
-  capturaInterior1: boolean = false;
-  capturaInterior2: boolean = false;
-  capturaInterior3: boolean = false;
-  capturaInterior4: boolean = false;
-  capturaInterior5: boolean = false;
+  //url de las fotos
+  urlParabrisas: string = '../../../assets/botonesVisibles/parabrisas.png';
+  urlPuerta: string = '../../../assets/botonesVisibles/puerta.png';
+  urlFactura: string = '../../../assets/botonesVisibles/factura.png';
+  urlTarjetaCirculacion: string = '../../../assets/botonesVisibles/tarjeta-circulacion.png';
 
   // semaforos
   mostrarIcono: boolean = false;
@@ -118,30 +109,6 @@ export class CapOcrComponent implements OnInit {
   iconoResultado: string = '';
   arregloResultados: any[] = [];
 
-  // casoJson: Caso = {
-  //   _id: 0,
-  //   visibles: {
-  //     listaLecturas: [
-  //       {
-  //         lectura: '',
-  //         resultado: '',
-  //       },
-  //     ],
-  //     vin: '',
-  //   },
-  //   obd: {
-  //     vin: '',
-  //   },
-  //   nfc: {
-  //     vin: '',
-  //   },
-  //   resultado: {
-  //     riesgo: '',
-  //     color: '',
-  //     descripcion: '',
-  //     recomendacion: [],
-  //   },
-  // };
 
   alertButtons = [
     {
@@ -181,7 +148,6 @@ export class CapOcrComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(({ id }) => {
       // aqui obtengo el id del registro
-      // this.obtenercasos(id);
       this.validacionId = id;
       console.log('validacionId', this.validacionId);
       this.obtenerDatosValidacion(this.validacionId);
@@ -193,29 +159,26 @@ export class CapOcrComponent implements OnInit {
   comparacionResultados() {
     // Limpiar el arreglo antes de agregar nuevos VIN
     this.arregloResultados = [];
+  
     // Verificar si "listaLecturas" existe y tiene elementos
     if (this.validacionData.visibles.listaLecturas.length >= 2) {
-      // Iterar sobre las lecturas
-      let i = 0;
+      // Iterar sobre las lecturas y extraer el VIN (usando vinEditado si existe)
       this.validacionData.visibles.listaLecturas.forEach((lectura) => {
-        // Verificar si "vinEditado" existe y tiene valor, en ese caso usarlo, de lo contrario usar "vinOCR"
         const vin = lectura.vinEditado ? lectura.vinEditado : lectura.vinOCR;
-        // Agregar el VIN al arreglo
         this.arregloResultados.push(vin);
-        i++;
-        console.log('vueltas:', i);
       });
     }
     console.log('arregloResultados', this.arregloResultados);
-
+  
+    // Si hay al menos 1 lectura, se muestra la tabla de comparación
     if (this.validacionData.visibles.listaLecturas.length >= 1) {
-      /// si el arreglo tiene 1 elemento muestra tabla
       this.mostrarTablaComparacion = true;
     }
-
+  
     const uniqueVins = new Set(this.arregloResultados);
+  
+    // Si hay al menos 2 lecturas, se muestra la comparación (verde si coinciden, rojo si no)
     if (this.arregloResultados.length >= 2) {
-      // si el arreglo tiene 2 elementos muestra comparacion
       if (uniqueVins.size === 1) {
         this.mostrarIcono = true;
         this.colorResultado = 'verde';
@@ -226,7 +189,14 @@ export class CapOcrComponent implements OnInit {
         this.iconoResultado = 'close-outline';
       }
     }
+  
+    // Si se tienen exactamente 4 VIN y todos coinciden, se llama a consultarNHTSA
+    if (this.arregloResultados.length === 4 && uniqueVins.size === 1) {
+      const vinUnico = this.arregloResultados[0];
+      this.consultarNHTSA(vinUnico);
+    }
   }
+  
 
   async presentAlertPrompt() {
     const alert = await this.alertController.create({
@@ -294,12 +264,12 @@ export class CapOcrComponent implements OnInit {
   }
 
   async capturaOCR(posicion: string) {
-    await this.photoService.takePhoto().then((base64Image: any) => {
-      console.log('base64Image', base64Image);
-      this.vinImageBase64 = base64Image;
+    await this.photoService.takePhoto().then((image: any) => {
+      console.log('imagen', image);
+      // this.vinImageBase64 = base64Image;
       const loading = this.showLoading();
       this.GoogleCloudVisionService.getLabels(
-        base64Image,
+        image.base64String,
         'TEXT_DETECTION'
       ).subscribe((result: any) => {
         // console.log('result',result);
@@ -330,78 +300,43 @@ export class CapOcrComponent implements OnInit {
             default:
               break;
           }
-          // if (posicion == 'puerta') {
-          //   this.capturaPuerta = true;
-          // } else if (posicion == 'parabrisas') {
-          //   this.capturaParabrisas = true;
-          // } else if (posicion == 'factura') {
-          //   this.capturaFactura = true;
-          // } else if (posicion == 'tarjeta-circulacion') {
-          //   this.capturaTarjetaCirculacion = true;
-          // }
-          console.log('posicion:', this.posicion);
+          // console.log('posicion:', this.posicion);
           this.setOpen(true);
+          // requiero una funcion donde guarde la foto en firbse storage ya que hizo la lectura del vin y guarde la url de la foto en la base de datos
+          console.log('imagen', image);
+          const path = 'ocr/'+posicion;
+          const blob = this.photoService.base64toBlob(image.base64String, 'image/jpeg');
+          console.log('upload - variables',blob, image, path);
+          this.photoService.uploadImage(blob,image,path).then((url) => {
+            console.log('url-componente', url);
+            this.fotoImage_url = url;
+            switch (posicion) {
+              case 'puerta':
+                this.urlPuerta = url;
+                break;
+              case 'parabrisas':
+                this.urlParabrisas = url;
+                break;
+              case 'factura':
+                this.urlFactura = url;
+                break;
+              case 'tarjeta-circulacion':
+                this.urlTarjetaCirculacion = url;
+                break;
+              default:
+                break;
+            }
+          });
         } else {
           console.log('vin invalido');
           this.presentAlertPromptVinInvalido();
         }
       });
+
     });
   }
 
-  async agregaFoto(posicion: string) {
-    await this.photoService.takePhoto().then((base64Image: any) => {
-      console.log('base64Image', base64Image);
-      this.fotoImageBase64 = base64Image;
-      this.posicion = posicion;
-      switch (posicion) {
-        case 'frente':
-          this.capturaFrente = true;
-          break;
-        case 'atras':
-          this.capturaAtras = true;
-          break;
-        case 'lado-izquierdo':
-          this.capturaLadoIzquierdo = true;
-          break;
-        case 'lado-derecho':
-          this.capturaLadoDerecho = true;
-          break;
-        case 'exterior1':
-          this.capturaExterior1 = true;
-          break;
-        case 'exterior2':
-          this.capturaExterior2 = true;
-          break;
-        case 'motor':
-          this.capturaMotor = true;
-          break;
-        case 'cajuela':
-          this.capturaCajuela = true;
-          break;
-        case 'tablero':
-          this.capturaTablero = true;
-          break;
-        case 'interior1':
-          this.capturaInterior1 = true;
-          break;
-        case 'interior2':
-          this.capturaInterior2 = true;
-          break;
-        case 'interior3':
-          this.capturaInterior3 = true;
-          break;
-        case 'interior4':
-          this.capturaInterior4 = true;
-          break;
-        case 'interior5':
-          this.capturaInterior5 = true;
-          break;
-        default:
-          break;
-      }
-    });
-  }
+
 
   async showLoading() {
     const loading = await this.loadingCtrl.create({
@@ -411,8 +346,8 @@ export class CapOcrComponent implements OnInit {
     return loading;
   }
 
-  linkCapturaOBD(validacionId: string) {
-    this.router.navigate(['obd/' + validacionId]);
+  linkCapturaFotos(validacionId: string) {
+    this.router.navigate(['fotos/' + validacionId]);
   }
 
   linkHome(validacionId: string) {
@@ -454,7 +389,7 @@ export class CapOcrComponent implements OnInit {
       editado: false,
       fecha: new Date(),
       imagen: {
-        base64: this.vinImageBase64,
+        url: this.fotoImage_url,
       },
     };
 
@@ -482,7 +417,7 @@ export class CapOcrComponent implements OnInit {
       this.mostrarVinTarjeta = true;
       this.resultadoVinTarjeta = vinOCR;
     }
-    console.log('Guardado aprobo OCR');
+    // console.log('Guardado aprobo OCR');
   }
 
   guardarEdicionVIN(posision: string, vinEditado: string) {
@@ -511,7 +446,7 @@ export class CapOcrComponent implements OnInit {
       editado: true,
       fecha: new Date(),
       imagen: {
-        base64: this.vinImageBase64,
+        url: this.fotoImage_url,
       },
     };
 
@@ -540,7 +475,13 @@ export class CapOcrComponent implements OnInit {
   }
 
   consultarNHTSA(vin: string) {
-    this.consultaNHTSA = this.nhtsaService.getLabels(vin);
-    console.log('consultaNHTSA: ', this.consultaNHTSA);
+     this.nhtsaService.getLabels(vin).then((data) => {
+      this.consultaNHTSA = data;
+      console.log('consultaNHTSA', this.consultaNHTSA);
+      this.vinDecodificado = true;
+     });
+
   }
+
+
 }

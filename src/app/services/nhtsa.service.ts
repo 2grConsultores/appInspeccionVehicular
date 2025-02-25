@@ -6,14 +6,14 @@ import { Injectable } from '@angular/core';
 })
 export class NhtsaService {
   constructor(public http: HttpClient) {}
-  getLabels(vin: string) {
+  async getLabels(vin: string) {
     let infoVin = {
       marca: '',
       modelo: '',
       anioModelo: '',
       pais: '',
     };
-    const respuesta = this.http.get(
+    const respuesta = await this.http.get(
       'https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/' +
         vin +
         '?format=json'

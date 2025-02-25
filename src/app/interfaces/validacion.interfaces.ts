@@ -11,7 +11,7 @@ export interface validacionInt {
         editado: boolean;
         fecha: Date;
         imagen: {
-          base64: string;
+          url: string;
         };
       }
     ];
@@ -28,7 +28,7 @@ export interface validacionInt {
   fotos: [
     {
       imagen: {
-        base64: string;
+        url: string;
       };
       posicion: string;
       fecha: Date;

@@ -16,11 +16,39 @@
     </div>
     <div class="cuerpo formulario" *ngIf="!mostrarResutlado">
       <p class="ion-margin ">Captura al menos dos imagenes para comparar los datos obtenidos. </p>
+      <div *ngIf="vinDecodificado">
+        <h2 class="ion-text-center">Decodificacion del VIN</h2>
+        <ion-item>
+          <ion-label>
+            <h2>Fabricante</h2>
+            <p>{{ consultaNHTSA.marca }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+
+          <ion-label>
+            <h2>Marca</h2>
+            <p>{{ consultaNHTSA.modelo }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Modelo</h2>
+            <p>{{ consultaNHTSA.anioModelo }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Pais</h2>
+            <p>{{ consultaNHTSA.pais }}</p>
+          </ion-label>
+        </ion-item>
+      </div>
       <ion-grid>
         <ion-row>
           <ion-col>
             <ion-card >
-              <img alt="parabrisas" class="cardimage" src="../../../assets/botonesVisibles/parabrisas.png" />
+              <img alt="parabrisas" class="cardimage" src="{{ urlParabrisas }}" />
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('parabrisas')">
@@ -33,7 +61,7 @@
           </ion-col>
           <ion-col>
             <ion-card>
-              <img alt="puerta" class="cardimage" src="../../../assets/botonesVisibles/puerta.png" />
+              <img alt="puerta" class="cardimage" src="{{ urlPuerta }}" />
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('puerta')">
@@ -48,7 +76,7 @@
         <ion-row>
           <ion-col>
             <ion-card>
-              <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/factura.png" />
+              <img alt="factura" class="cardimage" src="{{ urlFactura }}" />
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('factura')">
@@ -61,7 +89,7 @@
           </ion-col>
           <ion-col>
             <ion-card>
-              <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/tarjeta-circulacion.png" />
+              <img alt="tarjeta-circulacion" class="cardimage" src="{{ urlTarjetaCirculacion }}" />
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('tarjeta-circulacion')">
@@ -76,7 +104,7 @@
       </ion-grid>
 
       <div *ngIf="mostrarTablaComparacion">
-        <h1>Tabla de comparación</h1>
+        <h1 class="ion-text-center">Tabla de comparación</h1>
         <ion-item class="my-5" *ngIf="mostrarVinParabrisas" >
           <ion-icon name="custom-parabrisas" slot="start"></ion-icon>
           <ion-label ><p>Parabrisas</p><h2 class="bold">{{ resultadoVinParabrisas }}</h2>  </ion-label>
@@ -100,216 +128,16 @@
       </div>
       <div class="cuerpo" *ngIf="mostrarIcono">
         <p *ngIf="colorResultado == 'rojo'"  class="ion-margin" >La comparación de los VINs no coincide, es probable se tenga un problema </p>
-        <ion-button *ngIf="colorResultado == 'verde'" expand="block"  style="margin-top: 30px;" shape="round" (click)="linkCapturaOBD(validacionId)" >Siguiente</ion-button>
+        <!-- *ngIf="colorResultado == 'verde'"  -->
+        <ion-button 
+        
+        expand="block"  
+        style="margin-top: 30px;" 
+        shape="round" 
+        (click)="linkCapturaFotos(validacionId)" >Siguiente</ion-button>
         <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkHome(validacionId)" >Cencelar</ion-button>
       </div>
     </div>
-    <ion-button shape="round" (click)="consultarNHTSA('1HGRS3891RL904295')">
-      Decodificar VIN
-    </ion-button>
-
-    <!-- Fotos vehículo -->
-    <div>
-      <h1 class="ion-margin">Fotos del vehículo</h1>
-    </div>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-card>
-            <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/frente.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('frente')">
-                  <ion-icon *ngIf="!capturaFrente" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaFrente" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card>
-            <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/atras.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('atras')">
-                  <ion-icon *ngIf="!capturaAtras" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaAtras" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card>
-            <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/lateral_derecho.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('lateral_derecho')">
-                  <ion-icon *ngIf="!capturaLadoDerecho" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaLadoDerecho" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card>
-            <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/lateral_izquierdo.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('lateral_izquierdo')">
-                  <ion-icon *ngIf="!capturaLadoIzquierdo" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaLadoIzquierdo" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card>
-            <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/exterior_1.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('exterior_1')">
-                  <ion-icon *ngIf="!capturaExterior1" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaExterior1" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card>
-            <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/exterior_2.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('exterior_2')">
-                  <ion-icon *ngIf="!capturaExterior2" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaExterior2" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card>
-            <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/motor.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('motor')">
-                  <ion-icon *ngIf="!capturaMotor" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaMotor" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card>
-            <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/cajuela.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('cajuela')">
-                  <ion-icon *ngIf="!capturaCajuela" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaCajuela" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card>
-            <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/tablero.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('tablero')">
-                  <ion-icon *ngIf="!capturaTablero" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaTablero" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card>
-            <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/interior_1.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('interior_1')">
-                  <ion-icon *ngIf="!capturaInterior1" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaInterior1" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card>
-            <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/interior_2.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('interior_2')">
-                  <ion-icon *ngIf="!capturaInterior2" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaInterior2" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card>
-            <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/interior_3.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('interior_3')">
-                  <ion-icon *ngIf="!capturaInterior3" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaInterior3" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card>
-            <img alt="factura" class="cardimage" src="../../../assets/botonesVisibles/interior_4.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('interior_4')">
-                  <ion-icon *ngIf="!capturaInterior4" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaInterior4" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card>
-            <img alt="tarjeta-circulacion" class="cardimage" src="../../../assets/botonesVisibles/interior_5.webp" />
-            <ion-card-header>
-              <ion-card-title>
-                <ion-button shape="round" (click)="agregaFoto('interior_5')">
-                  <ion-icon *ngIf="!capturaInterior5" name="camera-outline"></ion-icon>
-                  <ion-icon *ngIf="capturaInterior5" name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
 
     <ion-alert
       [isOpen]="isAlertOpen"

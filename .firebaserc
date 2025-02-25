@@ -1,14 +1,14 @@
 {
   "targets": {
-    "validacioncruzadavin": {
+    "comprasegura-c5113": {
       "hosting": {
         "app": [
-          "validacioncruzadavin"
+          "comprasegura-c5113"
         ]
       }
     }
   },
   "projects": {
-    "default": "validacioncruzadavin"
+    "default": "comprasegura-c5113"
   }
 }

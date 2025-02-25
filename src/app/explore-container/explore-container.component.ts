@@ -1,22 +1,26 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirestoreService } from '../services/firestore.service';
+import { DatePipe } from '@angular/common';
+import { InfiniteScrollCustomEvent } from '@ionic/angular';
 
 @Component({
   selector: 'app-explore-container',
   templateUrl: './explore-container.component.html',
   styleUrls: ['./explore-container.component.scss'],
 })
-export class ExploreContainerComponent {
-  @Input() name?: string;
+export class ExploreContainerComponent implements OnInit {
+  datasources: any[] = [];
 
   constructor(
     private router: Router,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private datePipe: DatePipe
   ) {}
 
-  caso(caso: number) {
-    this.router.navigate(['ocr/' + caso]);
+  ngOnInit() {
+    this.obtenerInspecciones();
+
   }
 
   crearValidacion() {
@@ -53,5 +57,31 @@ export class ExploreContainerComponent {
       console.log('id registro', registro.id);
       this.router.navigate(['ocr/' + registro.id]);
     });
+  }
+
+  ver(id: string) {
+    this.router.navigate(['ocr/' + id]);
+  }
+
+  obtenerInspecciones() {
+    this.firestoreService.getCollection('inspecciones').subscribe((data: any[]) => {
+      // Mapear cada documento para formatear las marcas de tiempo
+      // this.datasources = data.map(doc => {
+      //   // Formatear el campo "fechaInicio" si existe
+      //   if (doc.fechaInicio && doc.fechaInicio.seconds) {
+      //     const dateInicio = new Date(doc.fechaInicio.seconds * 1000);
+      //     doc.fechaInicio = this.datePipe.transform(dateInicio, 'dd/MM/yyyy HH:mm:ss');
+      //   }
+      // });
+      this.datasources = data;
+      console.log(this.datasources );
+    });
+  }
+
+  onIonInfinite(event: InfiniteScrollCustomEvent) {
+    // this.generateItems();
+    setTimeout(() => {
+      event.target.complete();
+    }, 500);
   }
 }

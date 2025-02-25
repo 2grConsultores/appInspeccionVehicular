@@ -1,23 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>App SWS</ion-title>
+    <ion-title>Incio de sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <div id="container">
-    <img src="../../assets/logo-texto.png" alt="" class="logo">
     <ion-card>
       <ion-card-content>
         <ion-item>
-          <ion-label position="floating">Usuario</ion-label>
-          <ion-input label="" type="text" [(ngModel)]="username" name="username" required></ion-input>
-        </ion-item>
+          <ion-input label="Email" fill="outline" type="text" [(ngModel)]="username"  name="username" required></ion-input>
+        </ion-item> 
         <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input label="" type="password" [(ngModel)]="password" name="password" required></ion-input>
+          <ion-input label="Contraseña" fill="outline" type="password" [(ngModel)]="password"  name="password" required></ion-input>
         </ion-item>
         <ion-button expand="block" (click)="login()">Iniciar sesión</ion-button>
+        <ion-button expand="block" (click)="loginGoogle()">Iniciar sesión con Google</ion-button>
       </ion-card-content>
     </ion-card>
   </div>

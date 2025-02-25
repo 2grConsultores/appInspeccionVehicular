@@ -129,14 +129,13 @@
       <div class="cuerpo" *ngIf="mostrarIcono">
         <p *ngIf="colorResultado == 'rojo'"  class="ion-margin" >La comparación de los VINs no coincide, es probable se tenga un problema </p>
         <!-- *ngIf="colorResultado == 'verde'"  -->
-        <ion-button 
-        
-        expand="block"  
-        style="margin-top: 30px;" 
-        shape="round" 
-        (click)="linkCapturaFotos(validacionId)" >Siguiente</ion-button>
-        <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkHome(validacionId)" >Cencelar</ion-button>
       </div>
+      <ion-button 
+      expand="block"  
+      style="margin-top: 30px;" 
+      shape="round" 
+      (click)="linkCapturaFotos(validacionId)" >Siguiente</ion-button>
+      <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkHome(validacionId)" >Cencelar</ion-button>
     </div>
 
     <ion-alert

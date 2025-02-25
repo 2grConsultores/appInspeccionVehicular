@@ -7,19 +7,33 @@ import { ResultadoComponent } from './explore-container/resultado/resultado.comp
 import { FotosComponent } from './explore-container/fotos/fotos.component';
 
 const routes: Routes = [
+  // {
+  //   path: '', // requiero que la página de inicio sea el login
+  //   loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  // },
+  // {
+  //   path: 'home',
+  //   loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  // },
+  // {path: 'ocr/:id', component: CapOcrComponent},
+  // {path: 'fotos/:id', component: FotosComponent},
+  // {path: 'obd/:id', component: CapObdComponent},
+  // // {path: 'nfc/:id', component: CapNfcComponent},
+  // {path: 'resultado/:id', component: ResultadoComponent}
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
   {
-    path: 'home',
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
+  },
+  {
+    path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
-  {path: 'ocr/:id', component: CapOcrComponent},
-  {path: 'fotos/:id', component: FotosComponent},
-  {path: 'obd/:id', component: CapObdComponent},
-  // {path: 'nfc/:id', component: CapNfcComponent},
-  {path: 'resultado/:id', component: ResultadoComponent}
+
 ];
 @NgModule({
   imports: [

@@ -55,12 +55,12 @@ export class ExploreContainerComponent implements OnInit {
     };
     this.firestoreService.createDoc(data, 'inspecciones').then((registro) => {
       console.log('id registro', registro.id);
-      this.router.navigate(['ocr/' + registro.id]);
+      this.router.navigate(['tabs/tab2/inspeccion/' + registro.id]);
     });
   }
 
   ver(id: string) {
-    this.router.navigate(['ocr/' + id]);
+    this.router.navigate(['tabs/tab2/inspeccion/' + id]);
   }
 
   obtenerInspecciones() {

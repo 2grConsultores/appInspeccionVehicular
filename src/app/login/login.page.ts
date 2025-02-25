@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ export class LoginPage implements OnInit {
   public password: string = '';
 
   constructor(
-    private AuthService:AuthService,
+    private AuthService: AuthService,
     private router: Router,
     private alertController: AlertController
     ) { }
@@ -22,27 +22,10 @@ export class LoginPage implements OnInit {
     console.log('Arranque login:');
   }
 
-  // async login() {
-  //   console.log(this.username, this.password);
-  //   await this.AuthService.signin(this.username, this.password).subscribe(repuesta => {
-  //     this.router.navigate(['/inicio']);
-  //   }, error => {
-  //     console.log('error:', error);
-  //     const alert = this.alertController.create({
-  //       header: 'Error',
-  //       message: 'El nombre de usuario o la contraseña son incorrectos',
-  //       buttons: ['OK']
-  //     });
-  //     alert.then((alert) => {
-  //       alert.present();
-  //     });
-  //   });
-  // }
-
   login() {
-    this.AuthService.signin(this.username, this.password).subscribe({
+    this.AuthService.signIn(this.username, this.password).subscribe({
       next: () => {
-        // console.log('respuesta',respuesta);
+        console.log('iciono de sesion correcto');
         this.router.navigate(['/tabs/tab2']);
       },
       error: (err) => {
@@ -50,6 +33,27 @@ export class LoginPage implements OnInit {
         const alert = this.alertController.create({
           header: 'Error',
           message: 'El nombre de usuario o la contraseña son incorrectos',
+          buttons: ['OK']
+        });
+        alert.then((alert) => {
+          alert.present();
+        });
+      }
+    });
+  }
+
+
+  loginGoogle() {
+    this.AuthService.signInWithGoogle().subscribe({
+      next: () => {
+        console.log('iciono de sesion correcto');
+        this.router.navigate(['/tabs/tab2']);
+      },
+      error: (err) => {
+        console.log('error:', JSON.stringify(err));
+        const alert = this.alertController.create({
+          header: 'Error',
+          message: 'El incio de sesión con Google ha fallado',
           buttons: ['OK']
         });
         alert.then((alert) => {

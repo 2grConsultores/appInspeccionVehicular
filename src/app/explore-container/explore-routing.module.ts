@@ -5,9 +5,10 @@ import { FotosComponent } from '../explore-container/fotos/fotos.component';
 
 const routes: Routes = [
 
-  {path:'ocr', component: CapOcrComponent},
+  // {path:'ocr', component: CapOcrComponent},
   // {path:'fotos', component: FotosComponent},
   // {path: '**', redirectTo: 'tabs/tab2'}
+
 
 ];
 

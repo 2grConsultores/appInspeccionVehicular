@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CasosService } from '../../services/casos.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { PhotoService } from 'src/app/services/photo.service';
 import { GoogleCloudVisionService } from '../../services/google-cloud-vision.service';
@@ -135,7 +134,6 @@ export class CapOcrComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private CasosService: CasosService,
     private activatedRoute: ActivatedRoute,
     private firestoreService: FirestoreService,
     private photoService: PhotoService,
@@ -347,11 +345,11 @@ export class CapOcrComponent implements OnInit {
   }
 
   linkCapturaFotos(validacionId: string) {
-    this.router.navigate(['fotos/' + validacionId]);
+    this.router.navigate(['tabs/tab2/fotos/' + validacionId]);
   }
 
   linkHome(validacionId: string) {
-    this.router.navigate(['home']);
+    this.router.navigate(['tabs/tab2/inspeccion/' + validacionId]);
   }
 
   obtenerDatosValidacion(validacionId: string) {

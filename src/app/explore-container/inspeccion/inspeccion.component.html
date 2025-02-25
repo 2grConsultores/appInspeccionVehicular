@@ -1,0 +1,144 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-icon class="iconoheader" name="custom-visibles" slot="start"></ion-icon>
+    <ion-title>
+      Inspeccion 
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" >
+  <div id="container">
+    <div>
+      <h1 class="ion-margin">Proceso de inspeccion </h1>
+    </div>
+    <div class="cuerpo formulario">
+      <!-- <p class="ion-margin ">Captura al menos dos imagenes para comparar los datos obtenidos. </p> -->
+      <!-- <div *ngIf="vinDecodificado">
+        <h2 class="ion-text-center">Decodificacion del VIN</h2>
+        <ion-item>
+          <ion-label>
+            <h2>Fabricante</h2>
+            <p>{{ consultaNHTSA.marca }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+
+          <ion-label>
+            <h2>Marca</h2>
+            <p>{{ consultaNHTSA.modelo }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Modelo</h2>
+            <p>{{ consultaNHTSA.anioModelo }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Pais</h2>
+            <p>{{ consultaNHTSA.pais }}</p>
+          </ion-label>
+        </ion-item>
+      </div> -->
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-card >
+              <ion-card-header>
+                <ion-card-title>
+                  <p>Captura de fotos para la validacion del VIN </p> 
+                  <ion-button shape="round" (click)="linktoOCR()">
+                    <ion-icon *ngIf="ocrConcluido" name="checkmark"></ion-icon>
+                    <p  *ngIf="!ocrConcluido" >OCR</p>
+                  </ion-button>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+          <ion-col>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>
+                  <p>Captura de fotos del vehiculo en distintos angulos</p> 
+                  <ion-button shape="round" (click)="linktoFotos()">
+                    <ion-icon *ngIf="fotosConcluido" name="checkmark"></ion-icon>
+                    <p  *ngIf="!fotosConcluido" >Fotos</p>
+                  </ion-button>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-card >
+              <ion-card-header>
+                <ion-card-title>
+                  <p>Captura de datos mediante el protocolo OBD II</p> 
+                  <ion-button shape="round" (click)="linktoOCR()">
+                    <ion-icon *ngIf="obdConluido" name="checkmark"></ion-icon>
+                    <p  *ngIf="!obdConluido" >OBD II</p>
+                    
+                  </ion-button>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+          <ion-col>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>
+                  <p>Verificacion de datos con la credencial para votar</p> 
+                  <ion-button shape="round" (click)="linktoFotos()">
+                    <!-- <ion-icon *ngIf="!capturaPuerta" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaPuerta" name="checkmark"></ion-icon> -->
+                    INE
+                  </ion-button>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-card >
+              <ion-card-header>
+                <ion-card-title>
+                  <p>Consulta de historial vehicular</p> 
+                  <ion-button shape="round" (click)="linktoOCR()">
+                    <!-- <ion-icon *ngIf="!capturaParabrisas" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaParabrisas" name="checkmark"></ion-icon> -->
+                    CARFAX
+                  </ion-button>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+          <ion-col>
+
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button  style="margin-top: 30px;" expand="block" shape="round" (click)="linktoResultado()">
+              Ver resultado 
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <!-- <ion-alert
+      [isOpen]="isAlertOpen"
+      header="Validar VIN obtenido"
+      message="{{mensajeAlert}}"
+      [buttons]="alertButtons"
+      (didDismiss)="setOpen(false)"
+    ></ion-alert> -->
+    <!-- 
+    <ion-button expand="block"  style="margin-top: 30px;" id="open-loading" (click)="IconoResultado()">Comparar resultados</ion-button>
+    <ion-loading class="custom-loading"  trigger="open-loading" message="Comparando resultados" [duration]="3000"></ion-loading> -->
+  </div>
+</ion-content>
+

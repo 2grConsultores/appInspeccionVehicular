@@ -9,7 +9,8 @@
 <ion-content [fullscreen]="true" >
   <div id="container">
     <div>
-      <h1 class="ion-margin">Proceso de inspeccion </h1>
+      <h1 class="ion-margin ion-text-center">Proceso de inspeccion </h1>
+      <p></p>
     </div>
     <div class="cuerpo formulario">
       <!-- <p class="ion-margin ">Captura al menos dos imagenes para comparar los datos obtenidos. </p> -->
@@ -46,7 +47,7 @@
           <ion-col>
             <ion-card >
               <ion-card-header>
-                <ion-card-title>
+                <ion-card-title class="ion-text-center">
                   <p>Captura de fotos para la validacion del VIN </p> 
                   <ion-button shape="round" (click)="linktoOCR()">
                     <ion-icon *ngIf="ocrConcluido" name="checkmark"></ion-icon>
@@ -59,7 +60,7 @@
           <ion-col>
             <ion-card>
               <ion-card-header>
-                <ion-card-title>
+                <ion-card-title class="ion-text-center">
                   <p>Captura de fotos del vehiculo en distintos angulos</p> 
                   <ion-button shape="round" (click)="linktoFotos()">
                     <ion-icon *ngIf="fotosConcluido" name="checkmark"></ion-icon>
@@ -74,7 +75,7 @@
           <ion-col>
             <ion-card >
               <ion-card-header>
-                <ion-card-title>
+                <ion-card-title class="ion-text-center">
                   <p>Captura de datos mediante el protocolo OBD II</p> 
                   <ion-button shape="round" (click)="linktoOCR()">
                     <ion-icon *ngIf="obdConluido" name="checkmark"></ion-icon>
@@ -88,7 +89,7 @@
           <ion-col>
             <ion-card>
               <ion-card-header>
-                <ion-card-title>
+                <ion-card-title class="ion-text-center">
                   <p>Verificacion de datos con la credencial para votar</p> 
                   <ion-button shape="round" (click)="linktoFotos()">
                     <!-- <ion-icon *ngIf="!capturaPuerta" name="camera-outline"></ion-icon>
@@ -104,7 +105,7 @@
           <ion-col>
             <ion-card >
               <ion-card-header>
-                <ion-card-title>
+                <ion-card-title class="ion-text-center">
                   <p>Consulta de historial vehicular</p> 
                   <ion-button shape="round" (click)="linktoOCR()">
                     <!-- <ion-icon *ngIf="!capturaParabrisas" name="camera-outline"></ion-icon>

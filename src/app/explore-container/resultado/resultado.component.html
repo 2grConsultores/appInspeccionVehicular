@@ -7,62 +7,68 @@
 </ion-header>
 <ion-content [fullscreen]="true" >
   <div id="container">
-    <div class="cuerpo formulario" *ngIf="mostrarResutlado">
+    <!-- <div class="cuerpo formulario">
       <ion-loading class="custom-loading" trigger="open-loading" message="Comparando los resultados" [duration]="3000"></ion-loading>
-    </div>
-    <div class="cuerpo" *ngIf="mostrarResutlado">
-      <div class="imagen_semaforo">
-        <ion-img 
-          src="../../../assets/semaforo/{{casoJson.resultado.color}}.svg"
-          style="width: 80px;"
-        ></ion-img>
-      </div>
-      <ion-item >
-        <ion-label class="m-5 text-center"><h1>Riesgo {{casoJson.resultado.riesgo}} </h1></ion-label>
-      </ion-item>
-      <ion-item >
-        <ion-label>
-          <p class="m-5 ion-text-wrap">{{casoJson.resultado.descripcion}} </p>
-        </ion-label>
-      </ion-item>
+    </div> -->
+
+    <div class="cuerpo" >
       <ion-item-group>
         <ion-item-divider>
-          <ion-label>Recomendaciones</ion-label>
+          <ion-label>Decodificacion del VIN</ion-label>
         </ion-item-divider>
-        <ion-item *ngFor="let recomendacion of casoJson.resultado.recomendacion ">
+        <ion-item >
           <ion-label>
-           <p class="ion-text-wrap">{{recomendacion}}</p>
+          <div><p>Fabricante: </p><span>{{ validacionData.decodificacionVin.marca }}</span></div>
+          <div><p>Modelo: </p><span>{{ validacionData.decodificacionVin.modelo }}</span></div>
+          <div><p>Año: </p><span>{{ validacionData.decodificacionVin.anioModelo }}</span></div>
+          <div><p>País: </p><span>{{ validacionData.decodificacionVin.pais }}</span></div>
           </ion-label>
         </ion-item>
       </ion-item-group>
       <ion-item-group>
         <ion-item-divider>
-          <ion-label>Consulta reporte CRAFAX</ion-label>
+          <ion-label>Fotos</ion-label>
         </ion-item-divider>
-        <ion-item *ngIf="muestraVisibles">
+        <ion-item >
           <div class="consulta">
-            <h3>Visibles:</h3>
             <p class="consulta_resultado">
-              <ion-label class="m-5">{{casoJson.visibles.vin}} </ion-label>
-              <ion-button expand="block" shape="round"><ion-icon name="document-outline"></ion-icon>Consultar</ion-button>
+              <ion-label class="m-5"></ion-label>
             </p>
           </div>
         </ion-item>
-        <ion-item *ngIf="muestraObd">
+      </ion-item-group>
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>Lectura de OBD </ion-label>
+        </ion-item-divider>
+        <ion-item >
           <div class="consulta">
-            <h3>OBD:</h3>
             <p class="consulta_resultado">
-              <ion-label class="m-5">{{casoJson.obd.vin}} </ion-label>
-              <ion-button expand="block" shape="round"><ion-icon name="document-outline"></ion-icon>Consultar</ion-button>
+              <ion-label class="m-5"></ion-label>
             </p>
           </div>
         </ion-item>
-        <ion-item *ngIf="muestraEngomado">
+      </ion-item-group>
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>Verificacion INE</ion-label>
+        </ion-item-divider>
+        <ion-item >
           <div class="consulta">
-            <h3>Engomado:</h3>
             <p class="consulta_resultado">
-              <ion-label class="m-5">{{casoJson.nfc.vin}} </ion-label>
-              <ion-button expand="block" shape="round"><ion-icon name="document-outline"></ion-icon>Consultar</ion-button>
+              <ion-label class="m-5"></ion-label>
+            </p>
+          </div>
+        </ion-item>
+      </ion-item-group>
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>Consulta de historial vehicular</ion-label>
+        </ion-item-divider>
+        <ion-item >
+          <div class="consulta">
+            <p class="consulta_resultado">
+              <ion-label class="m-5"></ion-label>
             </p>
           </div>
         </ion-item>

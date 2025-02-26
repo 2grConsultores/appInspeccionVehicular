@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CasosService } from '../../services/casos.service';
 import { Caso } from 'src/app/interfaces/caso.interfaces';
+import { FirestoreService } from 'src/app/services/firestore.service';
+import { AlertController } from '@ionic/angular';
+import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 
 @Component({
   selector: 'app-resultado',
@@ -9,98 +12,87 @@ import { Caso } from 'src/app/interfaces/caso.interfaces';
   styleUrls: ['./resultado.component.scss'],
 })
 export class ResultadoComponent  implements OnInit {
-
-  mostrarResutlado:boolean = true;
-  muestraVisibles:boolean = false;
-  muestraObd:boolean = false;
-  muestraEngomado:boolean = false;
-  caso:number = 0; 
-  casoJson:Caso = {
-    _id: 0,
+  validacionId: string = '';
+  validacionData: validacionInt = {
+    usuario: '',
+    fechaInicio: new Date(),
+    fechaFin: new Date(),
     visibles: {
-      listaLecturas: [{
-        lectura:'',
-        resultado:''
-      }],
-      vin: ''
+      listaLecturas: [
+        {
+          posicion: '',
+          vinOCR: '',
+          vinEditado: '',
+          editado: false,
+          fecha: new Date(),
+          imagen: {
+            url: '',
+          },
+        },
+      ],
+      vin: '',
     },
     obd: {
-      vin: ''
+      vin: '',
+      fecha: new Date(),
     },
     nfc: {
-      vin: ''
+      vin: '',
+      fecha: new Date(),
     },
+    fotos: [
+      {
+        imagen: {
+          url: '',
+        },
+        posicion: '',
+        fecha: new Date(),
+      },
+    ],
     resultado: {
       riesgo: '',
       color: '',
       descripcion: '',
-      recomendacion: []
-    }
+      recomendacion: [],
+    },
+    decodificacionVin: {
+      marca: '',
+      modelo: '',
+      anioModelo: '',
+      pais: '',
+    },
   };
+
 
   constructor(
     private router: Router,
-    private CasosService: CasosService,
     private activatedRoute: ActivatedRoute,
+    private firestoreService: FirestoreService,
+    public alertController: AlertController,
   ) { }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe( ({id}) => { // aqui obtengo el id del registro
-      this.obtenercasos(id);
-    })
-  }
-
-  validarCaptura(){
-    setTimeout(() => {
-      // Después de 3 segundos, mostrar el resultado
-      console.log('Validando captura');
-      this.mostrarResutlado = true;
-  
-    }, 3500);
-
-
-  }
-
-  linkCapturaHome(){
-    this.router.navigate(['home']);
-  }
-
-  obtenercasos(numeroCaso: number){
-    console.log('numero de caso',numeroCaso);
-    this.CasosService.getJSON().subscribe( (casos: Caso[]) => {
-      console.log('casos',casos);
-      const foundCaso = casos.find( (caso: Caso) => caso._id == numeroCaso);
-      if (foundCaso !== undefined) {
-        this.casoJson = foundCaso; // if foundCaso is not undefined, assign it to this.casoJson
-        console.log('casoJson',this.casoJson);
-        if(foundCaso.visibles.vin == foundCaso.obd.vin && foundCaso.visibles.vin == foundCaso.nfc.vin){
-          this.muestraVisibles = true;
-          this.muestraObd = false; 
-          this.muestraEngomado = false;}
-        else if(foundCaso.visibles.vin == foundCaso.obd.vin && foundCaso.visibles.vin != foundCaso.nfc.vin){
-          this.muestraVisibles = true;
-          this.muestraObd = false; 
-          this.muestraEngomado = true;}
-        else if(foundCaso.visibles.vin != foundCaso.obd.vin && foundCaso.visibles.vin == foundCaso.nfc.vin){
-          this.muestraVisibles = true;
-          this.muestraObd = true; 
-          this.muestraEngomado = false;
-        }
-        else if(foundCaso.visibles.vin != foundCaso.obd.vin && foundCaso.visibles.vin != foundCaso.nfc.vin && foundCaso.obd.vin == foundCaso.nfc.vin){
-          this.muestraVisibles = true;
-          this.muestraObd = true; 
-          this.muestraEngomado = false;
-        }
-        else if(foundCaso.visibles.vin != foundCaso.obd.vin && foundCaso.visibles.vin != foundCaso.nfc.vin && foundCaso.obd.vin != foundCaso.nfc.vin){
-          this.muestraVisibles = true;
-          this.muestraObd = true; 
-          this.muestraEngomado = true;
-        }
-        
-      } else {
-        console.log('No se encontro el caso');
-      }
+    this.activatedRoute.params.subscribe(({ id }) => {
+      // aqui obtengo el id del registro
+      this.validacionId = id;
+      this.obtenerDatosValidacion(this.validacionId);
     });
   }
+
+
+  linkCapturaHome(){
+    this.router.navigate(['tabs/tab2/inspeccion/' + this.validacionId]);
+  }
+
+  obtenerDatosValidacion(validacionId: string) {
+    this.firestoreService
+      .findOne('inspecciones', validacionId)
+      .subscribe((validacion: validacionInt) => {
+        console.log('validacion Datos:', validacion);
+        this.validacionData = validacion;
+      });
+  }
+
+
 
 }

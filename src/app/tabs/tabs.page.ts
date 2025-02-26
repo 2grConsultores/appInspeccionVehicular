@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { FirestoreService } from '../services/firestore.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +9,46 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(
+    private router: Router,
+    private firestoreService: FirestoreService,
+  ) {}
+
+  crearValidacion() {
+    const data = {
+      usuario: 'usuario',
+      fechaInicio: new Date(),
+      visibles: {
+        listaLecturas: [],
+        vin: '',
+      },
+      obd: {
+        vin: '',
+        fecha: new Date(),
+      },
+      nfc: {
+        vin: '',
+        fecha: new Date(),
+      },
+      fotos: [],
+      resultado: {
+        riesgo: '',
+        color: '',
+        descripcion: '',
+        recomendacion: [],
+      },
+      decodificacionVin: {
+        marca: '',
+        modelo: '',
+        anioModelo: '',
+        pais: '',
+      },
+    };
+    this.firestoreService.createDoc(data, 'inspecciones').then((registro) => {
+      console.log('id registro', registro.id);
+      this.router.navigate(['tabs/tab2/inspeccion/' + registro.id]);
+    });
+  }
+
 
 }

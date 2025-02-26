@@ -25,6 +25,9 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+/* Tus variables y estilos personalizados, si los tienes */
+@import "theme/variables";
+
 #container {
     display: flex;
     padding: 10px;

@@ -29,9 +29,9 @@ export class PhotoService {
     try {
       if(Capacitor.getPlatform() != 'web') await Camera.requestPermissions();
       const image = await Camera.getPhoto({
-        quality: 90,
+        quality: 100,
         // allowEditing: false,
-        source: CameraSource.Prompt,
+        source: CameraSource.Camera,
         width: 600,
         resultType: CameraResultType.DataUrl
       });

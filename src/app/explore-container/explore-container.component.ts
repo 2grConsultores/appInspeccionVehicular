@@ -11,15 +11,18 @@ import { InfiniteScrollCustomEvent } from '@ionic/angular';
 })
 export class ExploreContainerComponent implements OnInit {
   datasources: any[] = [];
+  usuario: string = '';
 
   constructor(
     private router: Router,
     private firestoreService: FirestoreService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+
   ) {}
 
   ngOnInit() {
     this.obtenerInspecciones();
+    
 
   }
 
@@ -65,16 +68,18 @@ export class ExploreContainerComponent implements OnInit {
 
   obtenerInspecciones() {
     this.firestoreService.getCollection('inspecciones').subscribe((data: any[]) => {
+
       // Mapear cada documento para formatear las marcas de tiempo
-      // this.datasources = data.map(doc => {
-      //   // Formatear el campo "fechaInicio" si existe
-      //   if (doc.fechaInicio && doc.fechaInicio.seconds) {
-      //     const dateInicio = new Date(doc.fechaInicio.seconds * 1000);
-      //     doc.fechaInicio = this.datePipe.transform(dateInicio, 'dd/MM/yyyy HH:mm:ss');
-      //   }
-      // });
+      this.datasources = data.map(doc => {
+        // Formatear el campo "fechaInicio" si existe
+        // console.log('segundos',doc.fechaInicio.seconds);
+        const dateInicio = new Date(doc.fechaInicio.seconds * 1000);
+        // console.log('dateInicio',dateInicio);
+        doc.fechaInicio = this.datePipe.transform(dateInicio, 'dd/MM/yyyy HH:mm:ss');
+        // console.log('doc.fechaInicio',doc.fechaInicio);
+      });
       this.datasources = data;
-      console.log(this.datasources );
+      console.log('datasource: ',this.datasources );
     });
   }
 

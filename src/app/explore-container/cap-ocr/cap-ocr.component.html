@@ -12,10 +12,10 @@
 <ion-content [fullscreen]="true" >
   <div id="container">
     <div>
-      <h1 class="ion-margin">Captura el VIN (OCR)</h1>
+      <h1 class="ion-margin ion-text-center">Captura el VIN (OCR)</h1>
     </div>
     <div class="cuerpo formulario" *ngIf="!mostrarResutlado">
-      <p class="ion-margin ">Captura al menos dos imagenes para comparar los datos obtenidos. </p>
+      <p class="ion-margin ion-text-center" style="color: #8c8c8c;">Captura al menos dos imagenes para comparar los datos obtenidos. Si coinciden los 4 valores obtenidos se realizara la decodificacion del VIN</p>
       <div *ngIf="vinDecodificado">
         <h2 class="ion-text-center">Decodificacion del VIN</h2>
         <ion-item>
@@ -130,12 +130,10 @@
         <p *ngIf="colorResultado == 'rojo'"  class="ion-margin" >La comparación de los VINs no coincide, es probable se tenga un problema </p>
         <!-- *ngIf="colorResultado == 'verde'"  -->
       </div>
-      <ion-button 
-      expand="block"  
-      style="margin-top: 30px;" 
-      shape="round" 
-      (click)="linkCapturaFotos(validacionId)" >Siguiente</ion-button>
-      <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkHome(validacionId)" >Cencelar</ion-button>
+      <ion-button expand="block" style="margin-top: 30px;" shape="round"
+        (click)="linkCapturaFotos(validacionId)">Siguiente</ion-button>
+      <ion-button expand="block" style="margin-top: 30px;" shape="round"
+        (click)="linkHome(validacionId)">Regresar</ion-button>
     </div>
 
     <ion-alert

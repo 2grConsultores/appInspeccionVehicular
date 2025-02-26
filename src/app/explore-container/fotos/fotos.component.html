@@ -13,7 +13,21 @@
       <ion-row>
         <ion-col>
           <ion-card>
-            <img alt="factura" class="cardimage" src="{{ url_frente }}" />
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingFrente"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen frente" 
+                [src]="url_frente" 
+                (load)="onImageLoad('frente')" 
+                (error)="onImageLoad('frente')" 
+                [style.opacity]="isLoadingFrente ? 0 : 1"
+              />
+            </div>
             <ion-card-header>
               <ion-card-title>
                 <ion-button shape="round" (click)="agregaFoto('frente')">
@@ -24,9 +38,36 @@
             </ion-card-header>
           </ion-card>
         </ion-col>
-        <ion-col>
+        <!-- <ion-col>
           <ion-card>
             <img alt="tarjeta-circulacion" class="cardimage" src="{{ url_atras }}" />
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('atras')">
+                  <ion-icon *ngIf="!capturaAtras" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaAtras" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col> -->
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingAtras"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_atras" 
+                (load)="onImageLoad('atras')" 
+                (error)="onImageLoad('atras')" 
+                [style.opacity]="isLoadingAtras ? 0 : 1"
+              />
+            </div>
             <ion-card-header>
               <ion-card-title>
                 <ion-button shape="round" (click)="agregaFoto('atras')">
@@ -39,7 +80,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
+        <!-- <ion-col>
           <ion-card>
             <img alt="factura" class="cardimage" src="{{ url_lateral_derecho }}" />
             <ion-card-header>
@@ -51,10 +92,64 @@
               </ion-card-title>
             </ion-card-header>
           </ion-card>
-        </ion-col>
+        </ion-col> -->
         <ion-col>
           <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingLateralDerecho"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_lateral_derecho" 
+                (load)="onImageLoad('lateral_derecho')" 
+                (error)="onImageLoad('lateral_derecho')" 
+                [style.opacity]="isLoadingLateralDerecho ? 0 : 1"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('lateral_derecho')">
+                  <ion-icon *ngIf="!capturaLadoDerecho" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaLadoDerecho" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <!-- <ion-col>
+          <ion-card>
             <img alt="tarjeta-circulacion" class="cardimage" src="{{ url_lateral_izquierdo }}" />
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('lateral_izquierdo')">
+                  <ion-icon *ngIf="!capturaLadoIzquierdo" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaLadoIzquierdo" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col> -->
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingLateralIzquierdo"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_lateral_izquierdo" 
+                (load)="onImageLoad('lateral_izquierdo')" 
+                (error)="onImageLoad('lateral_izquierdo')" 
+                [style.opacity]="isLoadingLateralIzquierdo ? 0 : 1"
+              />
+            </div>
             <ion-card-header>
               <ion-card-title>
                 <ion-button shape="round" (click)="agregaFoto('lateral_izquierdo')">
@@ -67,7 +162,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
+        <!-- <ion-col>
           <ion-card>
             <img alt="factura" class="cardimage" src="{{ url_exterior1 }}" />
             <ion-card-header>
@@ -79,10 +174,64 @@
               </ion-card-title>
             </ion-card-header>
           </ion-card>
-        </ion-col>
+        </ion-col> -->
         <ion-col>
           <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingExterior1"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_exterior1" 
+                (load)="onImageLoad('exterior_1')" 
+                (error)="onImageLoad('exterior_1')" 
+                [style.opacity]="isLoadingExterior1 ? 0 : 1"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('exterior_1')">
+                  <ion-icon *ngIf="!capturaExterior1" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaExterior1" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <!-- <ion-col>
+          <ion-card>
             <img alt="tarjeta-circulacion" class="cardimage" src="{{ url_exterior2 }}" />
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('exterior_2')">
+                  <ion-icon *ngIf="!capturaExterior2" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaExterior2" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col> -->
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingExterior2"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_exterior2" 
+                (load)="onImageLoad('exterior_2')" 
+                (error)="onImageLoad('exterior_2')" 
+                [style.opacity]="isLoadingExterior2 ? 0 : 1"
+              />
+            </div>
             <ion-card-header>
               <ion-card-title>
                 <ion-button shape="round" (click)="agregaFoto('exterior_2')">
@@ -95,7 +244,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
+        <!-- <ion-col>
           <ion-card>
             <img alt="factura" class="cardimage" src="{{ url_motor }}" />
             <ion-card-header>
@@ -107,10 +256,64 @@
               </ion-card-title>
             </ion-card-header>
           </ion-card>
-        </ion-col>
+        </ion-col> -->
         <ion-col>
           <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingMotor"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_motor" 
+                (load)="onImageLoad('motor')" 
+                (error)="onImageLoad('motor')" 
+                [style.opacity]="isLoadingMotor ? 0 : 1"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('motor')">
+                  <ion-icon *ngIf="!capturaMotor" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaMotor" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <!-- <ion-col>
+          <ion-card>
             <img alt="tarjeta-circulacion" class="cardimage" src="{{ url_cajuela }}" />
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('cajuela')">
+                  <ion-icon *ngIf="!capturaCajuela" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaCajuela" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col> -->
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingCajuela"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_cajuela" 
+                (load)="onImageLoad('cajuela')" 
+                (error)="onImageLoad('cajuela')" 
+                [style.opacity]="isLoadingCajuela ? 0 : 1"
+              />
+            </div>
             <ion-card-header>
               <ion-card-title>
                 <ion-button shape="round" (click)="agregaFoto('cajuela')">
@@ -123,7 +326,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
+        <!-- <ion-col>
           <ion-card>
             <img alt="factura" class="cardimage" src="{{ url_tablero }}" />
             <ion-card-header>
@@ -135,10 +338,64 @@
               </ion-card-title>
             </ion-card-header>
           </ion-card>
-        </ion-col>
+        </ion-col> -->
         <ion-col>
           <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingTablero"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_tablero" 
+                (load)="onImageLoad('tablero')" 
+                (error)="onImageLoad('tablero')" 
+                [style.opacity]="isLoadingTablero ? 0 : 1"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('tablero')">
+                  <ion-icon *ngIf="!capturaTablero" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaTablero" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <!-- <ion-col>
+          <ion-card>
             <img alt="tarjeta-circulacion" class="cardimage" src="{{ url_interior1 }}" />
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('interior_1')">
+                  <ion-icon *ngIf="!capturaInterior1" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaInterior1" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col> -->
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingInterior1"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_interior1" 
+                (load)="onImageLoad('interior_1')" 
+                (error)="onImageLoad('interior_1')" 
+                [style.opacity]="isLoadingInterior1 ? 0 : 1"
+              />
+            </div>
             <ion-card-header>
               <ion-card-title>
                 <ion-button shape="round" (click)="agregaFoto('interior_1')">
@@ -151,7 +408,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
+        <!-- <ion-col>
           <ion-card>
             <img alt="factura" class="cardimage" src="{{ url_interior2 }}" />
             <ion-card-header>
@@ -176,10 +433,64 @@
               </ion-card-title>
             </ion-card-header>
           </ion-card>
+        </ion-col> -->
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingInterior2"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_interior2" 
+                (load)="onImageLoad('interior_2')" 
+                (error)="onImageLoad('interior_2')" 
+                [style.opacity]="isLoadingInterior2 ? 0 : 1"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('interior_2')">
+                  <ion-icon *ngIf="!capturaInterior2" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaInterior2" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingInterior3"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_interior3" 
+                (load)="onImageLoad('interior_3')" 
+                (error)="onImageLoad('interior_3')" 
+                [style.opacity]="isLoadingInterior3 ? 0 : 1"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('interior_3')">
+                  <ion-icon *ngIf="!capturaInterior3" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaInterior3" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
+        <!-- <ion-col>
           <ion-card>
             <img alt="factura" class="cardimage" src="{{ url_interior4 }}" />
             <ion-card-header>
@@ -204,6 +515,66 @@
               </ion-card-title>
             </ion-card-header>
           </ion-card>
+        </ion-col> -->
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingInterior4"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_interior4" 
+                (load)="onImageLoad('interior_4')" 
+                (error)="onImageLoad('interior_4')" 
+                [style.opacity]="isLoadingInterior4 ? 0 : 1"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('interior_4')">
+                  <ion-icon *ngIf="!capturaInterior4" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaInterior4" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+          <ion-card>
+            <!-- Contenedor de imagen con spinner -->
+            <div class="image-container" style="position: relative;">
+              <ion-spinner
+                *ngIf="isLoadingInterior5"
+                name="crescent"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              </ion-spinner>
+              <img 
+                alt="Imagen atras" 
+                [src]="url_interior5" 
+                (load)="onImageLoad('interior_5')" 
+                (error)="onImageLoad('interior_5')" 
+                [style.opacity]="isLoadingInterior5 ? 0 : 1"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-button shape="round" (click)="agregaFoto('interior_5')">
+                  <ion-icon *ngIf="!capturaInterior5" name="camera-outline"></ion-icon>
+                  <ion-icon *ngIf="capturaInterior5" name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+        <ion-button expand="block" style="margin-top: 30px;" shape="round"
+          (click)="linkHome(validacionId)">Regresar</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

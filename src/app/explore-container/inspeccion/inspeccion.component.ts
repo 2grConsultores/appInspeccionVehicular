@@ -4,6 +4,7 @@ import { FirestoreService } from '../../services/firestore.service';
 import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-inspeccion',
@@ -14,55 +15,7 @@ export class InspeccionComponent  implements OnInit {
 
   validacionId: string = '';
   arregloResultados: any[] = [];
-  validacionData: validacionInt = {
-    usuario: '',
-    fechaInicio: new Date(),
-    fechaFin: new Date(),
-    visibles: {
-      listaLecturas: [
-        {
-          posicion: '',
-          vinOCR: '',
-          vinEditado: '',
-          editado: false,
-          fecha: new Date(),
-          imagen: {
-            url: '',
-          },
-        },
-      ],
-      vin: '',
-    },
-    obd: {
-      vin: '',
-      fecha: new Date(),
-    },
-    nfc: {
-      vin: '',
-      fecha: new Date(),
-    },
-    fotos: [
-      {
-        imagen: {
-          url: '',
-        },
-        posicion: '',
-        fecha: new Date(),
-      },
-    ],
-    resultado: {
-      riesgo: '',
-      color: '',
-      descripcion: '',
-      recomendacion: [],
-    },
-    decodificacionVin: {
-      marca: '',
-      modelo: '',
-      anioModelo: '',
-      pais: '',
-    },
-  };
+  validacionData: any = {};
 
   fechaInicialInspeccion: string = '';
   ocrConcluido: boolean = false;
@@ -77,7 +30,8 @@ export class InspeccionComponent  implements OnInit {
       private activatedRoute: ActivatedRoute,
       private firestoreService: FirestoreService,
       public alertController: AlertController,
-      private loadingCtrl: LoadingController
+      private loadingCtrl: LoadingController,
+      private datePipe: DatePipe,
     ) {}
 
     ngOnInit() {
@@ -96,7 +50,12 @@ export class InspeccionComponent  implements OnInit {
         .subscribe((validacion: validacionInt) => {
           console.log('validacion Datos:', validacion);
           this.validacionData = validacion;
-          // this.fechaInicialInspeccion = this.validacionData.fechaInicio.toDate().toLocaleDateString();
+          const dateInicio =new Date(this.validacionData.fechaInicio.seconds * 1000);
+          this.fechaInicialInspeccion = this.datePipe.transform(
+            dateInicio,
+            'dd/MM/yyyy HH:mm:ss'
+          ) || '';
+          console.log('fechaInicialInspeccion', this.fechaInicialInspeccion);
           if (this.validacionData.visibles.listaLecturas.length >= 4) {
             this.ocrConcluido = true;
           }
@@ -109,16 +68,20 @@ export class InspeccionComponent  implements OnInit {
         });
     }
 
-    linktoOCR() {
-      this.router.navigate(['tabs/tab2/ocr/' + this.validacionId ]);
-    }
+    // linktoOCR() {
+    //   this.router.navigate(['tabs/tab2/ocr/' + this.validacionId ]);
+    // }
 
-    linktoFotos() {
-      this.router.navigate(['tabs/tab2/fotos/' + this.validacionId ]);
-    }
+    // linktoFotos() {
+    //   this.router.navigate(['tabs/tab2/fotos/' + this.validacionId ]);
+    // }
 
-    linktoResultado() {
-      this.router.navigate(['tabs/tab2/resultado/' + this.validacionId ]);
+    // linktoResultado() {
+    //   this.router.navigate(['tabs/tab2/resultado/' + this.validacionId ]);
+    // }
+
+    link(servicio: string) {
+      this.router.navigate([`tabs/tab2/${servicio}/${this.validacionId}`]);
     }
 
 }

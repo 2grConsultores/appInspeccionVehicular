@@ -27,12 +27,25 @@
       </ion-item-group>
       <ion-item-group>
         <ion-item-divider>
-          <ion-label>Fotos</ion-label>
+          <ion-label>Fotos ({{validacionData.fotos.length}})</ion-label>
         </ion-item-divider>
         <ion-item >
           <div class="consulta">
             <p class="consulta_resultado">
-              <ion-label class="m-5"></ion-label>
+              <ion-grid>
+                <ion-row>
+                  <ion-col *ngFor="let foto of validacionData.fotos">
+                    <ion-card>
+                      <img alt="parabrisas" class="cardimage" src="{{ foto.imagen.url }}" />
+                      <ion-card-header>
+                        <ion-card-title>
+                          {{ foto.posicion }}
+                        </ion-card-title>
+                      </ion-card-header>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
             </p>
           </div>
         </ion-item>

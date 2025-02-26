@@ -473,23 +473,25 @@ export class CapOcrComponent implements OnInit {
   }
 
   consultarNHTSA(vin: string) {
-     this.nhtsaService.getLabels(vin).then((data) => {
-      this.consultaNHTSA = data;;
-      this.vinDecodificado = true;
-      // Actualizar la decodificación del VIN en la base de datos
-      console.log(this.validacionId);
-      this.validacionData.decodificacionVin = this.consultaNHTSA;
-      console.log('validacionData nhtsa', this.validacionData);
-      this.firestoreService.updateDoc(
-        this.validacionData,
-        'inspecciones',
-        this.validacionId
-      ).then(() => {
-        console.log('Decodificación VIN guardada');
+    this.nhtsaService
+      .getLabels(vin)
+      .then((infoVin) => {
+        console.log('Información del VIN:', infoVin);
+        this.consultaNHTSA = infoVin;
+        this.vinDecodificado = true;
+        this.validacionData.decodificacionVin = this.consultaNHTSA;
+        console.log('validacionData nhtsa', this.validacionData);
+        this.firestoreService.updateDoc(
+              this.validacionData,
+              'inspecciones',
+              this.validacionId
+            ).then(() => {
+              console.log('Decodificación VIN guardada');
+            });
+      })
+      .catch((error) => {
+        console.error('Error al obtener los datos:', error);
       });
-
-     });
-
   }
 
 

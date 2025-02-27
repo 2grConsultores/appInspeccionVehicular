@@ -22,6 +22,7 @@ export class AuthService {
 
   // Cerrar sesión
   signOut(): Observable<void> {
+    console.log('signOut');
     return from(signOut(this.auth));
   }
 

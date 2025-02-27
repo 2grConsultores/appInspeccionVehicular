@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Tab3Page } from './tab3.page';
+import { MiCuentaComponent } from '../explore-container/mi-cuenta/mi-cuenta.component';
 
 const routes: Routes = [
   {

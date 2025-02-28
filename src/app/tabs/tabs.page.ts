@@ -16,7 +16,7 @@ export class TabsPage {
 
   crearValidacion() {
     const data = {
-      usuario: 'usuario',
+      usuario: localStorage.getItem('uid'),
       fechaInicio: new Date(),
       visibles: {
         listaLecturas: [],
@@ -42,6 +42,8 @@ export class TabsPage {
         modelo: '',
         anioModelo: '',
         pais: '',
+        completada: false,
+        fecha: new Date(),
       },
     };
     this.firestoreService.createDoc(data, 'inspecciones').then((registro) => {

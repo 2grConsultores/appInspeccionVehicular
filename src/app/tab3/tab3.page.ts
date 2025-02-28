@@ -10,7 +10,9 @@ import { Router } from '@angular/router';
 export class Tab3Page implements OnInit {
 
   usuario: any = {};
-
+  uid: string = '';
+  email: string = '';
+  displayName: string = '';
   constructor(
     private authService: AuthService,
      private router: Router,
@@ -20,6 +22,9 @@ export class Tab3Page implements OnInit {
 
   ngOnInit() {
     this.obtenerUsuario();
+    this.uid = localStorage.getItem('uid') || '';
+    this.email = localStorage.getItem('email') || '';
+    this.displayName = localStorage.getItem('displayName') || '';
   }
 
   obtenerUsuario() {

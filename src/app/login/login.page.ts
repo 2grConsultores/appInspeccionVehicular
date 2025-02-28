@@ -27,8 +27,17 @@ export class LoginPage implements OnInit {
       next: (user) => {
       // Almacena el uid en localStorage para luego identificar al usuario en las inspecciones
       const uid = user.user.uid;
+      const email = user.user.email;
+      const displayName = user.user.displayName;
       console.log('uid:', uid);
       localStorage.setItem('uid', uid);
+      if (email) {
+        localStorage.setItem('email', email);
+      }
+      if (displayName){
+        localStorage.setItem('displayName', displayName);
+      }
+      
 
         console.log('iciono de sesion correcto:', user);
         this.router.navigate(['/tabs/tab2']);

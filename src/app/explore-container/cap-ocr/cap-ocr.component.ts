@@ -20,7 +20,6 @@ export class CapOcrComponent implements OnInit {
   mostrarResutlado: boolean = false;
   vinOCR: string = '';
   vinImageBase64: string = '';
-  vinDecodificado = false;
   fotoImage_url: string = '';
   validacionId: string = '';
   isAlertOpen = false;
@@ -28,7 +27,7 @@ export class CapOcrComponent implements OnInit {
   posicion: string = '';
   mensajeAlert: string = '';
   vinREGEX = /[a-hj-npr-zA-HJ-NPR-Z0-9]{17}/g;
-  mostrarTablaComparacion: boolean = false;
+
   validacionData: validacionInt = {
     usuario: '',
     fechaInicio: new Date(),
@@ -76,6 +75,8 @@ export class CapOcrComponent implements OnInit {
       modelo: '',
       anioModelo: '',
       pais: '',
+      completada: false,
+      fecha: new Date(),
     },
   };
 
@@ -88,7 +89,8 @@ export class CapOcrComponent implements OnInit {
   resultadoVinFactura: string = '';
   mostrarVinTarjeta: boolean = false;
   resultadoVinTarjeta: string = '';
-  consultaNHTSA: any = {};
+  mostrarTablaComparacion: boolean = false;
+
 
   //Captura de fotos
   capturaParabrisas: boolean = false;
@@ -107,6 +109,10 @@ export class CapOcrComponent implements OnInit {
   colorResultado: string = '';
   iconoResultado: string = '';
   arregloResultados: any[] = [];
+
+  // Variables para la decodificación del VIN
+  public vinDecodificado: boolean = false;
+  public consultaNHTSA: any = {};
 
 
   alertButtons = [
@@ -189,7 +195,7 @@ export class CapOcrComponent implements OnInit {
     }
   
     // Si se tienen exactamente 4 VIN y todos coinciden, se llama a consultarNHTSA
-    if (this.arregloResultados.length === 4 && uniqueVins.size === 1) {
+    if (this.arregloResultados.length === 4 && uniqueVins.size === 1 && this.validacionData.decodificacionVin.completada === false) {
       const vinUnico = this.arregloResultados[0];
       this.consultarNHTSA(vinUnico);
     }
@@ -358,6 +364,46 @@ export class CapOcrComponent implements OnInit {
       .subscribe((validacion: validacionInt) => {
         console.log('validacion Datos:', validacion);
         this.validacionData = validacion;
+        if (this.validacionData.visibles.listaLecturas.length >= 1) {
+          this.validacionData.visibles.listaLecturas.forEach((lectura) => {
+
+            if (lectura.posicion == 'puerta') {
+              this.mostrarVinPuerta = true;
+              this.resultadoVinPuerta = lectura.vinEditado
+                ? lectura.vinEditado
+                : lectura.vinOCR;
+              this.urlPuerta = lectura.imagen.url;
+            } else if (lectura.posicion == 'parabrisas') {
+              this.mostrarVinParabrisas = true;
+              this.resultadoVinParabrisas = lectura.vinEditado
+                ? lectura.vinEditado
+                : lectura.vinOCR;
+              this.urlParabrisas = lectura.imagen.url;
+            } else if (lectura.posicion == 'factura') {
+              this.mostrarVinFactura = true;
+              this.resultadoVinFactura = lectura.vinEditado
+                ? lectura.vinEditado
+                : lectura.vinOCR;
+              this.urlFactura = lectura.imagen.url;
+            } else if (lectura.posicion == 'tarjeta-circulacion') {
+              this.mostrarVinTarjeta = true;
+              this.resultadoVinTarjeta = lectura.vinEditado
+                ? lectura.vinEditado
+                : lectura.vinOCR;
+              this.urlTarjetaCirculacion = lectura.imagen.url;
+            }
+            this.comparacionResultados();
+          });
+        }
+
+        if (
+          this.validacionData.decodificacionVin &&
+          this.validacionData.decodificacionVin.completada
+        ) {
+          this.vinDecodificado = true;
+          this.consultaNHTSA = this.validacionData.decodificacionVin;
+          this.mostrarTablaComparacion = true; 
+        }
       });
   }
 

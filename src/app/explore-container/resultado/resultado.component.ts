@@ -60,6 +60,8 @@ export class ResultadoComponent  implements OnInit {
       modelo: '',
       anioModelo: '',
       pais: '',
+      completada: false,
+      fecha: new Date(),
     },
   };
 

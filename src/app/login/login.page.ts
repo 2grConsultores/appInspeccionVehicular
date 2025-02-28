@@ -24,8 +24,13 @@ export class LoginPage implements OnInit {
 
   login() {
     this.AuthService.signIn(this.username, this.password).subscribe({
-      next: () => {
-        console.log('iciono de sesion correcto');
+      next: (user) => {
+      // Almacena el uid en localStorage para luego identificar al usuario en las inspecciones
+      const uid = user.user.uid;
+      console.log('uid:', uid);
+      localStorage.setItem('uid', uid);
+
+        console.log('iciono de sesion correcto:', user);
         this.router.navigate(['/tabs/tab2']);
       },
       error: (err) => {
@@ -45,8 +50,12 @@ export class LoginPage implements OnInit {
 
   loginGoogle() {
     this.AuthService.signInWithGoogle().subscribe({
-      next: () => {
-        console.log('iciono de sesion correcto');
+      next: (user) => {
+      // Almacena el uid en localStorage para luego identificar al usuario en las inspecciones
+      const uid = user.user.uid;
+      console.log('uid:', uid);
+      localStorage.setItem('uid', uid);
+        console.log('iciono de sesion correcto', user);
         this.router.navigate(['/tabs/tab2']);
       },
       error: (err) => {

@@ -29,6 +29,7 @@ export class Tab3Page implements OnInit {
   cerrarSesion() {
     this.authService.signOut();
     this.router.navigate(['login']);
+    localStorage.removeItem('uid');
   }
 
 }

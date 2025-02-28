@@ -45,5 +45,7 @@ export interface validacionInt {
     modelo: string;
     anioModelo: string;
     pais: string;
+    completada: boolean;
+    fecha: Date;
   };
 }

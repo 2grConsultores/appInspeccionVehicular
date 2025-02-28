@@ -5,6 +5,7 @@ import { CapOcrComponent } from '../explore-container/cap-ocr/cap-ocr.component'
 import { FotosComponent } from '../explore-container/fotos/fotos.component';
 import { ResultadoComponent } from '../explore-container/resultado/resultado.component';
 import { InspeccionComponent } from '../explore-container/inspeccion/inspeccion.component';
+import { CapObdComponent } from '../explore-container/cap-obd/cap-obd.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,9 @@ const routes: Routes = [
   {path: 'ocr/:id', component: CapOcrComponent},
   {path: 'fotos/:id', component: FotosComponent},
   {path: 'resultado/:id', component: ResultadoComponent},
-  {path: 'inspeccion/:id', component: InspeccionComponent}
+  {path: 'inspeccion/:id', component: InspeccionComponent},
+  {path: 'obd/:id', component: CapObdComponent},
+
   
 ];
 

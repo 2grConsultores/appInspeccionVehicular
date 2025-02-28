@@ -94,6 +94,8 @@ export class FotosComponent  implements OnInit {
       modelo: '',
       anioModelo: '',
       pais: '',
+      completada: false,
+      fecha: new Date(),
     },
   };
 

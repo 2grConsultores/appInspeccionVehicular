@@ -28,7 +28,7 @@ export class ExploreContainerComponent implements OnInit {
 
   crearValidacion() {
     const data = {
-      usuario: 'usuario',
+      usuario: localStorage.getItem('uid'),
       fechaInicio: new Date(),
       visibles: {
         listaLecturas: [],
@@ -54,6 +54,8 @@ export class ExploreContainerComponent implements OnInit {
         modelo: '',
         anioModelo: '',
         pais: '',
+        completada: false,
+        fecha: new Date(),
       },
     };
     this.firestoreService.createDoc(data, 'inspecciones').then((registro) => {
@@ -67,20 +69,26 @@ export class ExploreContainerComponent implements OnInit {
   }
 
   obtenerInspecciones() {
-    this.firestoreService.getCollection('inspecciones').subscribe((data: any[]) => {
-
-      // Mapear cada documento para formatear las marcas de tiempo
-      this.datasources = data.map(doc => {
-        // Formatear el campo "fechaInicio" si existe
-        // console.log('segundos',doc.fechaInicio.seconds);
-        const dateInicio = new Date(doc.fechaInicio.seconds * 1000);
-        // console.log('dateInicio',dateInicio);
-        doc.fechaInicio = this.datePipe.transform(dateInicio, 'dd/MM/yyyy HH:mm:ss');
-        // console.log('doc.fechaInicio',doc.fechaInicio);
-      });
-      this.datasources = data;
-      console.log('datasource: ',this.datasources );
-    });
+    // Obtener el uid del usuario logueado desde localStorage
+    const uid = localStorage.getItem('uid');
+    if (uid) {
+      // Ejecutar el query para obtener solo las inspecciones del usuario
+      this.firestoreService.getInspeccionesByUid(uid)
+        .subscribe((data: any[]) => {
+          // Formatear el campo fechaInicio para cada inspección, si existe
+          const inspeccionesFormateadas = data.map(doc => {
+            if (doc.fechaInicio && doc.fechaInicio.seconds) {
+              const dateInicio = new Date(doc.fechaInicio.seconds * 1000);
+              doc.fechaInicio = this.datePipe.transform(dateInicio, 'dd/MM/yyyy HH:mm:ss');
+            }
+            return doc;
+          });
+          this.datasources = inspeccionesFormateadas;
+          console.log('datasource:', this.datasources);
+        });
+    } else {
+      console.error('UID is null');
+    }
   }
 
   onIonInfinite(event: InfiniteScrollCustomEvent) {

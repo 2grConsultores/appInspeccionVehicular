@@ -17,6 +17,8 @@ export class NhtsaService {
       modelo: '',
       anioModelo: '',
       pais: '',
+      completada: true,
+      fecha: new Date()
     };
 
     if (data && data.Results) {

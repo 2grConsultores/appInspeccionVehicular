@@ -6,18 +6,18 @@ import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 
-
 @Component({
   selector: 'app-fotos',
   templateUrl: './fotos.component.html',
   styleUrls: ['./fotos.component.scss'],
 })
-export class FotosComponent  implements OnInit {
-
+export class FotosComponent implements OnInit {
   url_frente: string = '../../../assets/botonesVisibles/frente.webp';
   url_atras: string = '../../../assets/botonesVisibles/atras.webp';
-  url_lateral_derecho: string = '../../../assets/botonesVisibles/lateral_derecho.webp';
-  url_lateral_izquierdo: string = '../../../assets/botonesVisibles/lateral_izquierdo.webp';
+  url_lateral_derecho: string =
+    '../../../assets/botonesVisibles/lateral_derecho.webp';
+  url_lateral_izquierdo: string =
+    '../../../assets/botonesVisibles/lateral_izquierdo.webp';
   url_exterior1: string = '../../../assets/botonesVisibles/exterior_1.webp';
   url_exterior2: string = '../../../assets/botonesVisibles/exterior_2.webp';
   url_motor: string = '../../../assets/botonesVisibles/motor.webp';
@@ -138,76 +138,78 @@ export class FotosComponent  implements OnInit {
 
   async agregaFoto(posicion: string) {
     console.log('agregaFoto', posicion);
-    const path = 'fotos/'+posicion;
-    await this.photoService.takePhoto_to_url(path).then((url: any) => {
-      console.log('url-componente', url);
-      this.fotoImage_url = url;
-      this.posicion = posicion;
-      // requiero una funcion que guarde la url en la base de datos
-      this.guardarFoto();
-      switch (posicion) {
-        case 'frente':
-          this.capturaFrente = true;
-          this.url_frente = url;
-          break;
-        case 'atras':
-          this.capturaAtras = true;
-          this.url_atras = url;
-          break;
-        case 'lado-izquierdo':
-          this.capturaLadoIzquierdo = true;
-          this.url_lateral_izquierdo = url;
-          break;
-        case 'lado-derecho':
-          this.capturaLadoDerecho = true;
-          this.url_lateral_derecho = url;
-          break;
-        case 'exterior1':
-          this.capturaExterior1 = true;
-          this.url_exterior1 = url;
-          break;
-        case 'exterior2':
-          this.capturaExterior2 = true;
-          this.url_exterior2 = url;
-          break;
-        case 'motor':
-          this.capturaMotor = true;
-          this.url_motor = url;
-          break;
-        case 'cajuela':
-          this.capturaCajuela = true;
-          this.url_cajuela = url;
-          break;
-        case 'tablero':
-          this.capturaTablero = true;
-          this.url_tablero = url;
-          break;
-        case 'interior1':
-          this.capturaInterior1 = true;
-          this.url_interior1 = url;
-          break;
-        case 'interior2':
-          this.capturaInterior2 = true;
-          this.url_interior2 = url;
-          break;
-        case 'interior3':
-          this.capturaInterior3 = true;
-          this.url_interior3 = url;
-          break;
-        case 'interior4':
-          this.capturaInterior4 = true;
-          this.url_interior4 = url;
-          break;
-        case 'interior5':
-          this.capturaInterior5 = true;
-          this.url_interior5 = url;
-          break;
-        default:
-          break;
-      }
- 
-      this.setLoadingState(posicion, true);
-    });
+    const path = 'fotos/' + posicion;
+    await this.photoService
+      .takePhoto_to_url(path, this.validacionId)
+      .then((url: any) => {
+        console.log('url-componente', url);
+        this.fotoImage_url = url;
+        this.posicion = posicion;
+        // requiero una funcion que guarde la url en la base de datos
+        this.guardarFoto();
+        switch (posicion) {
+          case 'frente':
+            this.capturaFrente = true;
+            this.url_frente = url;
+            break;
+          case 'atras':
+            this.capturaAtras = true;
+            this.url_atras = url;
+            break;
+          case 'lado-izquierdo':
+            this.capturaLadoIzquierdo = true;
+            this.url_lateral_izquierdo = url;
+            break;
+          case 'lado-derecho':
+            this.capturaLadoDerecho = true;
+            this.url_lateral_derecho = url;
+            break;
+          case 'exterior1':
+            this.capturaExterior1 = true;
+            this.url_exterior1 = url;
+            break;
+          case 'exterior2':
+            this.capturaExterior2 = true;
+            this.url_exterior2 = url;
+            break;
+          case 'motor':
+            this.capturaMotor = true;
+            this.url_motor = url;
+            break;
+          case 'cajuela':
+            this.capturaCajuela = true;
+            this.url_cajuela = url;
+            break;
+          case 'tablero':
+            this.capturaTablero = true;
+            this.url_tablero = url;
+            break;
+          case 'interior1':
+            this.capturaInterior1 = true;
+            this.url_interior1 = url;
+            break;
+          case 'interior2':
+            this.capturaInterior2 = true;
+            this.url_interior2 = url;
+            break;
+          case 'interior3':
+            this.capturaInterior3 = true;
+            this.url_interior3 = url;
+            break;
+          case 'interior4':
+            this.capturaInterior4 = true;
+            this.url_interior4 = url;
+            break;
+          case 'interior5':
+            this.capturaInterior5 = true;
+            this.url_interior5 = url;
+            break;
+          default:
+            break;
+        }
+
+        this.setLoadingState(posicion, true);
+      });
   }
 
   guardarFoto() {
@@ -220,12 +222,16 @@ export class FotosComponent  implements OnInit {
       fecha: new Date(),
     };
     console.log('foto', foto);
-  
+
     // Asegúrate de que validacionData.fotos sea un arreglo; en caso de que no lo sea, lo inicializas.
-    const fotosActualizadas = this.validacionData.fotos ? [...this.validacionData.fotos] : [];
-  
+    const fotosActualizadas = this.validacionData.fotos
+      ? [...this.validacionData.fotos]
+      : [];
+
     // Buscar si ya existe una foto con la misma posición
-    const index = fotosActualizadas.findIndex(item => item.posicion === this.posicion);
+    const index = fotosActualizadas.findIndex(
+      (item) => item.posicion === this.posicion
+    );
     if (index > -1) {
       // Si existe, se sobrescribe el elemento
       fotosActualizadas[index] = foto;
@@ -233,9 +239,13 @@ export class FotosComponent  implements OnInit {
       // Si no existe, se agrega la nueva foto
       fotosActualizadas.push(foto);
     }
-  
+
     // Actualizamos el documento en Firestore con el arreglo de fotos modificado
-    this.firestoreService.updateDoc({ fotos: fotosActualizadas }, 'inspecciones', this.validacionId );
+    this.firestoreService.updateDoc(
+      { fotos: fotosActualizadas },
+      'inspecciones',
+      this.validacionId
+    );
   }
 
   obtenerDatosValidacion(validacionId: string) {
@@ -245,7 +255,7 @@ export class FotosComponent  implements OnInit {
         console.log('validacion Datos:', validacion);
         this.validacionData = validacion;
         if (this.validacionData && this.validacionData.fotos) {
-          this.validacionData.fotos.forEach(foto => {
+          this.validacionData.fotos.forEach((foto) => {
             switch (foto.posicion) {
               case 'frente':
                 this.url_frente = foto.imagen.url;
@@ -311,8 +321,8 @@ export class FotosComponent  implements OnInit {
       });
   }
 
-   // Esta función se ejecuta cuando la imagen se ha cargado o ocurre un error
-   onImageLoad(position: string) {
+  // Esta función se ejecuta cuando la imagen se ha cargado o ocurre un error
+  onImageLoad(position: string) {
     switch (position) {
       case 'frente':
         this.isLoadingFrente = false;
@@ -363,26 +373,54 @@ export class FotosComponent  implements OnInit {
 
   setLoadingState(position: string, state: boolean) {
     switch (position) {
-      case 'frente': this.isLoadingFrente = state; break;
-      case 'atras': this.isLoadingAtras = state; break;
-      case 'lateral_derecho': this.isLoadingLateralDerecho = state; break;
-      case 'lateral_izquierdo': this.isLoadingLateralIzquierdo = state; break;
-      case 'exterior_1': this.isLoadingExterior1 = state; break;
-      case 'exterior_2': this.isLoadingExterior2 = state; break;
-      case 'motor': this.isLoadingMotor = state; break;
-      case 'cajuela': this.isLoadingCajuela = state; break;
-      case 'tablero': this.isLoadingTablero = state; break;
-      case 'interior_1': this.isLoadingInterior1 = state; break;
-      case 'interior_2': this.isLoadingInterior2 = state; break;
-      case 'interior_3': this.isLoadingInterior3 = state; break;
-      case 'interior_4': this.isLoadingInterior4 = state; break;
-      case 'interior_5': this.isLoadingInterior5 = state; break;
-      default: break;
+      case 'frente':
+        this.isLoadingFrente = state;
+        break;
+      case 'atras':
+        this.isLoadingAtras = state;
+        break;
+      case 'lateral_derecho':
+        this.isLoadingLateralDerecho = state;
+        break;
+      case 'lateral_izquierdo':
+        this.isLoadingLateralIzquierdo = state;
+        break;
+      case 'exterior_1':
+        this.isLoadingExterior1 = state;
+        break;
+      case 'exterior_2':
+        this.isLoadingExterior2 = state;
+        break;
+      case 'motor':
+        this.isLoadingMotor = state;
+        break;
+      case 'cajuela':
+        this.isLoadingCajuela = state;
+        break;
+      case 'tablero':
+        this.isLoadingTablero = state;
+        break;
+      case 'interior_1':
+        this.isLoadingInterior1 = state;
+        break;
+      case 'interior_2':
+        this.isLoadingInterior2 = state;
+        break;
+      case 'interior_3':
+        this.isLoadingInterior3 = state;
+        break;
+      case 'interior_4':
+        this.isLoadingInterior4 = state;
+        break;
+      case 'interior_5':
+        this.isLoadingInterior5 = state;
+        break;
+      default:
+        break;
     }
   }
 
   linkHome(validacionId: string) {
     this.router.navigate(['tabs/tab2/inspeccion/' + validacionId]);
   }
-
 }

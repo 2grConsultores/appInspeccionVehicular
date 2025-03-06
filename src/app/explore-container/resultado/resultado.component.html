@@ -18,10 +18,11 @@
         </ion-item-divider>
         <ion-item >
           <ion-label>
-          <div><b>Fabricante: </b><span>{{ validacionData.decodificacionVin.marca }}</span></div>
-          <div><b>Modelo: </b><span>{{ validacionData.decodificacionVin.modelo }}</span></div>
-          <div><b>Año: </b><span>{{ validacionData.decodificacionVin.anioModelo }}</span></div>
-          <div><b>País: </b><span>{{ validacionData.decodificacionVin.pais }}</span></div>
+            <div><b>Fabricante: </b><span>{{ validacionData.decodificacionVin.marca }}</span></div>
+            <div><b>Modelo: </b><span>{{ validacionData.decodificacionVin.modelo }}</span></div>
+            <div><b>Año: </b><span>{{ validacionData.decodificacionVin.anioModelo }}</span></div>
+            <div><b>País: </b><span>{{ validacionData.decodificacionVin.pais }}</span></div>
+            <div><b>VIN: </b><span>{{ validacionData.visibles.vin }}</span></div>
           </ion-label>
         </ion-item>
       </ion-item-group>
@@ -88,6 +89,7 @@
       </ion-item-group>
 
       <ion-button style="margin-top: 30px;" expand="block" shape="round" (click)="linkCapturaHome()" >Regresar</ion-button>
+      <ion-button style="margin-top: 30px;" expand="block" shape="round" (click)="enviarEmail()" >Enviar correo</ion-button>
     </div>
 
 

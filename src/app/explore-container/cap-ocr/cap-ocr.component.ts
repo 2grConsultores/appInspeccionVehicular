@@ -199,6 +199,13 @@ export class CapOcrComponent implements OnInit {
       this.validacionData.decodificacionVin.completada === false
     ) {
       const vinUnico = this.arregloResultados[0];
+      this.validacionData.visibles.vin = vinUnico;
+      // this.firestoreService
+      //   .updateDoc(this.validacionData, 'inspecciones', this.validacionId)
+      //   .then(() => {
+      //     console.log('VIN guardado');
+      //   });
+
       this.consultarNHTSA(vinUnico);
     }
   }

@@ -10,8 +10,14 @@ export class NhtsaService {
 
   async getLabels(vin: string): Promise<{ marca: string; modelo: string; anioModelo: string; pais: string }> {
     const url = `https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/${vin}?format=json`;
+    const headers = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    };
     // Convierto el observable a Promise y espero la respuesta
-    const data: any = await lastValueFrom(this.http.get(url));
+    const data: any = await lastValueFrom(this.http.get(url, headers));// requiero agregar headers para que funcione Access-Control-Allow-Origin
     let infoVin = {
       marca: '',
       modelo: '',

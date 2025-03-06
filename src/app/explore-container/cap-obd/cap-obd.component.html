@@ -1,52 +1,54 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      OBD2 
-    </ion-title>
+    <ion-title>OBD2</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" >
+<ion-content [fullscreen]="true">
   <div id="container">
+    <!-- Sección de instrucciones y botón para buscar dispositivos -->
     <div *ngIf="instrucciones">
       <ion-img
         src="../../../assets/How-to-Connect-an-OBD-2-to-Your-Car.jpg"
-        alt="The Wisconsin State Capitol building in Madison, WI at night"
+        alt="Conectar OBD2"
       ></ion-img>
-      <p>Inserta el dispositivo y presiona el boton de buscar, uan ves que tengas la lista de dispositovos selecciona "OBD2 bluethoot"</p>
-      <ion-button expand="block" id="buscar" shape="round" (click)="buscarDispositivo()" >Buscar</ion-button>
-      <ion-loading class="custom-loading" trigger="buscar" message="buscando bluethoot" [duration]="1500"></ion-loading>
+      <p>
+        Inserta el dispositivo y presiona el botón de buscar. Una vez que
+        tengas la lista de dispositivos, selecciona el que desees conectar.
+      </p>
+      <div *ngIf="inicioble">
+        <ion-button expand="block" shape="round" (click)="startScan()">
+          Buscar Dispositivos
+        </ion-button>
+        <ion-loading trigger="buscar" message="Buscando Bluetooth..." [duration]="1500"></ion-loading>
+      </div>
+
     </div>
-    <div class="formulario" *ngIf="vincularDispositivo">
-      <ion-list [inset]="true">
-        <ion-item (click)="obtenerVin()" id="vincular" [button]="true">
-          <ion-label >OBD2 bluethoot</ion-label>
-          <ion-note slot="end">62123</ion-note>
-        </ion-item>
-        <ion-item [button]="true">
-          <ion-label>Samsung A16</ion-label>
-          <ion-note slot="end">62123</ion-note>
-        </ion-item>
-        <ion-item [button]="true">
-          <ion-label>TCL</ion-label>
-          <ion-note slot="end">23412</ion-note>
-        </ion-item>
-        <ion-item [button]="true">
-          <ion-label>Iphone X3</ion-label>
-          <ion-note slot="end">4534</ion-note>
+
+
+
+    <!-- Sección para listar dispositivos encontrados -->
+    <div *ngIf="devices && devices.length > 0">
+      <ion-list>
+        <ion-item *ngFor="let device of devices" button (click)="connect(device)">
+          <ion-label>
+            {{ device.name || device.id }}
+          </ion-label>
         </ion-item>
       </ion-list>
-      <ion-loading class="custom-loading" trigger="vincular" message="Obteniendo VIN" [duration]="3000"></ion-loading>
-    </div>
-    <div class="cuerpo" *ngIf="mostrarResutlado">
-      <ion-item >
-        <ion-label class="m-5">VIN obtenido </ion-label>
-        <p style="font-size: 13px;">{{casoJson.visibles.vin}} </p>
-      </ion-item>
-      <ion-button expand="block"  style="margin-top: 30px;" shape="round" (click)="linkCapturaNFC(caso)" >Siguiente</ion-button>
     </div>
 
+    <!-- Mensaje de dispositivo conectado -->
+    <div *ngIf="connectedDevice">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Conexión Exitosa</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Conectado al dispositivo: {{ connectedDevice.name || connectedDevice.id }}
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
-
 </ion-content>

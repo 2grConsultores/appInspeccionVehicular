@@ -47,8 +47,21 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-card >
-              <img alt="parabrisas" class="cardimage" src="{{ urlParabrisas }}" />
+            <ion-card>
+              <div class="image-container" style="position: relative;">
+                <ion-spinner
+                  *ngIf="isLoadingParabrisas"
+                  name="crescent"
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                </ion-spinner>
+                <img 
+                  alt="Imagen parabrisas" 
+                  [src]="urlParabrisas" 
+                  (load)="onImageLoad('parabrisas')" 
+                  (error)="onImageError('parabrisas')" 
+                  [style.opacity]="isLoadingParabrisas ? 0 : 1"
+                />
+              </div>
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('parabrisas')">
@@ -61,7 +74,20 @@
           </ion-col>
           <ion-col>
             <ion-card>
-              <img alt="puerta" class="cardimage" src="{{ urlPuerta }}" />
+              <div class="image-container" style="position: relative;">
+                <ion-spinner
+                  *ngIf="isLoadingPuerta"
+                  name="crescent"
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                </ion-spinner>
+                <img 
+                  alt="Imagen puerta" 
+                  [src]="urlPuerta" 
+                  (load)="onImageLoad('puerta')" 
+                  (error)="onImageError('puerta')" 
+                  [style.opacity]="isLoadingPuerta ? 0 : 1"
+                />
+              </div>
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('puerta')">
@@ -76,7 +102,20 @@
         <ion-row>
           <ion-col>
             <ion-card>
-              <img alt="factura" class="cardimage" src="{{ urlFactura }}" />
+              <div class="image-container" style="position: relative;">
+                <ion-spinner
+                  *ngIf="isLoadingFactura"
+                  name="crescent"
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                </ion-spinner>
+                <img 
+                  alt="Imagen factura" 
+                  [src]="urlFactura" 
+                  (load)="onImageLoad('factura')" 
+                  (error)="onImageError('factura')" 
+                  [style.opacity]="isLoadingFactura ? 0 : 1"
+                />
+              </div>
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('factura')">
@@ -89,7 +128,20 @@
           </ion-col>
           <ion-col>
             <ion-card>
-              <img alt="tarjeta-circulacion" class="cardimage" src="{{ urlTarjetaCirculacion }}" />
+              <div class="image-container" style="position: relative;">
+                <ion-spinner
+                  *ngIf="isLoadingTarjetaCirculacion"
+                  name="crescent"
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                </ion-spinner>
+                <img 
+                  alt="Imagen tarjeta circulacion" 
+                  [src]="urlTarjetaCirculacion" 
+                  (load)="onImageLoad('tarjeta-circulacion')" 
+                  (error)="onImageError('tarjeta-circulacion')" 
+                  [style.opacity]="isLoadingTarjetaCirculacion ? 0 : 1"
+                />
+              </div>
               <ion-card-header>
                 <ion-card-title>
                   <ion-button shape="round" (click)="capturaOCR('tarjeta-circulacion')">

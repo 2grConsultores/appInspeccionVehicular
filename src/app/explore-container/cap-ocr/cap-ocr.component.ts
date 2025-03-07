@@ -28,6 +28,7 @@ export class CapOcrComponent implements OnInit {
   vinREGEX = /[a-hj-npr-zA-HJ-NPR-Z0-9]{17}/g;
 
   validacionData: validacionInt = {
+    id: '',
     usuario: '',
     fechaInicio: new Date(),
     fechaFin: new Date(),
@@ -112,6 +113,12 @@ export class CapOcrComponent implements OnInit {
   // Variables para la decodificación del VIN
   public vinDecodificado: boolean = false;
   public consultaNHTSA: any = {};
+
+  // loeaders para las imagenes
+  isLoadingParabrisas = false;
+  isLoadingPuerta = false;
+  isLoadingFactura = false;
+  isLoadingTarjetaCirculacion = false;
 
   alertButtons = [
     {
@@ -275,82 +282,98 @@ export class CapOcrComponent implements OnInit {
     this.isAlertOpenInputs = isOpen;
   }
 
+
+
   async capturaOCR(posicion: string) {
-    await this.photoService.takePhoto().then((image: any) => {
-      console.log('imagen', image);
-      // this.vinImageBase64 = base64Image;
-      const loading = this.showLoading();
-      this.GoogleCloudVisionService.getLabels(
-        image.base64String,
-        'TEXT_DETECTION'
-      ).subscribe((result: any) => {
-        // console.log('result',result);
-        loading.then((loading) => loading.dismiss());
-        const vin = result.responses[0].textAnnotations[0].description;
-        const matchesVinRegExp: any = vin.match(this.vinREGEX);
-        // console.log('matchesVinRegExp',matchesVinRegExp); // matchesVinRegExp is an array
-        // const esValido = this.vinREGEX.test(vin);
-        if (matchesVinRegExp !== null) {
-          console.log('vin valido:', vin);
+    this.setLoadingState(posicion, true); // Mostrar spinner mientras se procesa la imagen
+  
+    try {
+      const image = await this.photoService.takePhoto();
+      if (!image) {
+        console.log('Captura de imagen cancelada');
+        this.setLoadingState(posicion, false);
+        return;
+      }
+  
+      console.log('Imagen capturada:', image);
+      const loading = await this.showLoading();
+  
+      if (!image.base64String) {
+        console.error('Error: La imagen capturada no contiene base64String.');
+        this.setLoadingState(posicion, false);
+        return;
+      }
+  
+      // Detectar texto en la imagen usando Google Cloud Vision
+      this.GoogleCloudVisionService.getLabels(image.base64String, 'TEXT_DETECTION').subscribe(
+        async (result: any) => {
+          await loading.dismiss();
+  
+          if (!result.responses || !result.responses[0].textAnnotations) {
+            console.log('No se encontró texto en la imagen');
+            this.setLoadingState(posicion, false);
+            this.presentAlertPromptVinInvalido();
+            return;
+          }
+  
+          const vin = result.responses[0].textAnnotations[0].description;
+          const matchesVinRegExp = vin.match(this.vinREGEX);
+  
+          if (!matchesVinRegExp) {
+            console.log('VIN inválido');
+            this.presentAlertPromptVinInvalido();
+            this.setLoadingState(posicion, false);
+            return;
+          }
+  
+          console.log('VIN válido:', vin);
           this.vinOCR = matchesVinRegExp[0];
           this.arregloResultados.push(this.vinOCR);
-          this.mensajeAlert = matchesVinRegExp[0];
+          this.mensajeAlert = this.vinOCR;
           this.posicion = posicion;
-          switch (posicion) {
-            case 'puerta':
-              this.capturaPuerta = true;
-              break;
-            case 'parabrisas':
-              this.capturaParabrisas = true;
-              break;
-            case 'factura':
-              this.capturaFactura = true;
-              break;
-            case 'tarjeta-circulacion':
-              this.capturaTarjetaCirculacion = true;
-              break;
-            default:
-              break;
-          }
-          // console.log('posicion:', this.posicion);
+          this.setCapturaEstado(posicion, true);
           this.setOpen(true);
-          // requiero una funcion donde guarde la foto en firbse storage ya que hizo la lectura del vin y guarde la url de la foto en la base de datos
-          console.log('imagen', image);
-          const path = 'ocr/' + posicion;
-          const blob = this.photoService.base64toBlob(
-            image.base64String,
-            'image/jpeg'
-          );
-          console.log('upload - variables', blob, image, path);
-          this.photoService
-            .uploadImage(blob, image, path, this.validacionId)
-            .then((url) => {
-              console.log('url-componente', url);
-              this.fotoImage_url = url;
-              switch (posicion) {
-                case 'puerta':
-                  this.urlPuerta = url;
-                  break;
-                case 'parabrisas':
-                  this.urlParabrisas = url;
-                  break;
-                case 'factura':
-                  this.urlFactura = url;
-                  break;
-                case 'tarjeta-circulacion':
-                  this.urlTarjetaCirculacion = url;
-                  break;
-                default:
-                  break;
-              }
-            });
-        } else {
-          console.log('vin invalido');
+  
+          // Convertir base64 a Blob y subir imagen a Firestore
+          const path = `ocr/${posicion}`;
+          if (!image.base64String) {
+            console.error('Error: La imagen capturada no contiene base64String.');
+            this.setLoadingState(posicion, false);
+            return;
+          }
+          const blob = this.photoService.base64toBlob(image.base64String, 'image/jpeg');
+  
+          console.log('Subiendo imagen a Firestore...', blob, image, path);
+  
+          try {
+            // Esperar la URL antes de continuar
+            const url = await this.photoService.uploadImage(blob, image, path, this.validacionId);
+  
+            if (url) {
+              console.log(`URL de la imagen subida correctamente para ${posicion}:`, url);
+              this.setImageUrl(posicion, url);
+            } else {
+              console.error(`Error: La URL devuelta es vacía o nula para ${posicion}.`);
+            }
+          } catch (uploadError) {
+            console.error('Error al subir imagen a Firestore:', uploadError);
+          } finally {
+            this.setLoadingState(posicion, false); // Ocultar el spinner al finalizar la operación
+          }
+        },
+        (error) => {
+          console.error('Error en Google Vision API:', error);
           this.presentAlertPromptVinInvalido();
+          this.setLoadingState(posicion, false);
         }
-      });
-    });
+      );
+    } catch (error) {
+      console.error('Error en la captura de la foto:', error);
+      this.setLoadingState(posicion, false);
+    }
   }
+  
+  
 
   async showLoading() {
     const loading = await this.loadingCtrl.create({
@@ -372,8 +395,9 @@ export class CapOcrComponent implements OnInit {
     this.firestoreService
       .findOne('inspecciones', validacionId)
       .subscribe((validacion: validacionInt) => {
-        console.log('validacion Datos:', validacion);
+        console.log('validacion Datos obtenerDatosValidacion:', validacion);
         this.validacionData = validacion;
+  
         if (this.validacionData.visibles.listaLecturas.length >= 1) {
           this.validacionData.visibles.listaLecturas.forEach((lectura) => {
             if (lectura.posicion == 'puerta') {
@@ -381,30 +405,31 @@ export class CapOcrComponent implements OnInit {
               this.resultadoVinPuerta = lectura.vinEditado
                 ? lectura.vinEditado
                 : lectura.vinOCR;
-              this.urlPuerta = lectura.imagen.url;
+              this.urlPuerta = this.urlPuerta || lectura.imagen.url; // Solo asigna si está vacío
             } else if (lectura.posicion == 'parabrisas') {
               this.mostrarVinParabrisas = true;
               this.resultadoVinParabrisas = lectura.vinEditado
                 ? lectura.vinEditado
                 : lectura.vinOCR;
-              this.urlParabrisas = lectura.imagen.url;
+              this.urlParabrisas = this.urlParabrisas || lectura.imagen.url;
             } else if (lectura.posicion == 'factura') {
               this.mostrarVinFactura = true;
               this.resultadoVinFactura = lectura.vinEditado
                 ? lectura.vinEditado
                 : lectura.vinOCR;
-              this.urlFactura = lectura.imagen.url;
+              this.urlFactura = this.urlFactura || lectura.imagen.url;
             } else if (lectura.posicion == 'tarjeta-circulacion') {
               this.mostrarVinTarjeta = true;
               this.resultadoVinTarjeta = lectura.vinEditado
                 ? lectura.vinEditado
                 : lectura.vinOCR;
-              this.urlTarjetaCirculacion = lectura.imagen.url;
+              this.urlTarjetaCirculacion = this.urlTarjetaCirculacion || lectura.imagen.url;
             }
-            this.comparacionResultados();
           });
+  
+          this.comparacionResultados();
         }
-
+  
         if (
           this.validacionData.decodificacionVin &&
           this.validacionData.decodificacionVin.completada
@@ -545,5 +570,60 @@ export class CapOcrComponent implements OnInit {
       .catch((error) => {
         console.error('Error al obtener los datos:', error);
       });
+  }
+
+  onImageLoad(tipo: string) {
+    this.setLoadingState(tipo, false);
+  }
+
+  onImageError(tipo: string) {
+    this.setImageUrl(tipo, '');
+  }
+
+  private setLoadingState(tipo: string, estado: boolean) {
+    switch (tipo) {
+      case 'parabrisas': this.isLoadingParabrisas = estado; break;
+      case 'puerta': this.isLoadingPuerta = estado; break;
+      case 'factura': this.isLoadingFactura = estado; break;
+      case 'tarjeta-circulacion': this.isLoadingTarjetaCirculacion = estado; break;
+    }
+  }
+
+  private setImageUrl(posicion: string, url: string) {
+    if (!url) {
+      console.error(`Error: No se asignó una URL válida para ${posicion}`);
+      return;
+    }
+  
+    switch (posicion) {
+      case 'puerta': 
+        this.urlPuerta = url; 
+        console.log('URL asignada a Puerta:', this.urlPuerta);
+        break;
+      case 'parabrisas': 
+        this.urlParabrisas = url; 
+        console.log('URL asignada a Parabrisas:', this.urlParabrisas);
+        break;
+      case 'factura': 
+        this.urlFactura = url; 
+        console.log('URL asignada a Factura:', this.urlFactura);
+        break;
+      case 'tarjeta-circulacion': 
+        this.urlTarjetaCirculacion = url; 
+        console.log('URL asignada a Tarjeta de Circulación:', this.urlTarjetaCirculacion);
+        break;
+      default:
+        console.error('Error: Posición no reconocida:', posicion);
+        break;
+    }
+  }
+
+  private setCapturaEstado(posicion: string, estado: boolean) {
+    switch (posicion) {
+      case 'puerta': this.capturaPuerta = estado; break;
+      case 'parabrisas': this.capturaParabrisas = estado; break;
+      case 'factura': this.capturaFactura = estado; break;
+      case 'tarjeta-circulacion': this.capturaTarjetaCirculacion = estado; break;
+    }
   }
 }

@@ -48,6 +48,7 @@ export class FotosComponent implements OnInit {
   validacionId: string = '';
   arregloResultados: any[] = [];
   validacionData: validacionInt = {
+    id: '',
     usuario: '',
     fechaInicio: new Date(),
     fechaFin: new Date(),

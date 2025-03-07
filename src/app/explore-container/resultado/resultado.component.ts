@@ -14,6 +14,7 @@ import * as Handlebars from 'handlebars';
 export class ResultadoComponent  implements OnInit {
   validacionId: string = '';
   validacionData: validacionInt = {
+    id: '',
     usuario: '',
     fechaInicio: new Date(),
     fechaFin: new Date(),
@@ -104,6 +105,34 @@ export class ResultadoComponent  implements OnInit {
   // Compilar la plantilla con Handlebars
   const template = Handlebars.compile(templateSource);
 
+  // Registrar el helper `isOdd`
+  Handlebars.registerHelper('isOdd', function (index) {
+    return index % 2 !== 0;
+  });
+
+  // Registrar el helper `isEven`
+  Handlebars.registerHelper('isEven', function (index) {
+    return index % 2 === 0;
+  });
+
+  // Registrar helper para formatear fechas
+  Handlebars.registerHelper('formatDate', function (timestamp) {
+    if (!timestamp) return 'Fecha no disponible';
+    
+    const date = new Date(timestamp * 1000); // Convertir segundos a milisegundos
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mes empieza en 0
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  });
+
+  //agregar el id de la validacion al objeto
+  this.validacionData.id = this.validacionId;
+
   // Generar el HTML final del correo
   const htmlFinal = template(this.validacionData);
 
@@ -136,7 +165,5 @@ export class ResultadoComponent  implements OnInit {
 
     await alert.present();
   }
-
-
 
 }

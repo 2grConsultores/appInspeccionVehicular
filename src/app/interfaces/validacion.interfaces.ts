@@ -1,4 +1,5 @@
 export interface validacionInt {
+  id: string;
   usuario: string;
   fechaInicio?: Date;
   fechaFin?: Date;

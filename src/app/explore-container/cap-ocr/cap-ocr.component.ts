@@ -90,6 +90,14 @@ export class CapOcrComponent implements OnInit {
     ]
   };
 
+  // Estado de disponibilidad de las estaciones
+  estacionDisponible = {
+    parabrisas: true,
+    puerta: true,
+    factura: true,
+    tarjetaCirculacion: true
+  };
+
   // resultados
   mostrarVinPuerta: boolean = false;
   resultadoVinPuerta: string = '';
@@ -173,6 +181,12 @@ export class CapOcrComponent implements OnInit {
     });
 
     console.log('arreglo onInit', this.arregloResultados);
+  }
+
+  // Función para alternar la disponibilidad de una estación
+  toggleEstacion(posicion: 'parabrisas' | 'puerta' | 'factura' | 'tarjetaCirculacion') {
+    this.estacionDisponible[posicion] = !this.estacionDisponible[posicion];
+    // this.verificarSiDispararConsulta();
   }
 
   comparacionResultados() {

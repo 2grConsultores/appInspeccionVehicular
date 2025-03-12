@@ -1,9 +1,7 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-icon class="iconoheader" name="custom-visibles" slot="start"></ion-icon>
     <ion-title>
-      
       Evidencias a la vista
     </ion-title>
   </ion-toolbar>
@@ -69,6 +67,7 @@
                     <ion-icon *ngIf="capturaParabrisas" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
+                <ion-toggle class="ion-padding-top" [(ngModel)]="estacionDisponible.parabrisas" (ionChange)="toggleEstacion('parabrisas')">Disponible</ion-toggle>
               </ion-card-header>
             </ion-card>
           </ion-col>
@@ -95,6 +94,7 @@
                     <ion-icon *ngIf="capturaPuerta" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
+                <ion-toggle class="ion-padding-top" [(ngModel)]="estacionDisponible.puerta" (ionChange)="toggleEstacion('puerta')">Disponible</ion-toggle>
               </ion-card-header>
             </ion-card>
           </ion-col>
@@ -118,11 +118,12 @@
               </div>
               <ion-card-header>
                 <ion-card-title>
-                  <ion-button shape="round" (click)="capturaOCR('factura')">
+                  <ion-button shape="round" (click)="capturaOCR('factura')" disabled="{{!estacionDisponible.factura}}">
                     <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
                     <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
+                <ion-toggle class="ion-padding-top" [(ngModel)]="estacionDisponible.factura" (ionChange)="toggleEstacion('factura')">Disponible</ion-toggle>
               </ion-card-header>
             </ion-card>
           </ion-col>
@@ -149,6 +150,7 @@
                     <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
                   </ion-button>
                 </ion-card-title>
+                <ion-toggle class="ion-padding-top" [(ngModel)]="estacionDisponible.tarjetaCirculacion" (ionChange)="toggleEstacion('tarjetaCirculacion')">Disponible</ion-toggle>
               </ion-card-header>
             </ion-card>
           </ion-col>

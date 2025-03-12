@@ -40,38 +40,6 @@ export class ExploreContainerComponent implements OnInit {
     this.router.navigate(['tabs/tab2/inspeccion/' + id]);
   }
 
-  // obtenerInspecciones() {
-  //   this.isLoading = true;
-  //   // Obtener el uid del usuario logueado desde localStorage
-  //   this.uid = localStorage.getItem('uid') || '';
-  //   if (this.uid) {
-  //     if (this.subscription) {
-  //       this.subscription.unsubscribe(); // Evita múltiples suscripciones
-  //     }
-  //     // Ejecutar el query para obtener solo las inspecciones del usuario
-  //     this.subscription = this.firestoreService.getInspeccionesByUid(this.uid, this.pageSize, null)
-  //       .subscribe((data: any[]) => {
-  //         // Formatear el campo fechaInicio para cada inspección, si existe
-  //         // const inspeccionesFormateadas = data.map(doc => {
-  //         //   if (doc.fechaInicio && doc.fechaInicio.seconds) {
-  //         //     const dateInicio = new Date(doc.fechaInicio.seconds * 1000);
-  //         //     doc.fechaInicio = this.datePipe.transform(dateInicio, 'dd/MM/yyyy HH:mm:ss');
-  //         //   }
-  //         //   return doc;
-  //         // });
-  //         // this.datasources = inspeccionesFormateadas;
-  //         this.datasources = data;
-  //         // if (this.datasources.length > 0) {
-  //         //   this.lastTimestamp = this.datasources[this.datasources.length - 1].fechaInicio;
-  //         // }
-  //         this.lastDoc = data.length > 0 ? data[data.length - 1] : null; // Guarda el último doc para paginación
-  //         this.isLoading = false;
-  //         console.log('datasource:', this.datasources);
-  //       });
-  //   } else {
-  //     console.error('UID is null');
-  //   }
-  // }
 
   obtenerInspecciones() {
     this.isLoading = true;
@@ -100,10 +68,6 @@ export class ExploreContainerComponent implements OnInit {
     }
   }
 
-  // setTimeout(() => {
-  //   event.target.complete();
-  //   this.isLoading = false;
-  // }, 500);
 
   async onIonInfinite(event: InfiniteScrollCustomEvent) {
     console.log('🚀 Evento:', event);
@@ -143,8 +107,10 @@ export class ExploreContainerComponent implements OnInit {
           this.infiniteScrollDisabled = true; // ✅ Deshabilitar si no hay más datos
         }
   
-        event.target.complete();
-        this.isLoading = false;
+        setTimeout(() => {
+          event.target.complete();
+          this.isLoading = false;
+        }, 500);
   
         // console.log('📌 Datasources después de actualizar:', this.datasources);
         // console.log('📌 Último documento (lastDoc):', this.lastDoc);

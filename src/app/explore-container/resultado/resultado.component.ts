@@ -170,6 +170,12 @@ export class ResultadoComponent  implements OnInit {
   //agregar el id de la validacion al objeto
   this.validacionData.id = this.validacionId;
 
+  const googleMapsUrl = `https://www.google.com/maps?q=${this.latitud},${this.longitud}`;
+  Handlebars.registerHelper('googleMapsUrl', function () {
+    return googleMapsUrl;
+  }
+  );
+
   // Generar el HTML final del correo
   const htmlFinal = template(this.validacionData);
 

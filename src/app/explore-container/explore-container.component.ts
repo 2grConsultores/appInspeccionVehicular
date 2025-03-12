@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FirestoreService } from '../services/firestore.service';
 import { DatePipe } from '@angular/common';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { Subscription, map } from 'rxjs';
 
 @Component({
   selector: 'app-explore-container',
@@ -10,8 +11,15 @@ import { InfiniteScrollCustomEvent } from '@ionic/angular';
   styleUrls: ['./explore-container.component.scss'],
 })
 export class ExploreContainerComponent implements OnInit {
-  datasources: any[] = [];
-  usuario: string = '';
+
+  uid: string = '';
+  datasources: any[] = [];  // Almacena las inspecciones cargadas
+  pageSize = 10;  // Cantidad de inspecciones por carga
+  lastTimestamp: string | null = null; // Última fecha para la paginación
+  isLoading = false; // Evita múltiples llamadas
+  lastDoc: any | null = null; // Almacenar el último documento para paginación
+  subscription: Subscription | null = null;
+  infiniteScrollDisabled = false; // Deshabilitar Infinite Scroll
 
   constructor(
     private router: Router,
@@ -22,68 +30,69 @@ export class ExploreContainerComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerInspecciones();
-    
-
   }
 
   crearValidacion() {
-    const data = {
-      usuario: localStorage.getItem('uid'),
-      fechaInicio: new Date(),
-      visibles: {
-        listaLecturas: [],
-        vin: '',
-      },
-      obd: {
-        vin: '',
-        fecha: new Date(),
-      },
-      nfc: {
-        vin: '',
-        fecha: new Date(),
-      },
-      fotos: [],
-      resultado: {
-        riesgo: '',
-        color: '',
-        descripcion: '',
-        recomendacion: [],
-      },
-      decodificacionVin: {
-        marca: '',
-        modelo: '',
-        anioModelo: '',
-        pais: '',
-        completada: false,
-        fecha: new Date(),
-      },
-    };
-    this.firestoreService.createDoc(data, 'inspecciones').then((registro) => {
-      console.log('id registro', registro.id);
-      this.router.navigate(['tabs/tab2/inspeccion/' + registro.id]);
-    });
+    this.firestoreService.crearValidacion();
   }
 
   ver(id: string) {
     this.router.navigate(['tabs/tab2/inspeccion/' + id]);
   }
 
+  // obtenerInspecciones() {
+  //   this.isLoading = true;
+  //   // Obtener el uid del usuario logueado desde localStorage
+  //   this.uid = localStorage.getItem('uid') || '';
+  //   if (this.uid) {
+  //     if (this.subscription) {
+  //       this.subscription.unsubscribe(); // Evita múltiples suscripciones
+  //     }
+  //     // Ejecutar el query para obtener solo las inspecciones del usuario
+  //     this.subscription = this.firestoreService.getInspeccionesByUid(this.uid, this.pageSize, null)
+  //       .subscribe((data: any[]) => {
+  //         // Formatear el campo fechaInicio para cada inspección, si existe
+  //         // const inspeccionesFormateadas = data.map(doc => {
+  //         //   if (doc.fechaInicio && doc.fechaInicio.seconds) {
+  //         //     const dateInicio = new Date(doc.fechaInicio.seconds * 1000);
+  //         //     doc.fechaInicio = this.datePipe.transform(dateInicio, 'dd/MM/yyyy HH:mm:ss');
+  //         //   }
+  //         //   return doc;
+  //         // });
+  //         // this.datasources = inspeccionesFormateadas;
+  //         this.datasources = data;
+  //         // if (this.datasources.length > 0) {
+  //         //   this.lastTimestamp = this.datasources[this.datasources.length - 1].fechaInicio;
+  //         // }
+  //         this.lastDoc = data.length > 0 ? data[data.length - 1] : null; // Guarda el último doc para paginación
+  //         this.isLoading = false;
+  //         console.log('datasource:', this.datasources);
+  //       });
+  //   } else {
+  //     console.error('UID is null');
+  //   }
+  // }
+
   obtenerInspecciones() {
-    // Obtener el uid del usuario logueado desde localStorage
-    const uid = localStorage.getItem('uid');
-    if (uid) {
-      // Ejecutar el query para obtener solo las inspecciones del usuario
-      this.firestoreService.getInspeccionesByUid(uid)
+    this.isLoading = true;
+    this.uid = localStorage.getItem('uid') || '';
+    
+    if (this.uid) {
+      if (this.subscription) {
+        this.subscription.unsubscribe(); // Evita múltiples suscripciones
+      }
+  
+      this.subscription = this.firestoreService.getInspeccionesByUid(this.uid, this.pageSize, null)
         .subscribe((data: any[]) => {
-          // Formatear el campo fechaInicio para cada inspección, si existe
-          const inspeccionesFormateadas = data.map(doc => {
-            if (doc.fechaInicio && doc.fechaInicio.seconds) {
-              const dateInicio = new Date(doc.fechaInicio.seconds * 1000);
-              doc.fechaInicio = this.datePipe.transform(dateInicio, 'dd/MM/yyyy HH:mm:ss');
-            }
-            return doc;
-          });
-          this.datasources = inspeccionesFormateadas;
+          // ✅ Convertir `Timestamp` a `Date`
+          this.datasources = data.map(doc => ({
+            ...doc,
+            fechaInicio: doc.fechaInicio?.seconds ? new Date(doc.fechaInicio.seconds * 1000) : doc.fechaInicio
+          }));
+  
+          this.lastDoc = data.length > 0 ? data[data.length - 1] : null;
+          this.isLoading = false;
+  
           console.log('datasource:', this.datasources);
         });
     } else {
@@ -91,10 +100,58 @@ export class ExploreContainerComponent implements OnInit {
     }
   }
 
-  onIonInfinite(event: InfiniteScrollCustomEvent) {
-    // this.generateItems();
-    setTimeout(() => {
+  // setTimeout(() => {
+  //   event.target.complete();
+  //   this.isLoading = false;
+  // }, 500);
+
+  async onIonInfinite(event: InfiniteScrollCustomEvent) {
+    console.log('🚀 Evento:', event);
+    if (this.isLoading || !this.lastDoc) {
       event.target.complete();
-    }, 500);
+      return;
+    }
+  
+    this.isLoading = true;
+  
+    this.firestoreService.getInspeccionesByUid(this.uid, this.pageSize, this.lastDoc.fechaInicio)
+      .subscribe((data: any[]) => {
+        // console.log('🚀 Data recibida:', data);
+        // console.log('📌 Datasources antes de actualizar:', this.datasources);
+  
+        if (data.length === 0) {
+          console.log('⚠️ No hay más datos para cargar. Deshabilitando Infinite Scroll.');
+          this.infiniteScrollDisabled = true; // ✅ Deshabilitar Infinite Scroll
+          event.target.complete();
+          this.isLoading = false;
+          return;
+        }
+  
+        // ✅ Convertir `fechaInicio` de nuevos registros a `Date`
+        const nuevosRegistros = data.map(doc => ({
+          ...doc,
+          fechaInicio: doc.fechaInicio?.seconds ? new Date(doc.fechaInicio.seconds * 1000) : doc.fechaInicio
+        })).filter(nuevo => !this.datasources.some(existente => existente.id === nuevo.id));
+  
+        // console.log('🆕 Nuevos registros filtrados:', nuevosRegistros);
+  
+        if (nuevosRegistros.length > 0) {
+          this.datasources = [...this.datasources, ...nuevosRegistros];
+          this.lastDoc = data[data.length - 1]; // ✅ Guardar el último documento
+        } else {
+          console.log('⚠️ No se encontraron nuevos registros. Deshabilitando Infinite Scroll.');
+          this.infiniteScrollDisabled = true; // ✅ Deshabilitar si no hay más datos
+        }
+  
+        event.target.complete();
+        this.isLoading = false;
+  
+        // console.log('📌 Datasources después de actualizar:', this.datasources);
+        // console.log('📌 Último documento (lastDoc):', this.lastDoc);
+      });
   }
+  
+  
+  
+
 }

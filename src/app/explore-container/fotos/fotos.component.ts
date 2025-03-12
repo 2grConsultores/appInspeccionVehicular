@@ -50,7 +50,7 @@ export class FotosComponent implements OnInit {
   validacionData: validacionInt = {
     id: '',
     usuario: '',
-    fechaInicio: new Date(),
+    fechaInicio: { seconds: 0, nanoseconds: 0 },
     fechaFin: new Date(),
     visibles: {
       listaLecturas: [
@@ -98,6 +98,16 @@ export class FotosComponent implements OnInit {
       completada: false,
       fecha: new Date(),
     },
+    ubicaciones: [
+      {
+        latitude: 0,
+        longitude: 0,
+        accuracy: 0,
+        heading: 0,
+        speed: 0,
+        timestamp: 0,
+      },
+    ]
   };
 
   // Variables para el spinner (estado de carga de cada imagen)

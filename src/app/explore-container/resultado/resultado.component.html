@@ -12,6 +12,10 @@
     </div> -->
 
     <div class="cuerpo" >
+      <div>
+        <h1 class="ion-margin ion-text-center">Resultado de la inspección </h1>
+        <p class="ion-margin ion-text-center " style="color: #8c8c8c;">{{validacionId}}  |  {{ fechaInicialInspeccion }}</p>
+      </div>
       <ion-item-group>
         <ion-item-divider>
           <ion-label>Decodificacion del VIN</ion-label>
@@ -83,6 +87,26 @@
           <div class="consulta">
             <p class="consulta_resultado">
               <ion-label class="m-5"></ion-label>
+            </p>
+          </div>
+        </ion-item>
+      </ion-item-group>
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>Ubicación</ion-label>
+        </ion-item-divider>
+        <ion-item >
+          <div class="consulta">
+            <p class="consulta_resultado">
+              <!-- Aqui se debe presentar el mapa con la ubicacion donde se realizo la inspeccion -->
+              <app-google-map 
+              *ngIf="latitud && longitud"
+              [lat]="latitud" 
+              [lng]="longitud">
+            </app-google-map>
+             <b *ngIf="!latitud && !longitud" class="ion-text-center">
+              No se ha podido obtener la ubicación
+             </b>
             </p>
           </div>
         </ion-item>

@@ -5,6 +5,9 @@ import { AlertController } from '@ionic/angular';
 import { validacionInt } from 'src/app/interfaces/validacion.interfaces';
 import { HttpClient } from '@angular/common/http';
 import * as Handlebars from 'handlebars';
+import { GoogleMap } from '@capacitor/google-maps';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-resultado',
@@ -16,7 +19,7 @@ export class ResultadoComponent  implements OnInit {
   validacionData: validacionInt = {
     id: '',
     usuario: '',
-    fechaInicio: new Date(),
+    fechaInicio: { seconds: 0, nanoseconds: 0 },
     fechaFin: new Date(),
     visibles: {
       listaLecturas: [
@@ -64,7 +67,20 @@ export class ResultadoComponent  implements OnInit {
       completada: false,
       fecha: new Date(),
     },
+    ubicaciones: [
+      {
+        latitude: 0,
+        longitude: 0,
+        accuracy: 0,
+        heading: 0,
+        speed: 0,
+        timestamp: 0,
+      },
+    ]
   };
+  latitud: number = 0;
+  longitud: number = 0;
+  fechaInicialInspeccion: string = '';
 
 
   constructor(
@@ -73,13 +89,20 @@ export class ResultadoComponent  implements OnInit {
     private firestoreService: FirestoreService,
     public alertController: AlertController,
     private http: HttpClient,
+    private datePipe: DatePipe,
   ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(({ id }) => {
       // aqui obtengo el id del registro
       this.validacionId = id;
+    
       this.obtenerDatosValidacion(this.validacionId);
+      if (this.validacionData?.ubicaciones) {
+        console.log('Coordenadas recibidas:', this.validacionData.ubicaciones[0].latitude, this.validacionData.ubicaciones[0].longitude);
+      } else {
+        console.warn('No se encontraron coordenadas de ubicación.');
+      }
     });
   }
 
@@ -94,6 +117,20 @@ export class ResultadoComponent  implements OnInit {
       .subscribe((validacion: validacionInt) => {
         console.log('validacion Datos:', validacion);
         this.validacionData = validacion;
+        if (this.validacionData.ubicaciones){
+          this.latitud = this.validacionData.ubicaciones[0].latitude;
+          this.longitud = this.validacionData.ubicaciones[0].longitude;
+        }
+        let dateInicio = new Date();
+        if(this.validacionData.fechaInicio){
+          dateInicio =new Date(this.validacionData.fechaInicio.seconds * 1000);
+          console.log('fechaInicio:', dateInicio);
+        }
+        this.fechaInicialInspeccion = this.datePipe.transform(
+          dateInicio,
+          'dd/MM/yyyy HH:mm:ss'
+        ) || '';
+        console.log('fechaInicialInspeccion', this.fechaInicialInspeccion);
       });
   }
 

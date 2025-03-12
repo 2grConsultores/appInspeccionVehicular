@@ -12,6 +12,7 @@ import { exploreRoutingModule } from './explore-routing.module';
 import { ResultadoComponent } from './resultado/resultado.component';
 import { FotosComponent } from './fotos/fotos.component';
 import { InspeccionComponent } from './inspeccion/inspeccion.component';
+import { GoogleMapComponent } from './google-map/google-map.component';
 
 
 @NgModule({
@@ -28,8 +29,11 @@ import { InspeccionComponent } from './inspeccion/inspeccion.component';
     CapObdComponent,
     FotosComponent,
     ResultadoComponent,
-    InspeccionComponent
+    InspeccionComponent,
+    GoogleMapComponent
   ],
-  exports: [ExploreContainerComponent]
+  exports: [ExploreContainerComponent,
+    GoogleMapComponent
+  ]
 })
 export class ExploreContainerComponentModule {}

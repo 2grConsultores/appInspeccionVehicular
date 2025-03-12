@@ -1,7 +1,7 @@
 export interface validacionInt {
   id: string;
   usuario: string;
-  fechaInicio?: Date;
+  fechaInicio?: { seconds: number; nanoseconds: number };
   fechaFin?: Date;
   visibles: {
     listaLecturas: [
@@ -49,4 +49,15 @@ export interface validacionInt {
     completada: boolean;
     fecha: Date;
   };
+  ubicaciones: [
+    { 
+      latitude: number;
+      longitude: number;
+      accuracy: number;
+      heading: number;
+      speed: number;
+      timestamp: number;
+    }
+  ];
+
 }

@@ -16,6 +16,12 @@ export interface validacionInt {
         };
       }
     ];
+    estacionDisponible:{
+      parabrisas: boolean;
+      puerta: boolean;
+      factura: boolean;
+      tarjetaCirculacion: boolean;
+    };
     vin: string;
   };
   obd: {

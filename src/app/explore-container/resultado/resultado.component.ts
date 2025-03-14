@@ -34,6 +34,12 @@ export class ResultadoComponent  implements OnInit {
           },
         },
       ],
+      estacionDisponible: {
+        parabrisas: true,
+        puerta: true,
+        factura: true,
+        tarjetaCirculacion: true,
+      },
       vin: '',
     },
     obd: {

@@ -45,6 +45,12 @@ export class CapOcrComponent implements OnInit {
           },
         },
       ],
+      estacionDisponible: {
+        parabrisas: true,
+        puerta: true,
+        factura: true,
+        tarjetaCirculacion: true,
+      },
       vin: '',
     },
     obd: {
@@ -90,14 +96,6 @@ export class CapOcrComponent implements OnInit {
     ]
   };
 
-  // Estado de disponibilidad de las estaciones
-  estacionDisponible = {
-    parabrisas: true,
-    puerta: true,
-    factura: true,
-    tarjetaCirculacion: true
-  };
-
   // resultados
   mostrarVinPuerta: boolean = false;
   resultadoVinPuerta: string = '';
@@ -138,6 +136,11 @@ export class CapOcrComponent implements OnInit {
   isLoadingFactura = false;
   isLoadingTarjetaCirculacion = false;
 
+  islodingDecodificacion = false;
+  mostrarDecodificacion = false;
+
+  minimoEstacionesActivas = 2;
+
   alertButtons = [
     {
       text: 'Corregir',
@@ -173,6 +176,7 @@ export class CapOcrComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    
     this.activatedRoute.params.subscribe(({ id }) => {
       // aqui obtengo el id del registro
       this.validacionId = id;
@@ -181,12 +185,55 @@ export class CapOcrComponent implements OnInit {
     });
 
     console.log('arreglo onInit', this.arregloResultados);
+    console.log('estacionDisponible', this.validacionData.visibles.estacionDisponible);
   }
 
   // Función para alternar la disponibilidad de una estación
   toggleEstacion(posicion: 'parabrisas' | 'puerta' | 'factura' | 'tarjetaCirculacion') {
-    this.estacionDisponible[posicion] = !this.estacionDisponible[posicion];
-    // this.verificarSiDispararConsulta();
+    console.log('Estación', posicion, 'disponible:', this.validacionData.visibles.estacionDisponible[posicion]);
+    console.log('estacionDisponible', this.validacionData.visibles.estacionDisponible);
+
+    // Verificar si estacionDisponible está inicializado
+    if (!this.validacionData?.visibles?.estacionDisponible) {
+      console.error('Error: estacionDisponible no está definido.');
+      return;
+    }
+  
+    // Si el usuario intenta desactivar una estación, verificar que al menos esten el minimo activas
+    if (!this.validacionData.visibles.estacionDisponible[posicion]) {
+      let estacionesActivas = 0;
+  
+      // Solución: Hacemos una conversión explícita del tipo de key
+      Object.keys(this.validacionData.visibles.estacionDisponible).forEach((key) => {
+        const typedKey = key as keyof typeof this.validacionData.visibles.estacionDisponible; // Solución correcta
+        if (this.validacionData.visibles.estacionDisponible[typedKey]) {
+          estacionesActivas++;
+        }
+      });
+  
+      if (estacionesActivas < this.minimoEstacionesActivas) {
+        this.presentAlertDisponibles(posicion);       
+        return;
+      }
+      this.comparacionResultados();
+    }
+  }
+
+  async presentAlertDisponibles(posicion: 'parabrisas' | 'puerta' | 'factura' | 'tarjetaCirculacion') {
+    const alert = await this.alertController.create({
+      header: 'Se requiere al menos '+this.minimoEstacionesActivas+' opciones activas',
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: () => {
+            this.validacionData.visibles.estacionDisponible[posicion] = true; // Revertimos el cambio
+            console.log('Cancelado');
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   comparacionResultados() {
@@ -194,7 +241,7 @@ export class CapOcrComponent implements OnInit {
     this.arregloResultados = [];
 
     // Verificar si "listaLecturas" existe y tiene elementos
-    if (this.validacionData.visibles.listaLecturas.length >= 2) {
+    if (this.validacionData.visibles.listaLecturas.length >= this.minimoEstacionesActivas) {
       // Iterar sobre las lecturas y extraer el VIN (usando vinEditado si existe)
       this.validacionData.visibles.listaLecturas.forEach((lectura) => {
         const vin = lectura.vinEditado ? lectura.vinEditado : lectura.vinOCR;
@@ -223,12 +270,18 @@ export class CapOcrComponent implements OnInit {
       }
     }
 
-    // Si se tienen exactamente 4 VIN y todos coinciden, se llama a consultarNHTSA
+    const estacionesActivas = Object.values(this.validacionData.visibles.estacionDisponible).filter(
+      (estacion) => estacion === true
+    ).length;
+    console.log('estacionesActivas', estacionesActivas);
+
+    // Si se tienen los datos de todas las estaciones activas y todos coinciden, se llama a consultarNHTSA
     if (
-      this.arregloResultados.length === 4 &&
+      this.arregloResultados.length === estacionesActivas &&
       uniqueVins.size === 1 &&
       this.validacionData.decodificacionVin.completada === false
     ) {
+      this.mostrarDecodificacion = true;
       const vinUnico = this.arregloResultados[0];
       this.validacionData.visibles.vin = vinUnico;
       // this.firestoreService
@@ -372,7 +425,7 @@ export class CapOcrComponent implements OnInit {
           try {
             // Esperar la URL antes de continuar
             const url = await this.photoService.uploadImage(blob, image, path, this.validacionId);
-  
+            this.fotoImage_url = url;
             if (url) {
               console.log(`URL de la imagen subida correctamente para ${posicion}:`, url);
               this.setImageUrl(posicion, url);
@@ -458,6 +511,7 @@ export class CapOcrComponent implements OnInit {
           this.validacionData.decodificacionVin &&
           this.validacionData.decodificacionVin.completada
         ) {
+          this.mostrarDecodificacion = true;
           this.vinDecodificado = true;
           this.consultaNHTSA = this.validacionData.decodificacionVin;
           this.mostrarTablaComparacion = true;
@@ -577,6 +631,7 @@ export class CapOcrComponent implements OnInit {
   }
 
   consultarNHTSA(vin: string) {
+    this.islodingDecodificacion = true
     this.nhtsaService
       .getLabels(vin)
       .then((infoVin) => {
@@ -590,6 +645,7 @@ export class CapOcrComponent implements OnInit {
           .then(() => {
             console.log('Decodificación VIN guardada');
           });
+        this.islodingDecodificacion = false
       })
       .catch((error) => {
         console.error('Error al obtener los datos:', error);
@@ -648,6 +704,42 @@ export class CapOcrComponent implements OnInit {
       case 'parabrisas': this.capturaParabrisas = estado; break;
       case 'factura': this.capturaFactura = estado; break;
       case 'tarjeta-circulacion': this.capturaTarjetaCirculacion = estado; break;
+    }
+  }
+
+  async actualizarUrlEnFirestore(posicion: string, url: string) {
+    if (!this.validacionId) {
+      console.error('No hay una validación ID definida.');
+      return;
+    }
+  
+    try {
+      // Asegurar que la estructura de validacionData existe
+      if (!this.validacionData || !this.validacionData.visibles || !this.validacionData.visibles.listaLecturas) {
+        console.error('Estructura de validacionData no inicializada correctamente.');
+        return;
+      }
+  
+      // Encontrar la lectura correcta según la posición
+      const lecturaIndex = this.validacionData.visibles.listaLecturas.findIndex(
+        (lectura) => lectura.posicion === posicion
+      );
+  
+      if (lecturaIndex !== -1) {
+        // Actualizar la URL en el objeto local
+        this.validacionData.visibles.listaLecturas[lecturaIndex].imagen = { url };
+  
+        // Guardar en Firestore
+        await this.firestoreService.updateDoc({
+          [`visibles.listaLecturas.${lecturaIndex}.imagen.url`]: url
+        },'inspecciones', this.validacionId );
+  
+        console.log(`URL de ${posicion} guardada en Firestore correctamente.`);
+      } else {
+        console.error(`No se encontró la posición ${posicion} en listaLecturas.`);
+      }
+    } catch (error) {
+      console.error('Error al actualizar Firestore:', error);
     }
   }
 }

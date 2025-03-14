@@ -14,149 +14,43 @@
     </div>
     <div class="cuerpo formulario" *ngIf="!mostrarResutlado">
       <p class="ion-margin ion-text-center" style="color: #8c8c8c;">Captura al menos dos imagenes para comparar los datos obtenidos. Si coinciden los 4 valores obtenidos se realizara la decodificacion del VIN</p>
-      <div *ngIf="vinDecodificado">
+      <div *ngIf="mostrarDecodificacion">
         <h2 class="ion-text-center">Decodificacion del VIN</h2>
-        <ion-item>
-          <ion-label>
-            <h2>Fabricante</h2>
-            <p>{{ consultaNHTSA.marca }}</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
+        <div class="ion-text-center">
+          <ion-spinner
+            *ngIf="islodingDecodificacion"
+            name="lines"
+            >
+          </ion-spinner>
+        </div>
+        <div *ngIf="vinDecodificado">
+          <ion-item>
+            <ion-label>
+              <h2>Fabricante</h2>
+              <p>{{ consultaNHTSA.marca }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
 
-          <ion-label>
-            <h2>Marca</h2>
-            <p>{{ consultaNHTSA.modelo }}</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h2>Modelo</h2>
-            <p>{{ consultaNHTSA.anioModelo }}</p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h2>Pais</h2>
-            <p>{{ consultaNHTSA.pais }}</p>
-          </ion-label>
-        </ion-item>
+            <ion-label>
+              <h2>Marca</h2>
+              <p>{{ consultaNHTSA.modelo }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h2>Modelo</h2>
+              <p>{{ consultaNHTSA.anioModelo }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h2>Pais</h2>
+              <p>{{ consultaNHTSA.pais }}</p>
+            </ion-label>
+          </ion-item>
+        </div>
       </div>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-card>
-              <div class="image-container" style="position: relative;">
-                <ion-spinner
-                  *ngIf="isLoadingParabrisas"
-                  name="crescent"
-                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                </ion-spinner>
-                <img 
-                  alt="Imagen parabrisas" 
-                  [src]="urlParabrisas" 
-                  (load)="onImageLoad('parabrisas')" 
-                  (error)="onImageError('parabrisas')" 
-                  [style.opacity]="isLoadingParabrisas ? 0 : 1"
-                />
-              </div>
-              <ion-card-header>
-                <ion-card-title>
-                  <ion-button shape="round" (click)="capturaOCR('parabrisas')">
-                    <ion-icon *ngIf="!capturaParabrisas" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaParabrisas" name="checkmark"></ion-icon>
-                  </ion-button>
-                </ion-card-title>
-                <ion-toggle class="ion-padding-top" [(ngModel)]="estacionDisponible.parabrisas" (ionChange)="toggleEstacion('parabrisas')">Disponible</ion-toggle>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-          <ion-col>
-            <ion-card>
-              <div class="image-container" style="position: relative;">
-                <ion-spinner
-                  *ngIf="isLoadingPuerta"
-                  name="crescent"
-                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                </ion-spinner>
-                <img 
-                  alt="Imagen puerta" 
-                  [src]="urlPuerta" 
-                  (load)="onImageLoad('puerta')" 
-                  (error)="onImageError('puerta')" 
-                  [style.opacity]="isLoadingPuerta ? 0 : 1"
-                />
-              </div>
-              <ion-card-header>
-                <ion-card-title>
-                  <ion-button shape="round" (click)="capturaOCR('puerta')">
-                    <ion-icon *ngIf="!capturaPuerta" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaPuerta" name="checkmark"></ion-icon>
-                  </ion-button>
-                </ion-card-title>
-                <ion-toggle class="ion-padding-top" [(ngModel)]="estacionDisponible.puerta" (ionChange)="toggleEstacion('puerta')">Disponible</ion-toggle>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-card>
-              <div class="image-container" style="position: relative;">
-                <ion-spinner
-                  *ngIf="isLoadingFactura"
-                  name="crescent"
-                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                </ion-spinner>
-                <img 
-                  alt="Imagen factura" 
-                  [src]="urlFactura" 
-                  (load)="onImageLoad('factura')" 
-                  (error)="onImageError('factura')" 
-                  [style.opacity]="isLoadingFactura ? 0 : 1"
-                />
-              </div>
-              <ion-card-header>
-                <ion-card-title>
-                  <ion-button shape="round" (click)="capturaOCR('factura')" disabled="{{!estacionDisponible.factura}}">
-                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
-                  </ion-button>
-                </ion-card-title>
-                <ion-toggle class="ion-padding-top" [(ngModel)]="estacionDisponible.factura" (ionChange)="toggleEstacion('factura')">Disponible</ion-toggle>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-          <ion-col>
-            <ion-card>
-              <div class="image-container" style="position: relative;">
-                <ion-spinner
-                  *ngIf="isLoadingTarjetaCirculacion"
-                  name="crescent"
-                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                </ion-spinner>
-                <img 
-                  alt="Imagen tarjeta circulacion" 
-                  [src]="urlTarjetaCirculacion" 
-                  (load)="onImageLoad('tarjeta-circulacion')" 
-                  (error)="onImageError('tarjeta-circulacion')" 
-                  [style.opacity]="isLoadingTarjetaCirculacion ? 0 : 1"
-                />
-              </div>
-              <ion-card-header>
-                <ion-card-title>
-                  <ion-button shape="round" (click)="capturaOCR('tarjeta-circulacion')">
-                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
-                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
-                  </ion-button>
-                </ion-card-title>
-                <ion-toggle class="ion-padding-top" [(ngModel)]="estacionDisponible.tarjetaCirculacion" (ionChange)="toggleEstacion('tarjetaCirculacion')">Disponible</ion-toggle>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
       <div *ngIf="mostrarTablaComparacion">
         <h1 class="ion-text-center">Tabla de comparación</h1>
         <ion-item class="my-5" *ngIf="mostrarVinParabrisas" >
@@ -180,6 +74,133 @@
           <ion-chip class="{{colorResultado}}" *ngIf="mostrarIcono"><ion-icon name="{{iconoResultado}}"></ion-icon></ion-chip>
         </ion-item>
       </div>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <div class="image-container" style="position: relative;">
+                <ion-spinner
+                  *ngIf="isLoadingParabrisas"
+                  name="crescent"
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                </ion-spinner>
+                <img 
+                  alt="Imagen parabrisas" 
+                  [src]="urlParabrisas" 
+                  (load)="onImageLoad('parabrisas')" 
+                  (error)="onImageError('parabrisas')" 
+                  [style.opacity]="isLoadingParabrisas ? 0 : 1"
+                />
+              </div>
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-button shape="round" (click)="capturaOCR('parabrisas')" [disabled]="!validacionData.visibles.estacionDisponible.parabrisas">
+                  <div *ngIf="validacionData.visibles.estacionDisponible.parabrisas">
+                    <ion-icon *ngIf="!capturaParabrisas" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaParabrisas" name="checkmark"></ion-icon>
+                  </div>
+                  <ion-icon *ngIf="!validacionData.visibles.estacionDisponible.parabrisas" name="close-outline"></ion-icon>
+                  </ion-button>
+                </ion-card-title>
+                <ion-toggle *ngIf="!capturaParabrisas" class="ion-padding-top" [(ngModel)]="validacionData.visibles.estacionDisponible.parabrisas" [enableOnOffLabels]="true" (ionChange)="toggleEstacion('parabrisas')">Disponible</ion-toggle>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+          <ion-col>
+            <ion-card>
+              <div class="image-container" style="position: relative;">
+                <ion-spinner
+                  *ngIf="isLoadingPuerta"
+                  name="crescent"
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                </ion-spinner>
+                <img 
+                  alt="Imagen puerta" 
+                  [src]="urlPuerta" 
+                  (load)="onImageLoad('puerta')" 
+                  (error)="onImageError('puerta')" 
+                  [style.opacity]="isLoadingPuerta ? 0 : 1"
+                />
+              </div>
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-button shape="round" (click)="capturaOCR('puerta')" [disabled]="!validacionData.visibles.estacionDisponible.puerta">
+                    <div *ngIf="validacionData.visibles.estacionDisponible.puerta">
+                      <ion-icon *ngIf="!capturaPuerta" name="camera-outline"></ion-icon>
+                      <ion-icon *ngIf="capturaPuerta" name="checkmark"></ion-icon>
+                    </div>
+                    <ion-icon *ngIf="!validacionData.visibles.estacionDisponible.puerta" name="close-outline"></ion-icon>
+                  </ion-button>
+                </ion-card-title>
+                <ion-toggle *ngIf="!capturaPuerta" class="ion-padding-top" [(ngModel)]="validacionData.visibles.estacionDisponible.puerta" [enableOnOffLabels]="true" (ionChange)="toggleEstacion('puerta')">Disponible</ion-toggle>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <div class="image-container" style="position: relative;">
+                <ion-spinner
+                  *ngIf="isLoadingFactura"
+                  name="crescent"
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                </ion-spinner>
+                <img 
+                  alt="Imagen factura" 
+                  [src]="urlFactura" 
+                  (load)="onImageLoad('factura')" 
+                  (error)="onImageError('factura')" 
+                  [style.opacity]="isLoadingFactura ? 0 : 1"
+                />
+              </div>
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-button shape="round" (click)="capturaOCR('factura')" [disabled]="!validacionData.visibles.estacionDisponible.factura">
+                  <div *ngIf="validacionData.visibles.estacionDisponible.factura">
+                    <ion-icon *ngIf="!capturaFactura" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaFactura" name="checkmark"></ion-icon>
+                  </div>
+                  <ion-icon *ngIf="!validacionData.visibles.estacionDisponible.factura" name="close-outline"></ion-icon>
+                  </ion-button>
+                </ion-card-title>
+                <ion-toggle *ngIf="!capturaFactura" class="ion-padding-top" [(ngModel)]="validacionData.visibles.estacionDisponible.factura" [enableOnOffLabels]="true" (ionChange)="toggleEstacion('factura')">Disponible</ion-toggle>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+          <ion-col>
+            <ion-card>
+              <div class="image-container" style="position: relative;">
+                <ion-spinner
+                  *ngIf="isLoadingTarjetaCirculacion"
+                  name="crescent"
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                </ion-spinner>
+                <img 
+                  alt="Imagen tarjeta circulacion" 
+                  [src]="urlTarjetaCirculacion" 
+                  (load)="onImageLoad('tarjeta-circulacion')" 
+                  (error)="onImageError('tarjeta-circulacion')" 
+                  [style.opacity]="isLoadingTarjetaCirculacion ? 0 : 1"
+                />
+              </div>
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-button shape="round" (click)="capturaOCR('tarjeta-circulacion')" [disabled]="!validacionData.visibles.estacionDisponible.tarjetaCirculacion">
+                  <div *ngIf="validacionData.visibles.estacionDisponible.tarjetaCirculacion">
+                    <ion-icon *ngIf="!capturaTarjetaCirculacion" name="camera-outline"></ion-icon>
+                    <ion-icon *ngIf="capturaTarjetaCirculacion" name="checkmark"></ion-icon>
+                  </div>
+                  <ion-icon *ngIf="!validacionData.visibles.estacionDisponible.tarjetaCirculacion" name="close-outline"></ion-icon>
+                  </ion-button>
+                </ion-card-title>
+                <ion-toggle *ngIf="!capturaTarjetaCirculacion" class="ion-padding-top" [(ngModel)]="validacionData.visibles.estacionDisponible.tarjetaCirculacion" [enableOnOffLabels]="true" (ionChange)="toggleEstacion('tarjetaCirculacion')">Disponible</ion-toggle>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
       <div class="cuerpo" *ngIf="mostrarIcono">
         <p *ngIf="colorResultado == 'rojo'"  class="ion-margin" >La comparación de los VINs no coincide, es probable se tenga un problema </p>
         <!-- *ngIf="colorResultado == 'verde'"  -->

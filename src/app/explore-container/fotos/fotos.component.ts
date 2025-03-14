@@ -65,6 +65,12 @@ export class FotosComponent implements OnInit {
           },
         },
       ],
+      estacionDisponible: {
+        parabrisas: true,
+        puerta: true,
+        factura: true,
+        tarjetaCirculacion: true,
+      },
       vin: '',
     },
     obd: {

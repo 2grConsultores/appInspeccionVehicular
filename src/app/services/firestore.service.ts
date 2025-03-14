@@ -46,6 +46,12 @@ export class FirestoreService {
         visibles: {
           listaLecturas: [],
           vin: '',
+          estacionDisponible: {
+            parabrisas: true,
+            puerta: true,
+            factura: true,
+            tarjetaCirculacion: true,
+          },
         },
         obd: {
           vin: '',
